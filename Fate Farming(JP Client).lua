@@ -55,7 +55,7 @@ Plugins that are needed for it to work:
     -> Lifestream :  (for changing Instances [ChangeInstance][Exchange]) https://raw.githubusercontent.com/NightmareXIV/MyDalamudPlugins/main/pluginmaster.json
 
 ********************************************************************************
-*  Optional Plugins *
+*                                Optional Plugins                              *
 ********************************************************************************
 
 This Plugins are Optional and not needed unless you have it enabled in the settings:
@@ -648,8 +648,8 @@ FatesData = {
             },
             otherNpcFates= {
                 { fateName="怪力の大食漢「マイティ・マイプ」", npcName="ハヌハヌ族の釣り人" }, --22 boss
-                { fateName="野性と葦", npcName="ハヌハヌ族の農夫"   }, --23 normal
-                { fateName="我々の貢物", npcName="ハヌハヌ族の巫女"   }, --24 tower defense
+                { fateName="野性と葦", npcName="ハヌハヌ族の農夫" }, --23 normal
+                { fateName="我々の貢物", npcName="ハヌハヌ族の巫女" }, --24 tower defense
                 { fateName="奸臣、大寒心", npcName="ペルペル族の行商人" }, --24 tower defense
                 { fateName="素晴らしき、キノコの世界", npcName="匠想いのバノブロク" }  --23 normal
             },

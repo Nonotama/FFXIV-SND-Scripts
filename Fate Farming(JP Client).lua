@@ -707,7 +707,7 @@ FatesData = {
                 { fateName="死せる悪漢「デッドマン・ダーテカ」", npcName="トナワータ族の労働者" }, --22 boss
                 { fateName="嘆きの猛進「ウィデキ」", npcName="ヘイザ・アロ族の男性" }, --22 boss
                 { fateName="ロネークと人の大地", npcName="ヘイザ・アロ族の女性" }, --23 normal
-                { fateName="リザー・ランズ・スルー・イット", npcName="ヘイザ・アロ族の釣人" }, --24 tower defense
+                { fateName="リバー・ランズ・スルー・イット", npcName="ヘイザ・アロ族の釣人" }, --24 tower defense
                 { fateName="恐竜怪鳥の伝説", npcName="ペルペル族の行商人" }  --23 normal
             },
             fatesWithContinuations = {

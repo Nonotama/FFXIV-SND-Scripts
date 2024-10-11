@@ -606,28 +606,28 @@ FatesData = {
         zoneName = "オルコ・パチャ",
         zoneId = 1187,
         aetheryteList = {
-            { aetheryteName="ワチュン・ペロ",   x=335, y=-160, z=-415 },
-            { aetheryteName="ウォーラーの残響", x=465, y=115,  z=635 },
+            { aetheryteName="ワチュン・ペロ", x=335, y=-160, z=-415 },
+            { aetheryteName="ウォーラーの残響", x=465, y=115, z=635 },
         },
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {
-                { fateName="ポゼッション",                     npcName="健脚のジーベリ"       }, --23 normal
-                { fateName="踊る山火「ラカクウルク」",         npcName="健脚のジーベリ"       }, --22 boss
-                { fateName="不死の人",                         npcName="墓参りのヨカフイ族"   }, --23 normal
-                { fateName="失われた山岳の都",                 npcName="遺跡守のヨカフイ族"   }, --24 tower defense
-                { fateName="コーヒーを巡る冒険",               npcName="カピー農園の作業員"   }, --24 tower defense
-                { fateName="千年の孤独",                       npcName="チーワグー・サベラー" }, --23 normal
-                { fateName="空飛ぶ鍋奉行「ペルペルイーター」", npcName="ペルペル族の旅商"     }, --22 boss
-                { fateName="狼の家",                           npcName="ペルペル族の旅商"     }  --23 normal
+                { fateName="ポゼッション", npcName="健脚のジーベリ" }, --23 normal
+                { fateName="踊る山火「ラカクウルク」", npcName="健脚のジーベリ" }, --22 boss
+                { fateName="不死の人", npcName="墓参りのヨカフイ族" }, --23 normal
+                { fateName="失われた山岳の都", npcName="遺跡守のヨカフイ族" }, --24 tower defense
+                { fateName="コーヒーを巡る冒険", npcName="カピー農園の作業員" }, --24 tower defense
+                { fateName="千年の孤独", npcName="チーワグー・サベラー" }, --23 normal
+                { fateName="空飛ぶ鍋奉行「ペルペルイーター」", npcName="ペルペル族の旅商" }, --22 boss
+                { fateName="狼の家", npcName="ペルペル族の旅商" }  --23 normal
             },
             fatesWithContinuations = {
                 { fateName="不死の人", continuationIsBoss=true },
                 { fateName="千年の孤独", continuationIsBoss=true }
             },
             blacklistedFates= {
-                "オンリー・ザ・ボム",              -- なぜか行かない
-                "狼の家",                          -- 同名NPCが、同一箇所に複数いるため
+                "オンリー・ザ・ボム", -- なぜか行かない
+                "狼の家", -- 同名NPCが、同一箇所に複数いるため
                 "空飛ぶ鍋奉行「ペルペルイーター」" -- 同名NPCが、同一箇所に複数いるため
             }
         }
@@ -636,22 +636,22 @@ FatesData = {
         zoneName="コザマル・カ",
         zoneId=1188,
         aetheryteList={
-            { aetheryteName="オック・ハヌ",     x=-170, y=6,   z=-470 },
-            { aetheryteName="朋友の灯火",       x=541,  y=117, z=203 },
+            { aetheryteName="オック・ハヌ", x=-170, y=6, z=-470 },
+            { aetheryteName="朋友の灯火", x=541, y=117, z=203 },
             { aetheryteName="アースンシャイア", x=-477, y=124, z=311 }
         },
         fatesList={
             collectionsFates={
-                { fateName="落ち石拾い",                       npcName="モブリン族の採集人" },
-                { fateName="人鳥細工",                         npcName="ハヌハヌ族の細工師" },
+                { fateName="落ち石拾い", npcName="モブリン族の採集人" },
+                { fateName="人鳥細工", npcName="ハヌハヌ族の細工師" },
                 
             },
             otherNpcFates= {
                 { fateName="怪力の大食漢「マイティ・マイプ」", npcName="ハヌハヌ族の釣り人" }, --22 boss
-                { fateName="野性と葦",                         npcName="ハヌハヌ族の農夫"   }, --23 normal
-                { fateName="我々の貢物",                       npcName="ハヌハヌ族の巫女"   }, --24 tower defense
-                { fateName="奸臣、大寒心",                     npcName="ペルペル族の行商人" }, --24 tower defense
-                { fateName="素晴らしき、キノコの世界",         npcName="匠想いのバノブロク" }  --23 normal
+                { fateName="野性と葦", npcName="ハヌハヌ族の農夫"   }, --23 normal
+                { fateName="我々の貢物", npcName="ハヌハヌ族の巫女"   }, --24 tower defense
+                { fateName="奸臣、大寒心", npcName="ペルペル族の行商人" }, --24 tower defense
+                { fateName="素晴らしき、キノコの世界", npcName="匠想いのバノブロク" }  --23 normal
             },
             fatesWithContinuations = {
                 { fateName="匠想いのバノブロク", continuationIsBoss=true }
@@ -665,28 +665,28 @@ FatesData = {
         zoneName="ヤクテル樹海",
         zoneId=1189,
         aetheryteList={
-            { aetheryteName="イクブラーシャ", x=-400, y=24,   z=-431 },
-            { aetheryteName="マムーク",       x=720,  y=-132, z=527 }
+            { aetheryteName="イクブラーシャ", x=-400, y=24, z=-431 },
+            { aetheryteName="マムーク", x=720, y=-132, z=527 }
         },
         fatesList= {
             collectionsFates= {
-                { fateName="恐怖！キノコ魔物",              npcName="フビゴ族の採集人"     }
+                { fateName="恐怖！キノコ魔物", npcName="フビゴ族の採集人" }
             },
             otherNpcFates= {
-                { fateName="上段の突きを喰らうイブルク",    npcName="シュバラール族の狩人" }, --23 normal
-                { fateName="血濡れの爪「ミユールル」",      npcName="シュバラール族の狩人" }, --22 boss
-                { fateName="ザ・デッドリーマンティス",      npcName="シュバラール族の狩人" }, --23 normal
-                { fateName="荒くれマムージャ襲撃編",        npcName="ドプロ族の槍使い" },
-                { fateName="秘薬を守る戦い",                npcName="フビゴ族の荷運び人"   }  --24 tower defense
+                { fateName="上段の突きを喰らうイブルク", npcName="シュバラール族の狩人" }, --23 normal
+                { fateName="血濡れの爪「ミユールル」", npcName="シュバラール族の狩人" }, --22 boss
+                { fateName="ザ・デッドリーマンティス", npcName="シュバラール族の狩人" }, --23 normal
+                { fateName="荒くれマムージャ襲撃編", npcName="ドプロ族の槍使い" }, --23 normal
+                { fateName="秘薬を守る戦い", npcName="フビゴ族の荷運び人" }  --24 tower defense
             },
             fatesWithContinuations = {
                 { fateName="上段の突きを喰らうイブルク", continuationIsBoss=false },
-                { fateName="荒くれマムージャ襲撃", continuationIsBoss=false }
+                { fateName="荒くれマムージャ襲撃", continuationIsBoss=true }
             },
             blacklistedFates= {
                 "上段の突きを喰らうイブルク", -- 同名NPCが、同一箇所に複数いるため
-                "血濡れの爪「ミユールル」",   -- 同名NPCが、同一箇所に複数いるため
-                "ザ・デッドリーマンティス"    -- 同名NPCが、同一箇所に複数いるため
+                "血濡れの爪「ミユールル」", -- 同名NPCが、同一箇所に複数いるため
+                "ザ・デッドリーマンティス" -- 同名NPCが、同一箇所に複数いるため
             }
         }
     },
@@ -694,21 +694,21 @@ FatesData = {
         zoneName="シャーローニ荒野",
         zoneId=1190,
         aetheryteList= {
-            { aetheryteName="フーサタイ宿場町", x=390,  y=0,   z=465 },
-            { aetheryteName="シェシェネ青燐泉", x=-295, y=19,  z=-115 },
-            { aetheryteName="メワヘイゾーン",   x=310,  y=-15, z=-567 }
+            { aetheryteName="フーサタイ宿場町", x=390, y=0, z=465 },
+            { aetheryteName="シェシェネ青燐泉", x=-295, y=19, z=-115 },
+            { aetheryteName="メワヘイゾーン", x=310, y=-15, z=-567 }
         },
         fatesList= {
             collectionsFates= {
-                { fateName="毛刈りの季節",                       npcName="トナワータ族の採集人" },
-                { fateName="トクローネ：狩猟の下準備",           npcName="赤日のブルクバー"     }
+                { fateName="毛刈りの季節", npcName="トナワータ族の採集人" },
+                { fateName="トクローネ：狩猟の下準備", npcName="赤日のブルクバー" }
             },
             otherNpcFates= {
                 { fateName="死せる悪漢「デッドマン・ダーテカ」", npcName="トナワータ族の労働者" }, --22 boss
-                { fateName="嘆きの猛進「ウィデキ」",             npcName="ヘイザ・アロ族の男性" }, --22 boss
-                { fateName="ロネークと人の大地",                 npcName="ヘイザ・アロ族の女性" }, --23 normal
-                { fateName="リザー・ランズ・スルー・イット",     npcName="ヘイザ・アロ族の釣人" }, --24 tower defense
-                { fateName="恐竜怪鳥の伝説",                     npcName="ペルペル族の行商人"   }  --23 normal
+                { fateName="嘆きの猛進「ウィデキ」", npcName="ヘイザ・アロ族の男性" }, --22 boss
+                { fateName="ロネークと人の大地", npcName="ヘイザ・アロ族の女性" }, --23 normal
+                { fateName="リザー・ランズ・スルー・イット", npcName="ヘイザ・アロ族の釣人" }, --24 tower defense
+                { fateName="恐竜怪鳥の伝説", npcName="ペルペル族の行商人" }  --23 normal
             },
             fatesWithContinuations = {
                 { fateName="トクローネ：狩猟の下準備", continuationIsBoss=false }
@@ -723,22 +723,22 @@ FatesData = {
         zoneName="ヘリテージファウンド",
         zoneId=1191,
         aetheryteList= {
-            { aetheryteName="ヤースラニ駅",         x=515,  y=145, z=210 },
-            { aetheryteName="アウトスカーツ",       x=-221, y=32,  z=-583 },
+            { aetheryteName="ヤースラニ駅", x=515, y=145, z=210 },
+            { aetheryteName="アウトスカーツ", x=-221, y=32, z=-583 },
             { aetheryteName="エレクトロープ採石場", x=-222, y=31,  z=123 }
         },
         fatesList= {
             collectionsFates= {
-                { fateName="薬屋のひと仕事",               npcName="農務役のトナワータ族"     },
-                { fateName="人生がときめく片づけの技法",   npcName="凛とした拾得人"           }
+                { fateName="薬屋のひと仕事", npcName="農務役のトナワータ族" },
+                { fateName="人生がときめく片づけの技法", npcName="凛とした拾得人" }
             },
             otherNpcFates= {
-                { fateName="ブロークンボットダイアリー",   npcName="駆け出しの駆除人"         }, --23 normal
-                { fateName="逃走テレメトリー",             npcName="駆け出しの駆除人"         }, --23 normal
-                { fateName="人狼伝説",                     npcName="危機に瀕した駆除人"       }, --23 normal
-                { fateName="気まぐれロボット",             npcName="途方に暮れた拾得人"       }, --23 normal
-                { fateName="巨獣めざめる",                 npcName="ドリフトダウンズの拾得人" }, --23 normal
-                { fateName="道を視る青年",                 npcName="怯えた配達人"             }  --23 normal
+                { fateName="ブロークンボットダイアリー", npcName="駆け出しの駆除人" }, --23 normal
+                { fateName="逃走テレメトリー", npcName="駆け出しの駆除人" }, --23 normal
+                { fateName="人狼伝説", npcName="危機に瀕した駆除人" }, --23 normal
+                { fateName="気まぐれロボット", npcName="途方に暮れた拾得人" }, --23 normal
+                { fateName="巨獣めざめる", npcName="ドリフトダウンズの拾得人" }, --23 normal
+                { fateName="道を視る青年", npcName="怯えた配達人" }  --23 normal
             },
             fatesWithContinuations = {
                 { fateName="気まぐれロボット", continuationIsBoss=false }
@@ -752,18 +752,18 @@ FatesData = {
         zoneName="リビング・メモリー",
         zoneId=1192,
         aetheryteList= {
-            { aetheryteName="レイノード・メモリス", x=0,    y=56, z=796 },
-            { aetheryteName="レイノード・ファイア", x=659,  y=27, z=-285 },
+            { aetheryteName="レイノード・メモリス", x=0, y=56, z=796 },
+            { aetheryteName="レイノード・ファイア", x=659, y=27, z=-285 },
             { aetheryteName="レイノード・ウィンド", x=-253, y=56, z=-400 }
         },
         fatesList= {
             collectionsFates= {
-                { fateName="種の期限",                     npcName="アンロスト・セントリーGX"   },
-                { fateName="メモリーズ",                   npcName="アンロスト・セントリーGX"   }
+                { fateName="種の期限", npcName="アンロスト・セントリーGX" },
+                { fateName="メモリーズ", npcName="アンロスト・セントリーGX" }
             },
             otherNpcFates= {
-                { fateName="カナルタウンでやすらかに",     npcName="アンロスト・セントリーGX"   }, --24 tower defense
-                { fateName="マイカ・ザ・ムー：出発進行",   npcName="ファニー・パレードマスター" }  --23 normal
+                { fateName="カナルタウンでやすらかに", npcName="アンロスト・セントリーGX" }, --24 tower defense
+                { fateName="マイカ・ザ・ムー：出発進行", npcName="ファニー・パレードマスター" }  --23 normal
             },
             fatesWithContinuations =
             {

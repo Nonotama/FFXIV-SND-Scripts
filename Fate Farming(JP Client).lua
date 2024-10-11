@@ -81,7 +81,7 @@ This Plugins are Optional and not needed unless you have it enabled in the setti
 Food = ""                                      --Leave "" Blank if you don't want to use any food. If its HQ include <hq> next to the name "Baked Eggplant <hq>"
 Potion = ""                                    --Leave "" Blank if you don't want to use any potions.
 ShouldSummonChocobo = true                     --Summon chocobo?
-    ShouldAutoBuyGysahlGreens = true               --Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if you're out
+    ShouldAutoBuyGysahlGreens = false              --Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if you're out
 MountToUse = "チャイチャ"                      --The mount you'd like to use when flying between fates
 
 --Fate Combat Settings
@@ -103,12 +103,12 @@ UseBM = true                                   --if you want to use the BossMod 
 
 --Post Fate Settings
 EnableChangeInstance = true                    --should it Change Instance when there is no Fate (only works on DT fates)
-    WaitIfBonusBuff = false                        --Don't change instances if you have the Twist of Fate bonus buff
+    WaitIfBonusBuff = true                         --Don't change instances if you have the Twist of Fate bonus buff
 ShouldExchangeBicolorVouchers = true           --Should it exchange Bicolor Gemstone Vouchers?
     VoucherTown = "オールド・シャーレアン"           -- Old Sharlayan for "オールド・シャーレアン" and Solution Nine for "ソリューションナイン"
 SelfRepair = true                              --if false, will go to Limsa mender
     RepairAmount = 20                              --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
-    ShouldAutoBuyDarkMatter = true                 --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
+    ShouldAutoBuyDarkMatter = false                --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
 ShouldExtractMateria = true                    --should it Extract Materia
 Retainers = true                               --should it do Retainers
 ShouldGrandCompanyTurnIn = true                --should it to Turn ins at the GC (requires Deliveroo)
@@ -231,27 +231,27 @@ CharacterCondition = {
 
 ClassList =
 {
-    pld = { classId=19, className="ナイト", isMelee=true, isTank=true },
-    mnk = { classId=20, className="モンク", isMelee=true, isTank=false },
-    war = { classId=21, className="戦士", isMelee=true, isTank=true },
-    drg = { classId=22, className="竜騎士", isMelee=true, isTank=false },
-    brd = { classId=23, className="吟遊詩人", isMelee=false, isTank=false },
-    whm = { classId=24, className="白魔道士", isMelee=false, isTank=false },
-    blm = { classId=25, className="黒魔道士", isMelee=false, isTank=false },
-    smn = { classId=27, className="召喚士", isMelee=false, isTank=false },
-    sch = { classId=28, className="学者", isMelee=false, isTank=false },
-    nin = { classId=30, className="忍者", isMelee=true, isTank=false },
-    mch = { classId=31, className="機工士", isMelee=false, isTank=false},
-    drk = { classId=32, className="暗黒騎士", isMelee=true, isTank=true },
-    ast = { classId=33, className="占星術師", isMelee=false, isTank=false },
-    sam = { classId=34, className="侍", isMelee=true, isTank=false },
-    rdm = { classId=35, className="赤魔道士", isMelee=false, isTank=false },
-    blu = { classId=36, className="青魔道士", isMelee=false, isTank=false },
-    gnb = { classId=37, className="ガンブレイカー", isMelee=true, isTank=true },
-    dnc = { classId=38, className="踊り子", isMelee=false, isTank=false },
-    rpr = { classId=39, className="リーパー", isMelee=true, isTank=false },
-    sge = { classId=40, className="賢者", isMelee=false, isTank=false },
-    vpr = { classId=41, className="ヴァイパー", isMelee=true, isTank=false },
+    pld = { classId=19, className="ナイト",         isMelee=true,  isTank=true },
+    mnk = { classId=20, className="モンク",         isMelee=true,  isTank=false },
+    war = { classId=21, className="戦士",           isMelee=true,  isTank=true },
+    drg = { classId=22, className="竜騎士",         isMelee=true,  isTank=false },
+    brd = { classId=23, className="吟遊詩人",       isMelee=false, isTank=false },
+    whm = { classId=24, className="白魔道士",       isMelee=false, isTank=false },
+    blm = { classId=25, className="黒魔道士",       isMelee=false, isTank=false },
+    smn = { classId=27, className="召喚士",         isMelee=false, isTank=false },
+    sch = { classId=28, className="学者",           isMelee=false, isTank=false },
+    nin = { classId=30, className="忍者",           isMelee=true,  isTank=false },
+    mch = { classId=31, className="機工士",         isMelee=false, isTank=false},
+    drk = { classId=32, className="暗黒騎士",       isMelee=true,  isTank=true },
+    ast = { classId=33, className="占星術師",       isMelee=false, isTank=false },
+    sam = { classId=34, className="侍",             isMelee=true,  isTank=false },
+    rdm = { classId=35, className="赤魔道士",       isMelee=false, isTank=false },
+    blu = { classId=36, className="青魔道士",       isMelee=false, isTank=false },
+    gnb = { classId=37, className="ガンブレイカー", isMelee=true,  isTank=true },
+    dnc = { classId=38, className="踊り子",         isMelee=false, isTank=false },
+    rpr = { classId=39, className="リーパー",       isMelee=true,  isTank=false },
+    sge = { classId=40, className="賢者",           isMelee=false, isTank=false },
+    vpr = { classId=41, className="ヴァイパー",     isMelee=true,  isTank=false },
     pct = { classId=42, className="ピクトマンサー", isMelee=false, isTank=false }
 }
 

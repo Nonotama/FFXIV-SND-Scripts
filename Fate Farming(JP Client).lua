@@ -744,7 +744,7 @@ FatesData = {
                 { fateName="気まぐれロボット", continuationIsBoss=false }
             },
             blacklistedFates= {
---                "道を視る青年" -- NPCに話しかける移動中、戦闘状態になると処理がストップする場合がある
+                "道を視る青年"
             }
         }
     },

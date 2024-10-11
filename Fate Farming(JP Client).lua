@@ -878,7 +878,11 @@ function SelectNextFateHelper(tempFate, nextFate)
         elseif nextFate.timeLeft < MinTimeLeftToIgnoreFate or nextFate.progress > CompletionToIgnoreFate then
             return tempFate
         else -- select based on progress
-            if tempFate.progress > nextFate.progress then
+            if nextFate.isBonusFate then
+                return nextFate
+            elseif tempFate.isBonusFate then
+                return tempFate
+            elseif tempFate.progress > nextFate.progress then
                 LogInfo("[FATE] Selecting #"..tempFate.fateId.." because other fate #"..nextFate.fateId.." has less progress.")
                 return tempFate
             elseif tempFate.progress < nextFate.progress then
@@ -909,10 +913,6 @@ function SelectNextFateHelper(tempFate, nextFate)
                             end
                         end
                     end
-                elseif nextFate.isBonusFate then
-                    return nextFate
-                elseif tempFate.isBonusFate then
-                    return tempFate
                 end
             end
         end
@@ -1514,7 +1514,7 @@ function MoveToFate()
         return
     end
 
-    PathfindAndMoveTo(nearestLandX, nearestLandY, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId))
+    PathfindAndMoveTo(nearestLandX, nearestLandY + 10, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId))
 end
 
 function InteractWithFateNpc()

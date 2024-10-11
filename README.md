@@ -1,4 +1,4 @@
-日本語クライアント用に名前（FATE、NPC、街、アイテム）を変更したもの
+固有名詞（FATE、NPC、街、アイテム）を日本語クライアント用に変更したもの
 
 本家ページ：https://github.com/pot0to/pot0to-SND-Scripts
 

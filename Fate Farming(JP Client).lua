@@ -1848,7 +1848,6 @@ function HandleUnexpectedCombat()
         TurnOffCombatMods()
         State = CharacterState.ready
         LogInfo("[FATE] State Change: Ready")
-        yield("/wait 0.2")
         return
     end
 
@@ -1928,7 +1927,6 @@ function DoFate()
             TurnOffCombatMods()
             State = CharacterState.ready
             LogInfo("[FATE] State Change: Ready")
-        yield("/wait 0.2")
         end
         return
     elseif GetCharacterCondition(CharacterCondition.mounted) then

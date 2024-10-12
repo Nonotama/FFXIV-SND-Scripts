@@ -570,12 +570,12 @@ FatesData = {
         },
         fatesList= {
             collectionsFates= {
-                { fateName="Omicron Recall: Comms Expansion", npcName="N-6205" }
+                { fateName="カイのメモリーより：通信機拡張", npcName="N-6205" }
             },
             otherNpcFates= {
-                { fateName="Wings of Glory", npcName="Ahl Ein's Kin" },
-                { fateName="Omicron Recall: Secure Connection", npcName="N-6205"},
-                { fateName="Only Just Begun", npcName="Myhk Nehr" }
+                { fateName="栄光の翼「アル・アイン」", npcName="アル・アインの友" }, --22 boss
+                { fateName="Omicron Recall: Secure Connection", npcName="N-6205"}, --23 normal
+                { fateName="永遠の終わり", npcName="ミク・ネール" } --23 normal
             },
             fatesWithContinuations = {},
             blacklistedFates= {}
@@ -591,14 +591,17 @@ FatesData = {
         },
         fatesList= {
             collectionsFates= {
-                { fateName="So Sorry, Sokles", npcName="Flora Overseer" }
+                { fateName="ソクレスへの弁明", npcName="植物担当の観察者" }
             },
             otherNpcFates= {
-                { fateName="Grand Designs: Unknown Execution", npcName="Meletos the Inscrutable" },
-                { fateName="Grand Designs: Aigokeros", npcName="Meletos the Inscrutable" },
-                { fateName="Nature's Staunch Protector", npcName="Monoceros Monitor" },
+                { fateName="創造計画：エゴーケロス観察", npcName="深遠のメレトス" }, --23 normal
+                { fateName="創造計画：斬新すぎたイデア", npcName="深遠のメレトス" }, --23 normal
+                { fateName="死の鳥", npcName="モノセロスの観察者" }, --23 normal
             },
-            fatesWithContinuations = {},
+            fatesWithContinuations = {
+                { fateName="創造計画：エゴーケロス観察", continuationIsBoss=true },
+                { fateName="創造計画：斬新すぎたイデア", continuationIsBoss=true }
+            },
             blacklistedFates= {}
         }
     },

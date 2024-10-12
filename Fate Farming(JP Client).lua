@@ -574,10 +574,13 @@ FatesData = {
             },
             otherNpcFates= {
                 { fateName="栄光の翼「アル・アイン」", npcName="アル・アインの友" }, --22 boss
-                { fateName="Omicron Recall: Secure Connection", npcName="N-6205"}, --23 normal
+                { fateName="カイのメモリーより：N-6205防衛", npcName="N-6205"}, --23 normal
                 { fateName="永遠の終わり", npcName="ミク・ネール" } --23 normal
             },
             fatesWithContinuations = {},
+            specialFates = {
+                "カイのメモリーより：侵略兵器の破壊" -- カイ（特殊FATE）
+            },
             blacklistedFates= {}
         }
     },

@@ -2,13 +2,14 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.15.10                                *
+*                              Version 2.15.11                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.15.10  Removed check for targeting forlorn only once
+    -> 2.15.11  Truncated random wait to 3 decimal places
+                Removed check for targeting forlorn only once
                 Added <0,0,0> check for pathing to enemies while in a fate
                 Added nilcheck for BossFatesClass
                 Fixed class changing for part 2 fates, fixed materia extraction flag
@@ -1976,6 +1977,7 @@ function DoFate()
         end
     else
 --        TurnOnAoes()
+        yield("/rotation auto")
     end
 
     -- targets whatever is trying to kill you

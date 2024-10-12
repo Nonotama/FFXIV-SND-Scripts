@@ -1966,7 +1966,7 @@ function DoFate()
 --                yield("/enemysign attack1")
 --                yield("/echo Found Forlorn! <se.3>")
 --                TurnOffAoes()
-                  yield("/rotation manual")
+                yield("/rotation manual")
                 ForlornMarked = true
             end
         else

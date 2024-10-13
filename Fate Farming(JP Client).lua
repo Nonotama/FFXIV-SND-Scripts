@@ -1081,7 +1081,7 @@ function GetClosestAetheryteToPoint(x, y, z, teleportTimePenalty)
 end
 
 function TeleportToClosestAetheryteToFate(nextFate)
-    local aetheryteForClosestFate = GetClosestAetheryteToPoint(nextFate.x, nextFate.y, nextFate.z, 300)
+    local aetheryteForClosestFate = GetClosestAetheryteToPoint(nextFate.x, nextFate.y, nextFate.z, 200)
     if aetheryteForClosestFate ~=nil then
         TeleportTo(aetheryteForClosestFate.aetheryteName)
         return true
@@ -1976,18 +1976,15 @@ function DoFate()
             if not ForlornMarked then
 --                yield("/enemysign attack1")
 --                yield("/echo Found Forlorn! <se.3>")
---                TurnOffAoes()
-                yield("/rotation manual")
+                TurnOffAoes()
                 ForlornMarked = true
             end
         else
             ClearTarget()
---            TurnOnAoes()
-            yield("/rotation auto")
+            TurnOnAoes()
         end
     else
---        TurnOnAoes()
-        yield("/rotation auto")
+        TurnOnAoes()
     end
 
     -- targets whatever is trying to kill you

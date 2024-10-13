@@ -494,10 +494,12 @@ FatesData = {
         },
         fatesList= {
             collectionsFates= {
-                { fateName="Sheaves on the Wind", npcName="Vexed Researcher" },
-                { fateName="Moisture Farming", npcName="Well-moisturized Researcher" }
+                { fateName="風の十四方位", npcName="困り果てた研究員" },
+                { fateName="天然由来保湿成分", npcName="美肌の研究員" }
             },
-            otherNpcFates= {},
+            otherNpcFates= {
+                { fateName="羊飼いの暮らし", npcName="種畜研究所の獣牧士" }, --24 tower defense
+            },
             fatesWithContinuations = {},
             blacklistedFates= {}
         }
@@ -512,10 +514,15 @@ FatesData = {
         },
         fatesList= {
             collectionsFates= {
-                { fateName="Full Petal ALchemist: Perilous Pickings", npcName="???" }
+                { fateName="香りの錬金術師：危険な花摘み", npcName="調香のサジャバート" }
             },
-            otherNpcFates= {},
+            otherNpcFates= {
+                { fateName="少年と海", npcName="漁師の息子" }, --24 tower defense
+            },
             fatesWithContinuations = {},
+            specialFates = {
+                "ムリガ信仰：偽りの神" -- ダイヴァディーパ（特殊FATE）
+            },
             blacklistedFates= {}
         }
     },
@@ -528,15 +535,17 @@ FatesData = {
         },
         fatesList= {
             collectionsFates= {
-                { fateName="Parts Unknown", npcName="Displaced Engineer" }
+                { fateName="回収は一刻を争う！", npcName="難民の魔導技師" }
             },
             otherNpcFates= {
-                { fateName="Artificial Malevolence: 15 Minutes to Comply", npcName="Keltlona" },
-                { fateName="Artificial Malevolence: The Drone Army", npcName="Ebrelnaux" },
-                { fateName="Artificial Malevolence: Unmanned Aerial Villains", npcName="Keltlona" },
-                { fateName="Amazing Crates", npcName="Hardy Refugee" }
+                { fateName="魔導技師の帰郷：ファースト・ステップ", npcName="ケルトロナ少甲士" }, --22 boss
+                { fateName="魔導技師の帰郷：ファースト・イン・トラップ", npcName="エルブレノ" }, --24 tower defense
+                { fateName="魔導技師の帰郷：ビフォー・コンタクト", npcName="ケルトロナ少甲士" }, --23 normal
+                { fateName="霜の巨人たち", npcName="生き残りの難民" } --24 tower defense
             },
-            fatesWithContinuations = {},
+            fatesWithContinuations = {
+                { fateName="魔導技師の帰郷：ビフォー・コンタクト", continuationIsBoss=true }
+            },
             blacklistedFates= {}
         }
     },
@@ -552,12 +561,13 @@ FatesData = {
                 { fateName="What a Thrill", npcName="Thrillingway" }
             },
             otherNpcFates= {
-                { fateName="Lepus Lamentorum: Dynamite Disaster", npcName="Warringway" },
-                { fateName="Lepus Lamentorum: Cleaner Catastrophe", npcName="Fallingway" },
+                { fateName="嘆きの白兎：ばくばく大爆発", npcName="ウォリングウェイ" }, --24 tower defense
+                { fateName="嘆きの白兎：だめだめ大暴走", npcName="フォリングウェイ" }, --23 normal
+                { fateName="嘆きの白兎：むきむき大処分", npcName="フォリングウェイ" } --22 boss
             },
             fatesWithContinuations = {},
             blacklistedFates= {
-                "Hunger Strikes", --really bad line of sight with rocks, get stuck not doing anything quite often
+                "大海を隔てるがごとく", --斜面で見通しが悪く何もできず棒立ちする可能性が高い
             }
         }
     },
@@ -575,8 +585,8 @@ FatesData = {
             },
             otherNpcFates= {
                 { fateName="栄光の翼「アル・アイン」", npcName="アル・アインの友" }, --22 boss
-                { fateName="カイのメモリーより：N-6205防衛", npcName="N-6205"}, --23 normal
-                { fateName="永遠の終わり", npcName="ミク・ネール" } --23 normal
+                { fateName="カイのメモリーより：N-6205防衛", npcName="N-6205"}, --24 tower defense
+                { fateName="永遠の終わり", npcName="ミク・ネール" } --24 tower defense
             },
             fatesWithContinuations = {},
             specialFates = {
@@ -600,7 +610,7 @@ FatesData = {
             otherNpcFates= {
                 { fateName="創造計画：エゴーケロス観察", npcName="深遠のメレトス" }, --23 normal
                 { fateName="創造計画：斬新すぎたイデア", npcName="深遠のメレトス" }, --23 normal
-                { fateName="死の鳥", npcName="モノセロスの観察者" }, --23 normal
+                { fateName="死の鳥", npcName="モノセロスの観察者" }, --24 tower defense
             },
             fatesWithContinuations = {
                 { fateName="創造計画：エゴーケロス観察", continuationIsBoss=true },
@@ -1071,7 +1081,7 @@ function GetClosestAetheryteToPoint(x, y, z, teleportTimePenalty)
 end
 
 function TeleportToClosestAetheryteToFate(nextFate)
-    local aetheryteForClosestFate = GetClosestAetheryteToPoint(nextFate.x, nextFate.y, nextFate.z, 200)
+    local aetheryteForClosestFate = GetClosestAetheryteToPoint(nextFate.x, nextFate.y, nextFate.z, 300)
     if aetheryteForClosestFate ~=nil then
         TeleportTo(aetheryteForClosestFate.aetheryteName)
         return true

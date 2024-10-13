@@ -707,7 +707,7 @@ FatesData = {
         },
         fatesList= {
             collectionsFates= {
-                { fateName="毛刈りの季節", npcName="トナワータ族の採集人" },
+                { fateName="毛狩りの季節", npcName="トナワータ族の採集人" },
                 { fateName="トクローネ：狩猟の下準備", npcName="赤日のブルクバー" }
             },
             otherNpcFates= {

@@ -2220,6 +2220,7 @@ function ExchangeNewVouchers()
         if not HasTarget() or GetTargetName() ~= "広域交易商 ベリル" then
             yield("/target 広域交易商 ベリル")
         elseif not GetCharacterCondition(CharacterCondition.occupiedShopkeeper) then
+            yield("/vnav stop")
             yield("/interact")
         end
     end

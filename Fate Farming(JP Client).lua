@@ -2106,7 +2106,6 @@ function Ready()
     elseif not LogInfo("[FATE] Ready -> GC TurnIn") and ShouldGrandCompanyTurnIn and
         GetInventoryFreeSlotCount() < InventorySlotsLeft and not shouldWaitForBonusBuff
     then
-        yield("/echo "..tostring(ShouldGrandCompanyTurnIn))
         State = CharacterState.gcTurnIn
         LogInfo("[FATE] State Change: GCTurnIn")
     elseif not LogInfo("[FATE] Ready -> TeleportBackToFarmingZone") and not IsInZone(SelectedZone.zoneId) then
@@ -2310,13 +2309,16 @@ function GrandCompanyTurnIn()
     if GetInventoryFreeSlotCount() <= InventorySlotsLeft then
         local playerGC = GetPlayerGC()
         local gcZoneIds = {
-            129, --Limsa Lominsa
-            132, --New Gridania
-            130 --"Ul'dah - Steps of Nald"
+            128, --リムサ・ロミンサ：上甲板層
+            132, --グリダニア：新市街
+            130 --ウルダハ：ナル回廊
         }
+        local GCVendor = { npcName="補給担当官", x=95.75, y=40.25, z=76.67 }
         if not IsInZone(gcZoneIds[playerGC]) then
             yield("/li gc")
             yield("/wait 1")
+        elseif GetDistanceToPoint(GCVendor.x, GCVendor.y, GCVendor.z) > 4 then
+            return
         elseif DeliverooIsTurnInRunning() then
             return
         else

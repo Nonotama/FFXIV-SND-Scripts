@@ -760,9 +760,7 @@ FatesData = {
             fatesWithContinuations = {
                 { fateName="気まぐれロボット", continuationIsBoss=false }
             },
-            blacklistedFates= {
-                "道を視る青年"
-            }
+            blacklistedFates= {}
         }
     },
     {
@@ -1976,7 +1974,7 @@ function DoFate()
             if not ForlornMarked then
 --                yield("/enemysign attack1")
 --                yield("/echo Found Forlorn! <se.3>")
-                TurnOffAoes()
+--                TurnOffAoes()
                 ForlornMarked = true
             end
         else

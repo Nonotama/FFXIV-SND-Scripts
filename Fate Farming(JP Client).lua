@@ -106,7 +106,7 @@ UseBM = true                                   --if you want to use the BossMod 
 EnableChangeInstance = true                    --should it Change Instance when there is no Fate (only works on DT fates)
     WaitIfBonusBuff = true                         --Don't change instances if you have the Twist of Fate bonus buff
 ShouldExchangeBicolorVouchers = true           --Should it exchange Bicolor Gemstone Vouchers?
-    VoucherTown = "オールド・シャーレアン"           -- Old Sharlayan for "オールド・シャーレアン" and Solution Nine for "ソリューションナイン"
+    VoucherTown = "ソリューションナイン"           -- Old Sharlayan for "オールド・シャーレアン" and Solution Nine for "ソリューションナイン"
 SelfRepair = true                              --if false, will go to Limsa mender
     RepairAmount = 20                              --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
     ShouldAutoBuyDarkMatter = false                --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
@@ -2057,7 +2057,7 @@ function Ready()
     GotCollectionsFullCredit = false
     ForlornMarked = false
 
-    local shouldWaitForBonusBuff = WaitIfBonusBuff and (HasStatusId(1288) or HasStatusId(1289))
+    local shouldWaitForBonusBuff = WaitIfBonusBuff and HasStatusId(1289)
 
     NextFate = SelectNextFate()
     if CurrentFate ~= nil and not IsFateActive(CurrentFate.fateId) then
@@ -2090,7 +2090,7 @@ function Ready()
             State = CharacterState.flyBackToAetheryte
             LogInfo("[FATE] State Change: FlyBackToAetheryte")
         else
-            yield("/wait 10")
+            yield("/wait 3")
         end
         return
     elseif not LogInfo("[FATE] Ready -> ExchangingVouchers") and WaitingForCollectionsFate == 0 and

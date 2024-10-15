@@ -404,7 +404,7 @@ FatesData = {
             fatesWithContinuations = {},
             specialFates = {
                 "激闘フォーミダブル：切り札起動" -- フォーミダブル（特殊FATE）
-            
+            },
             blacklistedFates= {}
         }
     },
@@ -421,7 +421,7 @@ FatesData = {
             otherNpcFates= {},
             fatesWithContinuations = {},
             blacklistedFates= {
-                "トルバNo. 1", -- 敵へのルートが困難
+                "トルバNo. 1" -- 敵へのルートが困難
             }
         }
     },
@@ -488,10 +488,9 @@ FatesData = {
             specialFates = {
                 "厄災のアルケオタニア：深海の討伐戦" -- アルケオタニア（特殊FATE）
             },
-            
             blacklistedFates= {
                 "貝汁物語", --エスコート
-                "厄災のアルケオタニア：テウスィー護衛", --エスコート
+                "厄災のアルケオタニア：テウスィー護衛" --エスコート
             }
         }
     },
@@ -509,7 +508,7 @@ FatesData = {
                 { fateName="天然由来保湿成分", npcName="美肌の研究員" }
             },
             otherNpcFates= {
-                { fateName="羊飼いの暮らし", npcName="種畜研究所の獣牧士" }, --24 タワーディフェンス
+                { fateName="羊飼いの暮らし", npcName="種畜研究所の獣牧士" } --24 タワーディフェンス
             },
             fatesWithContinuations = {},
             blacklistedFates= {}
@@ -528,7 +527,7 @@ FatesData = {
                 { fateName="香りの錬金術師：危険な花摘み", npcName="調香のサジャバート" }
             },
             otherNpcFates= {
-                { fateName="少年と海", npcName="漁師の息子" }, --24 タワーディフェンス
+                { fateName="少年と海", npcName="漁師の息子" } --24 タワーディフェンス
             },
             fatesWithContinuations = {},
             specialFates = {

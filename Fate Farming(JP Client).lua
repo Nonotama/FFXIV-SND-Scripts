@@ -376,14 +376,14 @@ FatesData = {
         },
         fatesList= {
             collectionsFates= {
-                { fateName="Pick-up Sticks", npcName="Crystarium Botanist" }
+                { fateName="木こり歌の事", npcName="レイクランドの木こり" }
             },
             otherNpcFates= {
-                { fateName="Subtle Nightshade", npcName="Artless Dodger" },
-                { fateName="Economic Peril", npcName="Jobb Guard" }
+                { fateName="紫葉団との戦い：卑劣な罠", npcName="行商人らしき男" }, --24 タワーディフェンス
+                { fateName="汚れた血め！", npcName="ジョッブ砦の衛兵" } --24 タワーディフェンス
             },
             fatesWithContinuations = {
-                "Behind Anemone Lines"
+                "ハイエボリューション"
             },
             blacklistedFates= {}
         }
@@ -398,10 +398,13 @@ FatesData = {
         },
         fatesList= {
             collectionsFates= {
-                { fateName="Ironbeard Builders - Rebuilt", npcName="Tholl Engineer" }
+                { fateName="紫葉団との戦い：卑劣な罠", npcName="トルー一家の技師" }
             },
             otherNpcFates= {},
             fatesWithContinuations = {},
+            specialFates = {
+                "激闘フォーミダブル：切り札起動" -- フォーミダブル（特殊FATE）
+            
             blacklistedFates= {}
         }
     },
@@ -418,7 +421,7 @@ FatesData = {
             otherNpcFates= {},
             fatesWithContinuations = {},
             blacklistedFates= {
-                "Tolba No. 1", -- pathing is really bad to enemies
+                "トルバNo. 1", -- 敵へのルートが困難
             }
         }
     },
@@ -432,10 +435,10 @@ FatesData = {
         },
         fatesList= {
             collectionsFates= {
-                { fateName="Twice Upon a Time", npcName="Nectar-seeking Pixie" }
+                { fateName="ピクシーテイル：黄金色の花蜜", npcName="花蜜探しのピクシー" }
             },
             otherNpcFates= {
-                { fateName="Once Upon a Time", npcName="Nectar-seeking Pixie" },
+                { fateName="ピクシーテイル：魔物包囲網", npcName="花蜜探しのピクシー" }
             },
             fatesWithContinuations = {},
             blacklistedFates= {}
@@ -450,13 +453,13 @@ FatesData = {
         },
         fatesList= {
             collectionsFates= {
-                { fateName="Picking up the Pieces", npcName="Night's Blessed Missionary" },
-                { fateName="Pluck of the Draw", npcName="Myalna Bowsing" },
-                { fateName="Monkeying Around", npcName="Fanow Warder" }
+                { fateName="ピンク・フラミンゴ", npcName="夜の民の導師" },
+                { fateName="ミャルナの巡察：矢の補充", npcName="弓音のミャルナ" },
+                { fateName="伝説が生まれる", npcName="ファノヴの護人" }
             },
             otherNpcFates= {
-                { fateName="Queen of the Harpies", npcName="Fanow Huntress" },
-                { fateName="Shot Through the Hart", npcName="Qilmet Redspear" },
+                { fateName="キルメとサルメ", npcName="血槍のキルメ" }, --24 タワーディフェンス
+                { fateName="死相の陸鳥「ケライノー」", npcName="ファノヴの狩人" } --22 ボス
             },
             fatesWithContinuations = {},
             blacklistedFates= {}
@@ -471,18 +474,24 @@ FatesData = {
         },
         fatesList= {
             collectionsFates= {
-                { fateName="Low Coral Fiber", npcName="Teushs Ooan" },
-                { fateName="Pearls Apart", npcName="Ondo Spearfisher" }
+                { fateName="厄災のアルケオタニア：紅血珊瑚の収集", npcName="テウスィー・オーン" },
+                { fateName="パールは永遠の輝き", npcName="オンド族の漁師" }
             },
             otherNpcFates= {
-                { fateName="Where has the Dagon", npcName="Teushs Ooan" },
-                { fateName="Ondo of Blood", npcName="Teushs Ooan" },
-                { fateName="Lookin' Back on the Track", npcName="Teushs Ooan" },
+                { fateName="厄災のアルケオタニア：追跡開始", npcName="テウスィー・オーン" }, --23 通常
+                { fateName="厄災のアルケオタニア：ズムスィー登場", npcName="テウスィー・オーン" }, --23 通常
+                { fateName="厄災のアルケオタニア：テウスィー防衛", npcName="テウスィー・オーン" }, --24 タワーディフェンス
+                { fateName="厄災のアルケオタニア：テウスィー護衛", npcName="テウスィー・オーン" }, --エスコート
+                { fateName="厄災のアルケオタニア：決戦の下準備", npcName="テウスィー・オーン" } --24 タワーディフェンス
             },
             fatesWithContinuations = {},
+            specialFates = {
+                "厄災のアルケオタニア：深海の討伐戦" -- アルケオタニア（特殊FATE）
+            },
+            
             blacklistedFates= {
-                "Coral Support", -- escort fate
-                "The Seashells He Sells", -- escort fate
+                "貝汁物語", --エスコート
+                "厄災のアルケオタニア：テウスィー護衛", --エスコート
             }
         }
     },
@@ -500,7 +509,7 @@ FatesData = {
                 { fateName="天然由来保湿成分", npcName="美肌の研究員" }
             },
             otherNpcFates= {
-                { fateName="羊飼いの暮らし", npcName="種畜研究所の獣牧士" }, --24 tower defense
+                { fateName="羊飼いの暮らし", npcName="種畜研究所の獣牧士" }, --24 タワーディフェンス
             },
             fatesWithContinuations = {},
             blacklistedFates= {}
@@ -519,7 +528,7 @@ FatesData = {
                 { fateName="香りの錬金術師：危険な花摘み", npcName="調香のサジャバート" }
             },
             otherNpcFates= {
-                { fateName="少年と海", npcName="漁師の息子" }, --24 tower defense
+                { fateName="少年と海", npcName="漁師の息子" }, --24 タワーディフェンス
             },
             fatesWithContinuations = {},
             specialFates = {
@@ -540,10 +549,10 @@ FatesData = {
                 { fateName="回収は一刻を争う！", npcName="難民の魔導技師" }
             },
             otherNpcFates= {
-                { fateName="魔導技師の帰郷：ファースト・ステップ", npcName="ケルトロナ少甲士" }, --22 boss
-                { fateName="魔導技師の帰郷：ファースト・イン・トラップ", npcName="エルブレノ" }, --24 tower defense
-                { fateName="魔導技師の帰郷：ビフォー・コンタクト", npcName="ケルトロナ少甲士" }, --23 normal
-                { fateName="霜の巨人たち", npcName="生き残りの難民" } --24 tower defense
+                { fateName="魔導技師の帰郷：ファースト・ステップ", npcName="ケルトロナ少甲士" }, --22 ボス
+                { fateName="魔導技師の帰郷：ファースト・イン・トラップ", npcName="エルブレノ" }, --24 タワーディフェンス
+                { fateName="魔導技師の帰郷：ビフォー・コンタクト", npcName="ケルトロナ少甲士" }, --23 通常
+                { fateName="霜の巨人たち", npcName="生き残りの難民" } --24 タワーディフェンス
             },
             fatesWithContinuations = {
                 { fateName="魔導技師の帰郷：ビフォー・コンタクト", continuationIsBoss=true }
@@ -563,9 +572,9 @@ FatesData = {
                 { fateName="What a Thrill", npcName="Thrillingway" }
             },
             otherNpcFates= {
-                { fateName="嘆きの白兎：ばくばく大爆発", npcName="ウォリングウェイ" }, --24 tower defense
-                { fateName="嘆きの白兎：だめだめ大暴走", npcName="フォリングウェイ" }, --23 normal
-                { fateName="嘆きの白兎：むきむき大処分", npcName="フォリングウェイ" } --22 boss
+                { fateName="嘆きの白兎：ばくばく大爆発", npcName="ウォリングウェイ" }, --24 タワーディフェンス
+                { fateName="嘆きの白兎：だめだめ大暴走", npcName="フォリングウェイ" }, --23 通常
+                { fateName="嘆きの白兎：むきむき大処分", npcName="フォリングウェイ" } --22 ボス
             },
             fatesWithContinuations = {},
             blacklistedFates= {
@@ -586,9 +595,9 @@ FatesData = {
                 { fateName="カイのメモリーより：通信機拡張", npcName="N-6205" }
             },
             otherNpcFates= {
-                { fateName="栄光の翼「アル・アイン」", npcName="アル・アインの友" }, --22 boss
-                { fateName="カイのメモリーより：N-6205防衛", npcName="N-6205"}, --24 tower defense
-                { fateName="永遠の終わり", npcName="ミク・ネール" } --24 tower defense
+                { fateName="栄光の翼「アル・アイン」", npcName="アル・アインの友" }, --22 ボス
+                { fateName="カイのメモリーより：N-6205防衛", npcName="N-6205"}, --24 タワーディフェンス
+                { fateName="永遠の終わり", npcName="ミク・ネール" } --24 タワーディフェンス
             },
             fatesWithContinuations = {},
             specialFates = {
@@ -610,9 +619,9 @@ FatesData = {
                 { fateName="ソクレスへの弁明", npcName="植物担当の観察者" }
             },
             otherNpcFates= {
-                { fateName="創造計画：エゴーケロス観察", npcName="深遠のメレトス" }, --23 normal
-                { fateName="創造計画：斬新すぎたイデア", npcName="深遠のメレトス" }, --23 normal
-                { fateName="死の鳥", npcName="モノセロスの観察者" }, --24 tower defense
+                { fateName="創造計画：エゴーケロス観察", npcName="深遠のメレトス" }, --23 通常
+                { fateName="創造計画：斬新すぎたイデア", npcName="深遠のメレトス" }, --23 通常
+                { fateName="死の鳥", npcName="モノセロスの観察者" }, --24 タワーディフェンス
             },
             fatesWithContinuations = {
                 { fateName="創造計画：エゴーケロス観察", continuationIsBoss=true },
@@ -631,14 +640,14 @@ FatesData = {
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {
-                { fateName="ポゼッション", npcName="健脚のジーベリ" }, --23 normal
-                { fateName="踊る山火「ラカクウルク」", npcName="健脚のジーベリ" }, --22 boss
-                { fateName="不死の人", npcName="墓参りのヨカフイ族" }, --23 normal
-                { fateName="失われた山岳の都", npcName="遺跡守のヨカフイ族" }, --24 tower defense
-                { fateName="コーヒーを巡る冒険", npcName="カピー農園の作業員" }, --24 tower defense
-                { fateName="千年の孤独", npcName="チーワグー・サベラー" }, --23 normal
-                { fateName="空飛ぶ鍋奉行「ペルペルイーター」", npcName="ペルペル族の旅商" }, --22 boss
-                { fateName="狼の家", npcName="ペルペル族の旅商" }  --23 normal
+                { fateName="ポゼッション", npcName="健脚のジーベリ" }, --23 通常
+                { fateName="踊る山火「ラカクウルク」", npcName="健脚のジーベリ" }, --22 ボス
+                { fateName="不死の人", npcName="墓参りのヨカフイ族" }, --23 通常
+                { fateName="失われた山岳の都", npcName="遺跡守のヨカフイ族" }, --24 タワーディフェンス
+                { fateName="コーヒーを巡る冒険", npcName="カピー農園の作業員" }, --24 タワーディフェンス
+                { fateName="千年の孤独", npcName="チーワグー・サベラー" }, --23 通常
+                { fateName="空飛ぶ鍋奉行「ペルペルイーター」", npcName="ペルペル族の旅商" }, --22 ボス
+                { fateName="狼の家", npcName="ペルペル族の旅商" }  --23 通常
             },
             fatesWithContinuations = {
                 { fateName="不死の人", continuationIsBoss=true },
@@ -666,11 +675,11 @@ FatesData = {
                 
             },
             otherNpcFates= {
-                { fateName="怪力の大食漢「マイティ・マイプ」", npcName="ハヌハヌ族の釣り人" }, --22 boss
-                { fateName="野性と葦", npcName="ハヌハヌ族の農夫" }, --23 normal
-                { fateName="我々の貢物", npcName="ハヌハヌ族の巫女" }, --24 tower defense
-                { fateName="奸臣、大寒心", npcName="ペルペル族の行商人" }, --24 tower defense
-                { fateName="素晴らしき、キノコの世界", npcName="匠想いのバノブロク" }  --23 normal
+                { fateName="怪力の大食漢「マイティ・マイプ」", npcName="ハヌハヌ族の釣り人" }, --22 ボス
+                { fateName="野性と葦", npcName="ハヌハヌ族の農夫" }, --23 通常
+                { fateName="我々の貢物", npcName="ハヌハヌ族の巫女" }, --24 タワーディフェンス
+                { fateName="奸臣、大寒心", npcName="ペルペル族の行商人" }, --24 タワーディフェンス
+                { fateName="素晴らしき、キノコの世界", npcName="匠想いのバノブロク" }  --23 通常
             },
             fatesWithContinuations = {
                 { fateName="匠想いのバノブロク", continuationIsBoss=true }
@@ -692,11 +701,11 @@ FatesData = {
                 { fateName="恐怖！キノコ魔物", npcName="フビゴ族の採集人" }
             },
             otherNpcFates= {
-                { fateName="上段の突きを喰らうイブルク", npcName="シュバラール族の狩人" }, --23 normal
-                { fateName="血濡れの爪「ミユールル」", npcName="シュバラール族の狩人" }, --22 boss
-                { fateName="ザ・デッドリーマンティス", npcName="シュバラール族の狩人" }, --23 normal
-                { fateName="荒くれマムージャ襲撃編", npcName="ドプロ族の槍使い" }, --23 normal
-                { fateName="秘薬を守る戦い", npcName="フビゴ族の荷運び人" }  --24 tower defense
+                { fateName="上段の突きを喰らうイブルク", npcName="シュバラール族の狩人" }, --23 通常
+                { fateName="血濡れの爪「ミユールル」", npcName="シュバラール族の狩人" }, --22 ボス
+                { fateName="ザ・デッドリーマンティス", npcName="シュバラール族の狩人" }, --23 通常
+                { fateName="荒くれマムージャ襲撃編", npcName="ドプロ族の槍使い" }, --23 通常
+                { fateName="秘薬を守る戦い", npcName="フビゴ族の荷運び人" }  --24 タワーディフェンス
             },
             fatesWithContinuations = {
                 { fateName="上段の突きを喰らうイブルク", continuationIsBoss=false },
@@ -723,11 +732,11 @@ FatesData = {
                 { fateName="トクローネ：狩猟の下準備", npcName="赤日のブルクバー" }
             },
             otherNpcFates= {
-                { fateName="死せる悪漢「デッドマン・ダーテカ」", npcName="トナワータ族の労働者" }, --22 boss
-                { fateName="嘆きの猛進「ウィデキ」", npcName="ヘイザ・アロ族の男性" }, --22 boss
-                { fateName="ロネークと人の大地", npcName="ヘイザ・アロ族の女性" }, --23 normal
-                { fateName="リバー・ランズ・スルー・イット", npcName="ヘイザ・アロ族の釣人" }, --24 tower defense
-                { fateName="恐竜怪鳥の伝説", npcName="ペルペル族の行商人" }  --23 normal
+                { fateName="死せる悪漢「デッドマン・ダーテカ」", npcName="トナワータ族の労働者" }, --22 ボス
+                { fateName="嘆きの猛進「ウィデキ」", npcName="ヘイザ・アロ族の男性" }, --22 ボス
+                { fateName="ロネークと人の大地", npcName="ヘイザ・アロ族の女性" }, --23 通常
+                { fateName="リバー・ランズ・スルー・イット", npcName="ヘイザ・アロ族の釣人" }, --24 タワーディフェンス
+                { fateName="恐竜怪鳥の伝説", npcName="ペルペル族の行商人" }  --23 通常
             },
             fatesWithContinuations = {
                 { fateName="トクローネ：狩猟の下準備", continuationIsBoss=false }
@@ -752,12 +761,12 @@ FatesData = {
                 { fateName="人生がときめく片づけの技法", npcName="凛とした拾得人" }
             },
             otherNpcFates= {
-                { fateName="ブロークンボットダイアリー", npcName="駆け出しの駆除人" }, --23 normal
-                { fateName="逃走テレメトリー", npcName="駆け出しの駆除人" }, --23 normal
-                { fateName="人狼伝説", npcName="危機に瀕した駆除人" }, --23 normal
-                { fateName="気まぐれロボット", npcName="途方に暮れた拾得人" }, --23 normal
-                { fateName="巨獣めざめる", npcName="ドリフトダウンズの拾得人" }, --23 normal
-                { fateName="道を視る青年", npcName="怯えた配達人" }  --23 normal
+                { fateName="ブロークンボットダイアリー", npcName="駆け出しの駆除人" }, --23 通常
+                { fateName="逃走テレメトリー", npcName="駆け出しの駆除人" }, --23 通常
+                { fateName="人狼伝説", npcName="危機に瀕した駆除人" }, --23 通常
+                { fateName="気まぐれロボット", npcName="途方に暮れた拾得人" }, --23 通常
+                { fateName="巨獣めざめる", npcName="ドリフトダウンズの拾得人" }, --23 通常
+                { fateName="道を視る青年", npcName="怯えた配達人" }  --23 通常
             },
             fatesWithContinuations = {
                 { fateName="気まぐれロボット", continuationIsBoss=false }
@@ -779,8 +788,8 @@ FatesData = {
                 { fateName="メモリーズ", npcName="アンロスト・セントリーGX" }
             },
             otherNpcFates= {
-                { fateName="カナルタウンでやすらかに", npcName="アンロスト・セントリーGX" }, --24 tower defense
-                { fateName="マイカ・ザ・ムー：出発進行", npcName="ファニー・パレードマスター" }  --23 normal
+                { fateName="カナルタウンでやすらかに", npcName="アンロスト・セントリーGX" }, --24 タワーディフェンス
+                { fateName="マイカ・ザ・ムー：出発進行", npcName="ファニー・パレードマスター" }  --23 通常
             },
             fatesWithContinuations =
             {

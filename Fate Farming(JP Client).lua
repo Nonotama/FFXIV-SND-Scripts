@@ -1806,6 +1806,7 @@ function TurnOnCombatMods(rotationMode)
                 yield("/bmrai followtarget on") -- overrides navmesh path and runs into walls sometimes
                 yield("/bmrai followcombat on")
                 -- yield("/bmrai followoutofcombat on")
+                yield("/bmrai positional any")
                 yield("/bmrai maxdistancetarget " .. MaxDistance)
             else
 --                yield("/vbmai on")

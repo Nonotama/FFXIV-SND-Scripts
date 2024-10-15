@@ -2,13 +2,15 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                              Version 2.15.11                                 *
+*                              Version 2.15.12                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.15.11  Truncated random wait to 3 decimal places
+    -> 2.15.12  Fixed autobuy for gysahl greens, added a path back to center of
+                    fate if no targets found
+                Truncated random wait  to 3 decimal places
                 Removed check for targeting forlorn only once
                 Added <0,0,0> check for pathing to enemies while in a fate
                 Added nilcheck for BossFatesClass
@@ -1662,7 +1664,7 @@ function SummonChocobo()
     if ShouldSummonChocobo and GetBuddyTimeRemaining() == 0 then
         if GetItemCount(4868) > 0 then
             yield("/item ギサールの野菜")
-        elseif AutoBuyGysahlGreens then
+        elseif ShouldAutoBuyGysahlGreens then
             State = CharacterState.autoBuyGysahlGreens
             LogInfo("[State] State Change: AutoBuyGysahlGreens")
             return
@@ -1676,11 +1678,11 @@ function AutoBuyGysahlGreens()
     if GetItemCount(4868) > 0 then -- don't need to buy
         if IsAddonVisible("Shop") then
             yield("/callback Shop true -1")
-            State = CharacterState.ready
-            LogInfo("State Change: ready")
-            return
         elseif IsInZone(SelectedZone.zoneId) then
             yield("/item ギサールの野菜")
+        else
+            State = CharacterState.ready
+            LogInfo("State Change: ready")
         end
         return
     else
@@ -1857,6 +1859,8 @@ function HandleUnexpectedCombat()
         TurnOffCombatMods()
         State = CharacterState.ready
         LogInfo("[FATE] State Change: Ready")
+        local randomWait = math.floor(math.random()*3 * 1000)/1000 -- truncated to 3 decimal places
+        yield("/wait "..randomWait)
         return
     end
 
@@ -1936,6 +1940,8 @@ function DoFate()
             TurnOffCombatMods()
             State = CharacterState.ready
             LogInfo("[FATE] State Change: Ready")
+            local randomWait = math.floor(math.random()*3 * 1000)/1000 -- truncated to 3 decimal places
+            yield("/wait "..randomWait)
         end
         return
     elseif GetCharacterCondition(CharacterCondition.mounted) then
@@ -2015,9 +2021,12 @@ function DoFate()
             return
         else
             TargetClosestFateEnemy()
+            if not HasTarget() then
+                PathfindAndMoveTo(CurrentFate.x, CurrentFate.y, CurrentFate.z)
+            end
         end
     else
-        if HasTarget() and GetDistanceToTarget() <= (MaxDistance + GetTargetHitboxRadius()) then
+        if HasTarget() and (GetDistanceToTarget() <= (MaxDistance + GetTargetHitboxRadius())) then
             yield("/vnav stop")
         else
             if not (PathfindInProgress() or PathIsRunning()) and not UseBM then

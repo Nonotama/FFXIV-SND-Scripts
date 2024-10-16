@@ -123,6 +123,8 @@ ShouldGrandCompanyTurnIn = true                --should it to Turn ins at the GC
 --2 echo how many bicolor gems you have after every fate and the next fate you're moving to
 Echo = 0
 
+FatePriority = "Distance"                      --Distance or Timeleft(defalt pot0to script)
+
 --#endregion Settings
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -915,10 +917,10 @@ function SelectNextFateHelper(tempFate, nextFate)
                 return nextFate
             else
                 if (nextFate.isBonusFate and tempFate.isBonusFate) or (not nextFate.isBonusFate and not tempFate.isBonusFate) then
-                    if tempFate.timeLeft < nextFate.timeLeft then -- select based on time left
+                    if tempFate.timeLeft < nextFate.timeLeft and FatePriority == "Timeleft" then -- select based on time left
                         LogInfo("[FATE] Selecting #"..tempFate.fateId.." because other fate #"..nextFate.fateId.." has more time left.")
                         return tempFate
-                    elseif tempFate.timeLeft > nextFate.timeLeft then
+                    elseif tempFate.timeLeft > nextFate.timeLeft and FatePriority == "Timeleft" then
                         LogInfo("[FATE] Selecting #"..tempFate.fateId.." because other fate #"..nextFate.fateId.." has more time left.")
                         return nextFate
                     else

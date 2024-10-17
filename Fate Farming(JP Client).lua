@@ -1358,7 +1358,7 @@ function MiddleOfFateDismount()
     end
 
     if HasTarget() then
-        if DistanceBetween(GetPlayerRawXPos(), 0, GetPlayerRawZPos(), GetTargetRawXPos(), 0, GetTargetRawZPos()) > (MaxDistance + GetTargetHitboxRadius()) then
+        if DistanceBetween(GetPlayerRawXPos(), 0, GetPlayerRawZPos(), GetTargetRawXPos(), 0, GetTargetRawZPos()) > MaxDistance then
             if not (PathfindInProgress() or PathIsRunning()) then
                 LogInfo("[FATE DEBUG] MiddleOfFateDismount PathfindAndMoveTo")
                 PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), GetCharacterCondition(CharacterCondition.flying))
@@ -1732,7 +1732,7 @@ end
 
 --Paths to the enemy (for Meele)
 function EnemyPathing()
-    while HasTarget() and GetDistanceToTarget() > (GetTargetHitboxRadius() + MaxDistance) do
+    while HasTarget() and GetDistanceToTarget() > MaxDistance do
         local enemy_x = GetTargetRawXPos()
         local enemy_y = GetTargetRawYPos()
         local enemy_z = GetTargetRawZPos()
@@ -1898,7 +1898,7 @@ function HandleUnexpectedCombat()
 
     -- pathfind closer if enemies are too far
     if HasTarget() then
-        if GetDistanceToTarget() > (MaxDistance + GetTargetHitboxRadius()) then
+        if GetDistanceToTarget() > MaxDistance then
             if not (PathfindInProgress() or PathIsRunning()) then
                 PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), GetCharacterCondition(CharacterCondition.flying))
             end
@@ -2037,7 +2037,7 @@ function DoFate()
             end
         end
     else
-        if HasTarget() and (GetDistanceToTarget() <= (MaxDistance + GetTargetHitboxRadius())) then
+        if HasTarget() and (GetDistanceToTarget() <= MaxDistance) then
             yield("/vnav stop")
         else
             if not (PathfindInProgress() or PathIsRunning()) and not UseBM then

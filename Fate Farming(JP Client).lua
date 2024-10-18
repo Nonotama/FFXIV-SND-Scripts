@@ -909,10 +909,10 @@ function SelectNextFateHelper(tempFate, nextFate)
                 return nextFate
             elseif tempFate.isBonusFate then
                 return tempFate
-            elseif tempFate.progress > nextFate.progress and FatePriority ~= TimeLeft then
+            elseif tempFate.progress > nextFate.progress and FatePriority == "Timeleft" then
                 LogInfo("[FATE] Selecting #"..tempFate.fateId.." because other fate #"..nextFate.fateId.." has less progress.")
                 return tempFate
-            elseif tempFate.progress < nextFate.progress and FatePriority ~= TimeLeft then
+            elseif tempFate.progress < nextFate.progress and FatePriority == "Timeleft" then
                 LogInfo("[FATE] Selecting #"..nextFate.fateId.." because other fate #"..tempFate.fateId.." has less progress.")
                 return nextFate
             else

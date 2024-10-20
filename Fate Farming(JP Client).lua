@@ -683,7 +683,7 @@ FatesData = {
                 { fateName="素晴らしき、キノコの世界", npcName="匠想いのバノブロク" }  --23 通常
             },
             fatesWithContinuations = {
-                { fateName="匠想いのバノブロク", continuationIsBoss=true }
+                { fateName="素晴らしき、キノコの世界", continuationIsBoss=true }
             },
             blacklistedFates= {
                 "奸臣、大寒心" -- 同名NPCが、同一箇所に複数いるため

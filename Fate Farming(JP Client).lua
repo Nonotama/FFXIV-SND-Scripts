@@ -1818,6 +1818,7 @@ function TurnOnCombatMods(rotationMode)
                 -- yield("/bmrai followoutofcombat on")
                 yield("/bmrai positional any")
                 yield("/bmrai maxdistancetarget " .. MaxDistance)
+                yield("/bmrai forbidactions on")
             else
 --                yield("/vbmai on")
 --                yield("/vbmai followtarget on")

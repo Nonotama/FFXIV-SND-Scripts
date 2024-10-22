@@ -2,13 +2,15 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                              Version 2.15.13                                 *
+*                              Version 2.15.15                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.15.13  Added a 5s wait for casts to go off. If character is still not
+    -> 2.15.15  Fixed partial support feature
+                Added support for ARR base classes
+                Added a 5s wait for casts to go off. If character is still not
                     in combat by the end of 5s, attempts to move to edge of
                     hitbox and try again
                 Fixed autobuy for gysahl greens, added a path back to center of
@@ -31,16 +33,6 @@ State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/Fa
                 Fixing fate selection bug
                 Added missing Kozama'uka npc fates, fixed aoe settings after
                     forlorn dies
-                Added pretty README
-                Added setting to select RSR aoe type, reworked aoe settings for
-                    targeting forlorns, added settings for special fates,
-                    updated RSR recommendations
-                Removed feature to use Thavnairian Onions when chocobo is ready
-                    for level up
-                Fixed fate name for The Serpentlord Seethes
-                Turn off aoes for forlorn
-                Added Dawntrail special fates to blacklist
-                Fixed continaution fates
     -> 2.0.0    State system
 
 ********************************************************************************
@@ -241,6 +233,13 @@ CharacterCondition = {
 
 ClassList =
 {
+    gla = { classId=1, className="剣術士",          isMelee=true,  isTank=true },
+    pgl = { classId=2, className="格闘士",          isMelee=true,  isTank=false },
+    mrd = { classId=3, className="斧術士",          isMelee=true,  isTank=true },
+    lnc = { classId=4, className="槍術士",          isMelee=true,  isTank=false },
+    arc = { classId=5, className="弓術士",          isMelee=false, isTank=false },
+    cnj = { classId=6, className="幻術士",          isMelee=false, isTank=false },
+    thm = { classId=7, className="呪術士",          isMelee=false, isTank=false },
     pld = { classId=19, className="ナイト",         isMelee=true,  isTank=true },
     mnk = { classId=20, className="モンク",         isMelee=true,  isTank=false },
     war = { classId=21, className="戦士",           isMelee=true,  isTank=true },
@@ -248,8 +247,10 @@ ClassList =
     brd = { classId=23, className="吟遊詩人",       isMelee=false, isTank=false },
     whm = { classId=24, className="白魔道士",       isMelee=false, isTank=false },
     blm = { classId=25, className="黒魔道士",       isMelee=false, isTank=false },
+    acn = { classId=26, className="巴術士",         isMelee=false, isTank=false },
     smn = { classId=27, className="召喚士",         isMelee=false, isTank=false },
     sch = { classId=28, className="学者",           isMelee=false, isTank=false },
+    rog = { classId=29, className="双剣士",         isMelee=true,  isTank=false },
     nin = { classId=30, className="忍者",           isMelee=true,  isTank=false },
     mch = { classId=31, className="機工士",         isMelee=false, isTank=false},
     drk = { classId=32, className="暗黒騎士",       isMelee=true,  isTank=true },
@@ -2594,7 +2595,8 @@ if SelectedZone == nil then
             collectionsFates= {},
             otherNpcFates= {},
             bossFates= {},
-            blacklistedFates= {}
+            blacklistedFates= {},
+            fatesWithContinuations = {}
         }
     }
 end
@@ -2612,7 +2614,6 @@ end
 LogInfo("[FATE] Starting fate farming script.")
 while true do
     if NavIsReady() then
-
         if State ~= CharacterState.dead and GetCharacterCondition(CharacterCondition.dead) then
             State = CharacterState.dead
             LogInfo("[FATE] State Change: Dead")
@@ -2645,5 +2646,8 @@ while true do
     end
     yield("/wait 0.1")
 end
+
+::StopLoop::
+    yield("/vnav stop")
 
 --#endregion Main

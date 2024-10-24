@@ -2,13 +2,16 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                              Version 2.15.15                                 *
+*                               Version 2.16.1                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.15.15  Fixed partial support feature
+    -> 2.16.0   Updated aetheryte code to use new SND aetheryte functions, fixed
+                    bug that causes character to path to center of mob even when
+                    playing as ranged
+                Fixed partial support feature
                 Added support for ARR base classes
                 Added a 5s wait for casts to go off. If character is still not
                     in combat by the end of 5s, attempts to move to edge of
@@ -270,9 +273,6 @@ FatesData = {
     {
         zoneName = "クルザス中央高地",
         zoneId = 155,
-        aetheryteList = {
-            { aetheryteName="キャンプ・ドラゴンヘッド", x=223.98718, y=315.7854, z=-234.85168 }
-        },
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {},
@@ -283,9 +283,6 @@ FatesData = {
     {
         zoneName = "クルザス西部高知",
         zoneId = 397,
-        aetheryteList = {
-            { aetheryteName="ファルコンネスト", x=474.87585, y=217.94458, z=708.5221 }
-        },
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {},
@@ -296,9 +293,6 @@ FatesData = {
     {
         zoneName = "モードゥナ",
         zoneId = 156,
-        aetheryteList = {
-            { aetheryteName="レヴナンツトール", x=40.024292, y=24.002441, z=-668.0247 }
-        },
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {},
@@ -309,10 +303,6 @@ FatesData = {
     {
         zoneName = "アバラシア雲海",
         zoneId = 401,
-        aetheryteList = {
-            { aetheryteName="キャンプ・クラウドトップ", x=-615.7473, y=-118.36426, z=546.5934 },
-            { aetheryteName="オク・ズンド", x=-613.1533, y=-49.485046, z=-415.03015 }
-        },
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {},
@@ -323,9 +313,6 @@ FatesData = {
     {
         zoneName = "アジス・ラー",
         zoneId = 402,
-        aetheryteList = {
-            { aetheryteName="ポート・ヘリックス", x=-722.8046, y=-182.29956, z=-593.40814 }
-        },
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {},
@@ -336,10 +323,6 @@ FatesData = {
     {
         zoneName = "高知ドラヴァニア",
         zoneId = 398,
-        aetheryteList = {
-            { aetheryteName="テイルフェザー", x=532.6771, y=-48.722107, z=30.166992 },
-            { aetheryteName="不浄の三塔", x=-304.12756, y=-16.70868, z=32.059082 }
-        },
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {},
@@ -351,9 +334,6 @@ FatesData = {
         zoneName = "イディルシャイア",
         zoneId=399,
         tpZoneId = 478,
-        aetheryteList = {
-            { aetheryteName="イディルシャイア", x=71.94617, y=211.26111, z=-18.905945 }
-        },
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {},
@@ -364,10 +344,6 @@ FatesData = {
     {
         zoneName = "ドラヴァニア雲海",
         zoneId=400,
-        aetheryteList = {
-            { aetheryteName="モグモグホーム", x=259.20496, y=-37.70508, z=596.85657 },
-            { aetheryteName="白亜の宮殿", x=-584.9546, y=52.84192, z=313.43542 },
-        },
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {},
@@ -378,10 +354,6 @@ FatesData = {
     {
         zoneName = "レイクランド",
         zoneId = 813,
-        aetheryteList = {
-            { aetheryteName="オスタル厳命城", x=-735, y=53, z=-230 },
-            { aetheryteName="ジョッブ砦", x=753, y=24, z=-28 },
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="木こり歌の事", npcName="レイクランドの木こり" }
@@ -399,11 +371,6 @@ FatesData = {
     {
         zoneName = "コルシア島",
         zoneId = 814,
-        aetheryteList = {
-            { aetheryteName="スティルタイド", x=668, y=29, z=289 },
-            { aetheryteName="ライト村", x=-244, y=20, z=385 },
-            { aetheryteName="トメラの村", x=-426, y=419, z=-623 },
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="紫葉団との戦い：卑劣な罠", npcName="トルー一家の技師" }
@@ -419,11 +386,6 @@ FatesData = {
     {
         zoneName = "アム・アレーン",
         zoneId = 815,
-        aetheryteList = {
-            { aetheryteName="モルド・スーク", x=246, y=12, z=-220 },
-            { aetheryteName="トゥワイン", x=-511, y=47, z=-212 },
-            { aetheryteName="旅立ちの宿", x=399, y=-24, z=307 },
-        },
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {},
@@ -436,11 +398,6 @@ FatesData = {
     {
         zoneName = "イル・メグ",
         zoneId = 816,
-        aetheryteList = {
-            { aetheryteName="リダ・ラーン", x=-344, y=48, z=512 },
-            { aetheryteName="ヴォレクドルフ", x=380, y=87, z=-687 },
-            { aetheryteName="プラ・エンニ茸窟", x=-72, y=103, z=-857 },
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="ピクシーテイル：黄金色の花蜜", npcName="花蜜探しのピクシー" }
@@ -455,10 +412,6 @@ FatesData = {
     {
         zoneName = "ラケティカ大森林",
         zoneId = 817,
-        aetheryteList = {
-            { aetheryteName="スリザーバウ", x=-103, y=-19, z=297 },
-            { aetheryteName="ファノヴの里", x=382, y=21, z=-194 },
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="ピンク・フラミンゴ", npcName="夜の民の導師" },
@@ -476,10 +429,6 @@ FatesData = {
     {
         zoneName = "テンペスト",
         zoneId = 818,
-        aetheryteList = {
-            { aetheryteName="オンドの潮溜まり", x=561, y=352, z=-199 },
-            { aetheryteName="マカレンサス広場", x=-141, y=-280, z=218 },
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="厄災のアルケオタニア：紅血珊瑚の収集", npcName="テウスィー・オーン" },
@@ -505,11 +454,6 @@ FatesData = {
     {
         zoneName = "ラヴィリンソス",
         zoneId = 956,
-        aetheryteList = {
-            { aetheryteName="アルケイオン保管院", x=443, y=170, z=-476 },
-            { aetheryteName="リトルシャーレアン", x=8, y=-27, z=-46 },
-            { aetheryteName="アポリア本部", x=-729, y=-27, z=302 },
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="風の十四方位", npcName="困り果てた研究員" },
@@ -525,11 +469,6 @@ FatesData = {
     {
         zoneName = "サベネア島",
         zoneId = 957,
-        aetheryteList = {
-            { aetheryteName="イェドリマン", x=193, y=6, z=629 },
-            { aetheryteName="デミールの遺烈郷", x=-527, y=4, z=36 },
-            { aetheryteName="パーラカの里", x=405, y=5, z=-244 },
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="香りの錬金術師：危険な花摘み", npcName="調香のサジャバート" }
@@ -547,10 +486,6 @@ FatesData = {
     {
         zoneName = "ガレマルド",
         zoneId = 958,
-        aetheryteList = {
-            { aetheryteName="キャンプ・ブロークングラス", x=-408, y=24, z=479 },
-            { aetheryteName="テルティウム駅", x=518, y=-35, z=-178 },
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="回収は一刻を争う！", npcName="難民の魔導技師" }
@@ -570,10 +505,6 @@ FatesData = {
     {
         zoneName = "嘆きの海",
         zoneId = 959,
-        aetheryteList = {
-            { aetheryteName="涙の入江", x=-566, y=134, z=650 },
-            { aetheryteName="ベストウェイ・バロー", x=0, y=-128, z=-512 },
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="What a Thrill", npcName="Thrillingway" }
@@ -592,11 +523,6 @@ FatesData = {
     {
         zoneName = "ウルティマ・トゥーレ",
         zoneId = 960,
-        aetheryteList = {
-            { aetheryteName="リア・ターラ", x=-544, y=74, z=269 },
-            { aetheryteName="イーアの里", x=64, y=272, z=-657 },
-            { aetheryteName="オミクロンベース", x=-489, y=437, z=333 },
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="カイのメモリーより：通信機拡張", npcName="N-6205" }
@@ -616,11 +542,6 @@ FatesData = {
     {
         zoneName = "エルピス",
         zoneId = 961,
-        aetheryteList = {
-            { aetheryteName="アナグノリシス天測園", x=159, y=11, z=126 },
-            { aetheryteName="十二節の園", x=-633, y=-19, z=542 },
-            { aetheryteName="ポイエテーン・オイコス", x=-529, y=161, z=-222 },
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="ソクレスへの弁明", npcName="植物担当の観察者" }
@@ -640,10 +561,6 @@ FatesData = {
     {
         zoneName = "オルコ・パチャ",
         zoneId = 1187,
-        aetheryteList = {
-            { aetheryteName="ワチュン・ペロ", x=335, y=-160, z=-415 },
-            { aetheryteName="ウォーラーの残響", x=465, y=115, z=635 },
-        },
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {
@@ -670,11 +587,6 @@ FatesData = {
     {
         zoneName="コザマル・カ",
         zoneId=1188,
-        aetheryteList={
-            { aetheryteName="オック・ハヌ", x=-170, y=6, z=-470 },
-            { aetheryteName="朋友の灯火", x=541, y=117, z=203 },
-            { aetheryteName="アースンシャイア", x=-477, y=124, z=311 }
-        },
         fatesList={
             collectionsFates={
                 { fateName="落ち石拾い", npcName="モブリン族の採集人" },
@@ -699,10 +611,6 @@ FatesData = {
     {
         zoneName="ヤクテル樹海",
         zoneId=1189,
-        aetheryteList={
-            { aetheryteName="イクブラーシャ", x=-400, y=24, z=-431 },
-            { aetheryteName="マムーク", x=720, y=-132, z=527 }
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="恐怖！キノコ魔物", npcName="フビゴ族の採集人" }
@@ -728,11 +636,6 @@ FatesData = {
     {
         zoneName="シャーローニ荒野",
         zoneId=1190,
-        aetheryteList= {
-            { aetheryteName="フーサタイ宿場町", x=390, y=0, z=465 },
-            { aetheryteName="シェシェネ青燐泉", x=-295, y=19, z=-115 },
-            { aetheryteName="メワヘイゾーン", x=310, y=-15, z=-567 }
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="毛狩りの季節", npcName="トナワータ族の採集人" },
@@ -757,11 +660,6 @@ FatesData = {
     {
         zoneName="ヘリテージファウンド",
         zoneId=1191,
-        aetheryteList= {
-            { aetheryteName="ヤースラニ駅", x=515, y=145, z=210 },
-            { aetheryteName="アウトスカーツ", x=-221, y=32, z=-583 },
-            { aetheryteName="エレクトロープ採石場", x=-222, y=31,  z=123 }
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="薬屋のひと仕事", npcName="農務役のトナワータ族" },
@@ -784,11 +682,6 @@ FatesData = {
     {
         zoneName="リビング・メモリー",
         zoneId=1192,
-        aetheryteList= {
-            { aetheryteName="レイノード・メモリス", x=0, y=56, z=796 },
-            { aetheryteName="レイノード・ファイア", x=659, y=27, z=-285 },
-            { aetheryteName="レイノード・ウィンド", x=-253, y=56, z=-400 }
-        },
         fatesList= {
             collectionsFates= {
                 { fateName="種の期限", npcName="アンロスト・セントリーGX" },
@@ -1064,41 +957,11 @@ end
 
 --#region Movement Functions
 
-function GetAetheryteName(aetheryteId)
-    for i=0,AetheryteList.Count do
-        if AetheryteList[i] ~= nil then
-            if AetheryteList[i].AetheryteId == aetheryteId then
-                if AetheryteList[i].AetheryteData.GameData ~= nil then
-                    if AetheryteList[i].AetheryteData.GameData.PlaceName.Value ~= nil then
-                        if AetheryteList[i].AetheryteData.GameData.PlaceName.Value.Name ~= nil then
-                            LogInfo(AetheryteList[i].AetheryteData.GameData.PlaceName.Value.Name)
-                            return tostring(AetheryteList[i].AetheryteData.GameData.PlaceName.Value.Name):match("(.+):")
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
-
-function GetAetherytesInZone(zoneId)
-    local aetherytes = {}
-    for i=0,AetheryteList.Count do
-        if AetheryteList[i] ~= nil then
-            if AetheryteList[i].TerritoryId == zoneId then
-                yield("/echo "..AetheryteList[i].AetheryteId)
-                table.insert(aetherytes, AetheryteList[i].AetheryteId)
-            end
-        end
-    end
-    return aetherytes
-end
-
 function GetClosestAetheryte(x, y, z, teleportTimePenalty)
     local closestAetheryte = nil
     local closestTravelDistance = math.maxinteger
     for _, aetheryte in ipairs(SelectedZone.aetheryteList) do
-        local distanceAetheryteToFate = DistanceBetween(aetheryte.x, aetheryte.y, aetheryte.z, x, y, z)
+        local distanceAetheryteToFate = DistanceBetween(aetheryte.x, y, aetheryte.z, x, y, z)
         local comparisonDistance = distanceAetheryteToFate + teleportTimePenalty
         LogInfo("[FATE] Distance via "..aetheryte.aetheryteName.." adjusted for tp penalty is "..tostring(comparisonDistance))
 
@@ -1117,7 +980,7 @@ function GetClosestAetheryteToPoint(x, y, z, teleportTimePenalty)
     LogInfo("[FATE] Direct flight distance is: "..directFlightDistance)
     local closestAetheryte = GetClosestAetheryte(x, y, z, teleportTimePenalty)
     if closestAetheryte ~= nil then
-        local closestAetheryteDistance = DistanceBetween(x, y, z, closestAetheryte.x, closestAetheryte.y, closestAetheryte.z) + teleportTimePenalty
+        local closestAetheryteDistance = DistanceBetween(x, y, z, closestAetheryte.x, y, closestAetheryte.z) + teleportTimePenalty
 
         if closestAetheryteDistance < directFlightDistance then
             return closestAetheryte
@@ -1778,23 +1641,6 @@ function EnemyPathing()
     end
 end
 
--- function AvoidEnemiesWhileFlying()
---     --If you get attacked it flies up
---     if GetCharacterCondition(CharacterCondition.inCombat) then
---         Name = GetCharacterName()
---         PlocX = GetPlayerRawXPos(Name)
---         PlocY = GetPlayerRawYPos(Name)+40
---         PlocZ = GetPlayerRawZPos(Name)
---         yield("/gaction jump")
---         yield("/wait 0.5")
---         yield("/vnavmesh stop")
---         yield("/wait 1")
---         PathfindAndMoveTo(PlocX, PlocY, PlocZ, true)
---         PathStop()
---         yield("/wait 2")
---     end
--- end
-
 function TurnOnAoes()
     if not AoesOn then
         if rotationMode == "manual" then
@@ -2056,13 +1902,18 @@ function DoFate()
     -- pathfind closer if enemies are too far
     if not GetCharacterCondition(CharacterCondition.inCombat) then
         if HasTarget() then
-            if GetDistanceToTarget() <= (1 + GetTargetHitboxRadius()) then
-                yield("/vnav stop")
+            local x,y,z = GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos()
+            if GetDistanceToTarget() <= (MaxDistance + GetTargetHitboxRadius()) then
+                if PathfindInProgress() or PathIsRunning() then
+                    yield("/vnav stop")
+                    yield("/wait 5") -- give it 5s to engage combat upon first entering combat range
+                else
+                    PathfindAndMoveTo(x, y, z)
+                    yield("/wait 1") -- inch closer by 1s
+                end
             elseif not (PathfindInProgress() or PathIsRunning()) then
-                yield("/wait 5") -- wait 5 seconds for casts to go off to engage combat
-                local x,y,z = GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos()
                 if x ~= 0 and z~=0 and not GetCharacterCondition(CharacterCondition.inCombat) then
-                    PathfindAndMoveTo(x,y,z, GetCharacterCondition(CharacterCondition.flying))
+                    PathfindAndMoveTo(x, y, z)
                 end
             end
             return
@@ -2074,8 +1925,10 @@ function DoFate()
             end
         end
     else
-        if HasTarget() and (GetDistanceToTarget() <= (MaxDistance + GetTargetHitboxRadius() + 1)) then
+        if HasTarget() and (GetDistanceToTarget() <= (MaxDistance + GetTargetHitboxRadius())) then
+            if PathfindInProgress() or PathIsRunning() then
             yield("/vnav stop")
+            end
         else
             if not (PathfindInProgress() or PathIsRunning()) and not UseBM then
                 yield("/wait 1")
@@ -2600,6 +2453,20 @@ if SelectedZone == nil then
         }
     }
 end
+SelectedZone.zoneName = GetZoneName(SelectedZone.zoneId)
+SelectedZone.aetheryteList = {}
+local aetheryteIds = GetAetherytesInZone(SelectedZone.zoneId)
+for i=0, aetheryteIds.Count-1 do
+    local aetherytePos = GetAetheryteRawPos(aetheryteIds[i])
+    local aetheryteTable = {
+        aetheryteName = GetAetheryteName(aetheryteIds[i]),
+        aetheryteId = aetheryteIds[i],
+        x = aetherytePos.Item1,
+        y = 0,
+        z = aetherytePos.Item2
+    }
+    table.insert(SelectedZone.aetheryteList, aetheryteTable)
+end
 
 -- variable to track collections fates that you have completed but are still active.
 -- will not leave area or change instance if value ~= 0
@@ -2646,8 +2513,5 @@ while true do
     end
     yield("/wait 0.1")
 end
-
-::StopLoop::
-    yield("/vnav stop")
 
 --#endregion Main

@@ -86,6 +86,7 @@ This Plugins are Optional and not needed unless you have it enabled in the setti
 Food = ""                                      --Leave "" Blank if you don't want to use any food. If its HQ include <hq> next to the name "Baked Eggplant <hq>"
 Potion = ""                                    --Leave "" Blank if you don't want to use any potions.
 ShouldSummonChocobo = true                     --Summon chocobo?
+    ResummonChocoboTimeLeft = 3 * 60            --Resummons chocobo if there's less than this many seconds left on the timer, so it doesn't disappear on you in the middle of a fate.
     ShouldAutoBuyGysahlGreens = false              --Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if you're out
 MountToUse = "チャイチャ"                      --The mount you'd like to use when flying between fates
 
@@ -126,6 +127,8 @@ ShouldGrandCompanyTurnIn = true                --should it to Turn ins at the GC
 --1 echo how many bicolor gems you have after every fate
 --2 echo how many bicolor gems you have after every fate and the next fate you're moving to
 Echo = 0
+
+CompanionScriptMode = false                      --Set to true if you are using the fate script with a companion script (such as the Atma Farmer)
 
 FatePriority = "Distance"                      --Distance or Timeleft(default pot0to script)
 
@@ -276,6 +279,53 @@ ClassList =
 }
 
 FatesData = {
+    {
+        zoneName = "中央ラノシア",
+        zoneId = 134,
+        fatesList = {
+            collectionsFates= {},
+            otherNpcFates= {
+                { fateName="Thwack-a-Mole" , npcName="Troubled Tiller" },
+                { fateName="Yellow-bellied Greenbacks", npcName="Yellowjacket Drill Sergeant"},
+                { fateName="The Orange Boxes", npcName="Farmer in Need" }
+            },
+            fatesWithContinuations = {},
+            blacklistedFates= {}
+        }
+    },
+    {
+        zoneName = "低地ラノシア",
+        zoneId = 135,
+        fatesList = {
+            collectionsFates= {},
+            otherNpcFates= {
+                { fateName="Away in a Bilge Hold" , npcName="Yellowjacket Veteran" },
+                { fateName="Fight the Flower", npcName="Furious Farmer" }
+            },
+            fatesWithContinuations = {},
+            blacklistedFates= {}
+        }
+    },
+    {
+        zoneName = "南ザナラーン",
+        zoneId = 146,
+        fatesList = {
+            collectionsFates= {},
+            otherNpcFates= {},
+            fatesWithContinuations = {},
+            blacklistedFates= {}
+        }
+    },
+    {
+        zoneName = "外地ラノシア",
+        zoneId = 180,
+        fatesList = {
+            collectionsFates= {},
+            otherNpcFates= {},
+            fatesWithContinuations = {},
+            blacklistedFates= {}
+        }
+    },
     {
         zoneName = "クルザス中央高地",
         zoneId = 155,
@@ -792,6 +842,51 @@ function EorzeaTimeToUnixTime(eorzeaTime)
     return eorzeaTime/(144/7) -- 24h Eorzea Time equals 70min IRL
 end
 
+function SelectNextZone()
+    local nextZone = nil
+    local nextZoneId = GetZoneID()
+
+    for i, zone in ipairs(FatesData) do
+        if nextZoneId == zone.zoneId then
+            nextZone = zone
+        end
+    end
+    if nextZone == nil then
+        yield("/echo [FATE] 現在のエリアは部分的にしかサポートされていません。NPC FATEのデータがありません。")
+        nextZone = {
+            zoneId = nextZoneId,
+            fatesList= {
+                collectionsFates= {},
+                otherNpcFates= {},
+                bossFates= {},
+                blacklistedFates= {},
+                fatesWithContinuations = {}
+            }
+        }
+    end
+
+    nextZone.zoneName = GetZoneName(nextZone.zoneId).ToString()
+    nextZone.aetheryteList = {}
+    local aetheryteIds = GetAetherytesInZone(nextZone.zoneId)
+    for i=0, aetheryteIds.Count-1 do
+        local aetherytePos = GetAetheryteRawPos(aetheryteIds[i])
+        local aetheryteTable = {
+            aetheryteName = GetAetheryteName(aetheryteIds[i]),
+            aetheryteId = aetheryteIds[i],
+            x = aetherytePos.Item1,
+            y = 0,
+            z = aetherytePos.Item2
+        }
+        table.insert(nextZone.aetheryteList, aetheryteTable)
+    end
+
+    if nextZone.flying == nil then
+        nextZone.flying = true
+    end
+
+    return nextZone
+end
+
 --[[
     Given two fates, picks the better one based on priority progress -> is bonus -> time left -> distance
 ]]
@@ -1098,11 +1193,11 @@ function ChangeInstance()
 
     if GetDistanceToTarget() > 10 then
         LogInfo("[FATE] Targeting aetheryte, but greater than 10 distance")
-        if GetDistanceToTarget() > 20 and not GetCharacterCondition(CharacterCondition.flying) then
+        if GetDistanceToTarget() > 20 and not GetCharacterCondition(CharacterCondition.mounted) then
             State = CharacterState.mounting
             LogInfo("[FATE] State Change: Mounting")
         elseif not (PathfindInProgress() or PathIsRunning()) then
-            PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), GetCharacterCondition(CharacterCondition.flying))
+            PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
         end
         return
     end
@@ -1203,7 +1298,11 @@ function FlyBackToAetheryte()
     if not (PathfindInProgress() or PathIsRunning()) then
         local closestAetheryte = GetClosestAetheryte(GetPlayerRawXPos(), GetPlayerRawYPos(), GetPlayerRawZPos(), 0)
         if closestAetheryte ~= nil then
-            PathfindAndMoveTo(closestAetheryte.x, closestAetheryte.y, closestAetheryte.z, GetCharacterCondition(CharacterCondition.flying))
+            yield("/echo x: "..closestAetheryte.x)
+            yield("/echo y: "..closestAetheryte.y)
+            yield("/echo z: "..closestAetheryte.z)
+            SetMapFlag(SelectedZone.zoneId, closestAetheryte.x, closestAetheryte.y, closestAetheryte.z)
+            PathfindAndMoveTo(closestAetheryte.x, closestAetheryte.y, closestAetheryte.z, GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
         end
     end
 end
@@ -1213,7 +1312,12 @@ function Mount()
         State = CharacterState.moveToFate
         LogInfo("[FATE] State Change: MoveToFate")
     elseif GetCharacterCondition(CharacterCondition.mounted) then
-        yield("/gaction ジャンプ")
+        if not SelectedZone.flying then
+            State = CharacterState.moveToFate
+            LogInfo("[FATE] State Change: MoveToFate")
+    else
+            yield("/gaction ジャンプ")
+        end
     else
         if MountToUse == "マウント・ルーレット" then
             yield("/gaction マウント・ルーレット")
@@ -1246,7 +1350,7 @@ function Dismount()
                 local nearestPointY = QueryMeshNearestPointY(random_x, random_y, random_z, 100, 100)
                 local nearestPointZ = QueryMeshNearestPointZ(random_x, random_y, random_z, 100, 100)
                 if nearestPointX ~= nil and nearestPointY ~= nil and nearestPointZ ~= nil then
-                    PathfindAndMoveTo(nearestPointX, nearestPointY, nearestPointZ, GetCharacterCondition(CharacterCondition.flying))
+                    PathfindAndMoveTo(nearestPointX, nearestPointY, nearestPointZ, GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
                     yield("/wait 1")
                 end
             end
@@ -1309,7 +1413,7 @@ function MoveToNPC()
     yield("/target "..CurrentFate.npcName)
     if HasTarget() and GetTargetName()==CurrentFate.npcName then
         if GetDistanceToTarget() > 5 then
-            PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), GetCharacterCondition(CharacterCondition.flying))
+            PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
         else
             yield("/vnav stop")
         end
@@ -1400,7 +1504,7 @@ function MoveToFate()
                 yield("/vnav stop")
                 yield("/wait 1")
                 LogInfo("[FATE] Antistuck")
-                PathfindAndMoveTo(x, y + 10, z, GetCharacterCondition(CharacterCondition.flying)) -- fly up 10 then try again
+                PathfindAndMoveTo(x, y + 10, z, GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying) -- fly up 10 then try again
             end
             
             LastStuckCheckTime = now
@@ -1421,7 +1525,7 @@ function MoveToFate()
         return
     end
 
-    if not GetCharacterCondition(CharacterCondition.flying) then
+    if not GetCharacterCondition(CharacterCondition.mounted) then
         State = CharacterState.mounting
         LogInfo("[FATE] State Change: Mounting")
         return
@@ -1432,7 +1536,7 @@ function MoveToFate()
         nearestLandX, nearestLandY, nearestLandZ = RandomAdjustCoordinates(CurrentFate.x, CurrentFate.y, CurrentFate.z, 10)
     end
 
-    PathfindAndMoveTo(nearestLandX, nearestLandY, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId))
+    PathfindAndMoveTo(nearestLandX, nearestLandY, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying)
 end
 
 function InteractWithFateNpc()
@@ -1626,7 +1730,7 @@ function EnemyPathing()
         local enemy_y = GetTargetRawYPos()
         local enemy_z = GetTargetRawZPos()
         if PathIsRunning() == false then
-            PathfindAndMoveTo(enemy_x, enemy_y, enemy_z, GetCharacterCondition(CharacterCondition.flying))
+            PathfindAndMoveTo(enemy_x, enemy_y, enemy_z, GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
         end
         yield("/wait 0.1")
     end
@@ -1688,8 +1792,8 @@ function TurnOnCombatMods(rotationMode)
                 yield("/bmrai followtarget on") -- overrides navmesh path and runs into walls sometimes
                 yield("/bmrai followcombat on")
                 -- yield("/bmrai followoutofcombat on")
-                yield("/bmrai positional any")
                 yield("/bmrai maxdistancetarget " .. MaxDistance)
+                yield("/bmrai positional any")
                 yield("/bmrai forbidactions on")
             else
 --                yield("/vbmai on")
@@ -1773,14 +1877,14 @@ function HandleUnexpectedCombat()
     if HasTarget() then
         if GetDistanceToTarget() > (MaxDistance + GetTargetHitboxRadius()) then
             if not (PathfindInProgress() or PathIsRunning()) then
-                PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), GetCharacterCondition(CharacterCondition.flying))
+                PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
             end
         else
             if PathfindInProgress() or PathIsRunning() then
                 yield("/vnav stop")
             elseif not GetCharacterCondition(CharacterCondition.inCombat) then
                 --inch closer 3 seconds
-                PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), GetCharacterCondition(CharacterCondition.flying))
+                PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
                 yield("/wait 3")
             end
         end
@@ -1809,10 +1913,10 @@ function DoFate()
         not GetCharacterCondition(CharacterCondition.mounted) and not (PathIsRunning() or PathfindInProgress())
     then -- got pushed out of fate. go back
         yield("/vnav stop")
-        yield("/wait 0.5")
-        PathfindAndMoveTo(CurrentFate.x, CurrentFate.y, CurrentFate.z, GetCharacterCondition(CharacterCondition.flying))
+        yield("/wait 1")
+        PathfindAndMoveTo(CurrentFate.x, CurrentFate.y, CurrentFate.z, GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
         return
-    elseif not IsFateActive(CurrentFate.fateId) then
+    elseif not IsFateActive(CurrentFate.fateId) or GetFateProgress(CurrentFate.fateId) == 100 then
         yield("/vnav stop")
         ClearTarget()
         if not LogInfo("[FATE] HasContintuation check") and CurrentFate.hasContinuation then
@@ -1826,6 +1930,9 @@ function DoFate()
             LogInfo("[FATE] State Change: Ready")
             local randomWait = math.floor(math.random()*3 * 1000)/1000 -- truncated to 3 decimal places
             yield("/wait "..randomWait)
+        end
+        if CompanionScriptMode then
+            StopScript = true
         end
         return
     elseif GetCharacterCondition(CharacterCondition.mounted) then
@@ -1932,7 +2039,7 @@ function DoFate()
                 yield("/wait 1")
                 local x,y,z = GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos()
                 if x ~= 0 and z~=0 then
-                    PathfindAndMoveTo(x,y,z, GetCharacterCondition(CharacterCondition.flying))
+                    PathfindAndMoveTo(x,y,z, GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
                 end
             end
         end
@@ -2416,6 +2523,8 @@ CharacterState = {
 
 --#region Main
 
+LogInfo("[FATE] Starting fate farming script.")
+
 GemAnnouncementLock = false
 DeathAnnouncementLock = false
 MovingAnnouncementLock = false
@@ -2432,39 +2541,8 @@ if ClassForBossFates ~= "" then
 end
 SetMaxDistance()
 
-local selectedZoneId = GetZoneID()
-for i, zone in ipairs(FatesData) do
-    if selectedZoneId == zone.zoneId then
-        SelectedZone = zone
-    end
-end
-if SelectedZone == nil then
-    yield("/echo [FATE] Current zone is only partially supported. No data on npc fates.")
-    SelectedZone = {
-        zoneId = selectedZoneId,
-        fatesList= {
-            collectionsFates= {},
-            otherNpcFates= {},
-            bossFates= {},
-            blacklistedFates= {},
-            fatesWithContinuations = {}
-        }
-    }
-end
-SelectedZone.zoneName = GetZoneName(SelectedZone.zoneId)
-SelectedZone.aetheryteList = {}
-local aetheryteIds = GetAetherytesInZone(SelectedZone.zoneId)
-for i=0, aetheryteIds.Count-1 do
-    local aetherytePos = GetAetheryteRawPos(aetheryteIds[i])
-    local aetheryteTable = {
-        aetheryteName = GetAetheryteName(aetheryteIds[i]),
-        aetheryteId = aetheryteIds[i],
-        x = aetherytePos.Item1,
-        y = 0,
-        z = aetherytePos.Item2
-    }
-    table.insert(SelectedZone.aetheryteList, aetheryteTable)
-end
+SelectedZone = SelectNextZone()
+yield("/echo Farming "..SelectedZone.zoneName)
 
 -- variable to track collections fates that you have completed but are still active.
 -- will not leave area or change instance if value ~= 0
@@ -2476,8 +2554,8 @@ if IsInFate() and GetFateProgress(GetNearestFate()) < 100 then
     CurrentFate = BuildFateTable(GetNearestFate())
 end
 
-LogInfo("[FATE] Starting fate farming script.")
-while true do
+StopScript = false
+while not StopScript do
     if NavIsReady() then
         if State ~= CharacterState.dead and GetCharacterCondition(CharacterCondition.dead) then
             State = CharacterState.dead

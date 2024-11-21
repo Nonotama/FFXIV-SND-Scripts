@@ -2,13 +2,15 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.17.2                                 *
+*                               Version 2.17.4                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.17.2   Updated index for bicolor vouchers
+    -> 2.17.4   Fixed typo
+                Substituted empty zone names for unsupported zones
+                Updated index for bicolor vouchers
                 Updated to support 2 instances, updated prints to use hardcoded
                     zoneName
                 Released companion mode, banned flying in some ARR zones
@@ -104,8 +106,7 @@ JoinCollectionsFates = false        --Set to false if you never want to do colle
 RSRAoeType = "Cleave"               --Options: Cleave/Full/Off
 RSRAutoType = "LowHP"                          --Options: LowHP/HighHP/Big/Small/HighMaxHP/LowMaxHP/Nearest/Farthest.
                                     
-UseBM = true                                   --if you want to use the BossMod dodge/follow mode
-    BMorBMR = "BMR"
+RotationPlugin = "BMR"              --Options: BMR/VBM/Wrath/None
     MeleeDist = 2.5                                --distance for BMRAI melee. Melee attacks (auto attacks) max distance is 2.59y, 2.60 is "target out of range"
     RangedDist = 20                                --distance for BMRAI ranged. Ranged attacks and spells max distance to be usable is 25.49y, 25.5 is "target out of range"=
 
@@ -152,24 +153,6 @@ if not HasPlugin("vnavmesh") then
     yield("/echo [FATE] Please Install vnavmesh")
 end
 
-if UseBM then
-    if HasPlugin("BossModReborn") then
-        BMorBMR = "BMR"
-    elseif HasPlugin("BossMod") then
-        BMorBMR = "BM"
-    else
-        UseBM = false
-        yield("/echo [FATE] Neither BossMod nor BossModReborn have been detected. "..
-            "Please set useBM to false or install one of these plugins to silence this warning.")
-    end
-end
-
-if HasPlugin("RotationSolver") then
-    yield("/rotation Settings TargetingTypes removeall")
-    yield("/rotation Settings TargetingTypes add "..RSRAutoType)
-else
-    yield("/echo [FATE] Please Install Rotation Solver Reborn")
-end
 if not HasPlugin("TextAdvance") then
     yield("/echo [FATE] Please Install TextAdvance")
 end
@@ -304,6 +287,18 @@ FatesData = {
             otherNpcFates= {
                 { fateName="Away in a Bilge Hold" , npcName="Yellowjacket Veteran" },
                 { fateName="Fight the Flower", npcName="Furious Farmer" }
+            },
+            fatesWithContinuations = {},
+            blacklistedFates= {}
+        }
+    },
+    {
+        zoneName = "中央ザナラーン",
+        zoneId = 141,
+        fatesList = {
+            collectionsFates= {},
+            otherNpcFates= {
+                { fateName="" , npcName="Crestfallen Merchant" }
             },
             fatesWithContinuations = {},
             blacklistedFates= {}
@@ -857,6 +852,7 @@ function SelectNextZone()
     if nextZone == nil then
         yield("/echo [FATE] 現在のエリアは部分的にしかサポートされていません。NPC FATEのデータがありません。")
         nextZone = {
+            zoneName = "",
             zoneId = nextZoneId,
             fatesList= {
                 collectionsFates= {},
@@ -1301,9 +1297,6 @@ function FlyBackToAetheryte()
     if not (PathfindInProgress() or PathIsRunning()) then
         local closestAetheryte = GetClosestAetheryte(GetPlayerRawXPos(), GetPlayerRawYPos(), GetPlayerRawZPos(), 0)
         if closestAetheryte ~= nil then
-            yield("/echo x: "..closestAetheryte.x)
-            yield("/echo y: "..closestAetheryte.y)
-            yield("/echo z: "..closestAetheryte.z)
             SetMapFlag(SelectedZone.zoneId, closestAetheryte.x, closestAetheryte.y, closestAetheryte.z)
             PathfindAndMoveTo(closestAetheryte.x, closestAetheryte.y, closestAetheryte.z, GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
         end
@@ -1539,7 +1532,7 @@ function MoveToFate()
         nearestLandX, nearestLandY, nearestLandZ = RandomAdjustCoordinates(CurrentFate.x, CurrentFate.y, CurrentFate.z, 10)
     end
 
-    PathfindAndMoveTo(nearestLandX, nearestLandY, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying)
+    PathfindAndMoveTo(nearestLandX, nearestLandY + 10, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying)
 end
 
 function InteractWithFateNpc()
@@ -1787,10 +1780,10 @@ function TurnOnCombatMods(rotationMode)
 
         TurnOnAoes()
         
-        if not bossModAIActive and UseBM then
+        if not CombatPluginActive then
             SetMaxDistance()
             
-            if BMorBMR == "BMR" then
+            if RotationPlugin == "BMR" then
                 yield("/bmrai on")
                 yield("/bmrai followtarget on") -- overrides navmesh path and runs into walls sometimes
                 yield("/bmrai followcombat on")
@@ -1798,13 +1791,13 @@ function TurnOnCombatMods(rotationMode)
                 yield("/bmrai maxdistancetarget " .. MaxDistance)
                 yield("/bmrai positional any")
                 yield("/bmrai forbidactions on")
-            else
+            elseif RotationPlugin == "VBM" then
 --                yield("/vbmai on")
 --                yield("/vbmai followtarget on")
 --                yield("/vbmai followcombat on")
                 --yield("/vbmai followoutofcombat on")
             end
-            bossModAIActive = true
+            CombatPluginActive = true
         end
     end
 end
@@ -1819,8 +1812,8 @@ function TurnOffCombatMods()
         -- yield("/rotation off") -- rotation off doesn't always stick
 
         -- turn off BMR so you don't start following other mobs
-        if UseBM and bossModAIActive then
-            if BMorBMR == "BMR" then
+        if CombatPluginActive then
+            if RotationPlugin == "BMR" then
 --                yield("/bmrai off")
 --                yield("/bmrai followtarget off")
 --                yield("/bmrai followcombat off")
@@ -1869,11 +1862,6 @@ function HandleUnexpectedCombat()
     -- targets whatever is trying to kill you
     if not HasTarget() then
         yield("/battletarget")
-    end
-
-    --Paths to enemys when Bossmod is disabled
-    if not UseBM then
-        EnemyPathing()
     end
 
     -- pathfind closer if enemies are too far
@@ -2001,11 +1989,6 @@ function DoFate()
         ClearTarget()
     end
 
-    --Paths to enemys when Bossmod is disabled
-    if not UseBM then
-        EnemyPathing()
-    end
-
     -- pathfind closer if enemies are too far
     if not GetCharacterCondition(CharacterCondition.inCombat) then
         if HasTarget() then
@@ -2013,13 +1996,13 @@ function DoFate()
             if GetDistanceToTarget() <= (MaxDistance + GetTargetHitboxRadius() + 1) then
                 if PathfindInProgress() or PathIsRunning() then
                     yield("/vnav stop")
-                    yield("/wait 5") -- wait 5s before inching any closer
+                    yield("/wait 1") -- wait 5s before inching any closer
                 elseif GetDistanceToTarget() > (1 + GetTargetHitboxRadius()) then -- never move into hitbox
                     PathfindAndMoveTo(x, y, z)
                     yield("/wait 1") -- inch closer by 1s
                 end
             elseif not (PathfindInProgress() or PathIsRunning()) then
-                yield("/wait 5") -- give 5s for casts to go off before attempting to move closer
+                yield("/wait 1") -- give 5s for casts to go off before attempting to move closer
                 if x ~= 0 and z~=0 and not GetCharacterCondition(CharacterCondition.inCombat) then
                     PathfindAndMoveTo(x, y, z)
                 end
@@ -2202,7 +2185,6 @@ function ExchangeOldVouchers()
     local gadfrid = { x=74.17, y=5.15, z=-37.44}
     if GetDistanceToPoint(gadfrid.x, gadfrid.y, gadfrid.z) > 5 then
         PathfindAndMoveTo(gadfrid.x, gadfrid.y, gadfrid.z)
-        yield("/ac スプリント")
     else
         if not HasTarget() or GetTargetName() ~= "広域交易商 ガドフリッド" then
             yield("/target 広域交易商 ガドフリッド")
@@ -2233,15 +2215,14 @@ function ExchangeNewVouchers()
         if not (PathfindInProgress() or PathIsRunning()) then
             LogInfo("Path not running")
             PathfindAndMoveTo(beryl.x, beryl.y, beryl.z)
-            yield("/ac スプリント")
         end
     else
         LogInfo("広域交易商 ベリル")
         if not HasTarget() or GetTargetName() ~= "広域交易商 ベリル" then
             yield("/target 広域交易商 ベリル")
         elseif not GetCharacterCondition(CharacterCondition.occupiedInQuestEvent) then
-            yield("/vnav stop")
             yield("/interact")
+            yield("/vnav stop")
         end
     end
 end
@@ -2256,7 +2237,7 @@ function ExchangeVouchers()
         end
 
         if IsAddonVisible("ShopExchangeCurrency") then
-            if VoucherType == "Bicolor Gemstone Voucher" then
+            if VoucherTown == "オールド・シャーレアン" then
                 yield("/callback ShopExchangeCurrency false 0 8 "..(BicolorGemCount//100))
             else
                 yield("/callback ShopExchangeCurrency false 0 6 "..(BicolorGemCount//100))
@@ -2445,7 +2426,7 @@ function Repair()
             end
 
             local mender = { npcName="修理屋 アリステア", x=-246.87, y=16.19, z=49.83 }
-            if GetDistanceToPoint(mender.x, mender.y, mender.z) > (DistanceBetween(hawkersAlleyAethernetShard.x, hawkersAlleyAethernetShard.y, hawkersAlleyAethernetShard.z, mender.x, mender.y, mender.z) + 10) then                yield("/li Hawkers' Alley")
+            if GetDistanceToPoint(mender.x, mender.y, mender.z) > (DistanceBetween(hawkersAlleyAethernetShard.x, hawkersAlleyAethernetShard.y, hawkersAlleyAethernetShard.z, mender.x, mender.y, mender.z) + 10) then
                 yield("/li マーケット（国際街広場）")
                 yield("/wait 1") -- give it a moment to register
             elseif IsAddonVisible("TelepotTown") then
@@ -2549,7 +2530,9 @@ end
 SetMaxDistance()
 
 SelectedZone = SelectNextZone()
-yield("/echo Farming "..SelectedZone.zoneName)
+if SelectedZone.zoneName ~= "" then
+	yield("/echo Farming "..SelectedZone.zoneName)
+end
 
 -- variable to track collections fates that you have completed but are still active.
 -- will not leave area or change instance if value ~= 0

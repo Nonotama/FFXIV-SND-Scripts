@@ -2,13 +2,14 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.17.4                                 *
+*                               Version 2.18.0                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.17.4   Fixed typo
+    -> 2.18.0   Updated rotation plugins stuff
+                Fixed typo
                 Substituted empty zone names for unsupported zones
                 Updated index for bicolor vouchers
                 Updated to support 2 instances, updated prints to use hardcoded
@@ -25,26 +26,6 @@ State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/Fa
                 Added a 5s wait for casts to go off. If character is still not
                     in combat by the end of 5s, attempts to move to edge of
                     hitbox and try again
-                Fixed autobuy for gysahl greens, added a path back to center of
-                    fate if no targets found
-                Truncated random wait  to 3 decimal places
-                Removed check for targeting forlorn only once
-                Added <0,0,0> check for pathing to enemies while in a fate
-                Added nilcheck for BossFatesClass
-                Fixed class changing for part 2 fates, fixed materia extraction flag
-                Fixed wait for bonus buff for retainers, mender, gysahl greens
-                    and dark matter purchases, bugfix for
-                    unexpectedCombat -> ready -> unexpectedCombat loop
-                Switch to /rsr manual for forlorns and switch back after
-                Added a dismount check before summoning chocobo
-                Fixed name of Fate La Selva se lo Llevó in Yak T'el
-                Fix for chocobo summoning
-                Removed Pandora, added feature to purchase Gysahl Greens and
-                    Grade 8 Dark Matter from Limsa vendors, turned off BMR when
-                    turning in collections fates, fixed S9 waits
-                Fixing fate selection bug
-                Added missing Kozama'uka npc fates, fixed aoe settings after
-                    forlorn dies
     -> 2.0.0    State system
 
 ********************************************************************************
@@ -53,13 +34,16 @@ State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/Fa
 
 Plugins that are needed for it to work:
 
-    -> Something Need Doing [Expanded Edition] : (Main Plugin for everything to work)   https://puni.sh/api/repository/croizat   
-    -> VNavmesh :   (for Pathing/Moving)    https://puni.sh/api/repository/veyn         
-    -> RotationSolver Reborn :  (for Attacking enemys)  https://raw.githubusercontent.com/FFXIV-CombatReborn/CombatRebornRepo/main/pluginmaster.json       
-        -> Target -> Check "Select only Fate targets in Fate" and DESELECT "Target Fate priority" (or else it will mess up Forlorn targeting)
-        -> Target -> "Engage settings" set to "All targets that are in range for any abilities (Tanks/Autoduty)" regardless of whether you are tank
-        -> List -> Map Specific Settings -> Add "Forlorn Maiden" and "The Forlorn" to Prio Targets
-        -> Recommended for melees: Target -> Configuration -> gapcloser distance = 20y
+    -> Something Need Doing [Expanded Edition] : (Main Plugin for everything to work)   https://puni.sh/api/repository/croizat
+    -> VNavmesh :   (for Pathing/Moving)    https://puni.sh/api/repository/veyn
+    -> Some form of rotation plugin for attacking enemies. Options are:
+        -> RotationSolver Reborn: https://raw.githubusercontent.com/FFXIV-CombatReborn/CombatRebornRepo/main/pluginmaster.json       
+        -> BossMod Reborn: https://raw.githubusercontent.com/FFXIV-CombatReborn/CombatRebornRepo/main/pluginmaster.json
+        -> Veyn's BossMod: https://puni.sh/api/repository/veyn
+        -> Wrath Combo: https://love.puni.sh/ment.json
+    -> Some form of AI dodging. Options are: 
+        -> BossMod Reborn: https://raw.githubusercontent.com/FFXIV-CombatReborn/CombatRebornRepo/main/pluginmaster.json
+        -> Veyn's BossMod: https://puni.sh/api/repository/veyn
     -> TextAdvance: (for interacting with Fate NPCs)
     -> Teleporter :  (for Teleporting to aetherytes [teleport][Exchange][Retainers])
     -> Lifestream :  (for changing Instances [ChangeInstance][Exchange]) https://raw.githubusercontent.com/NightmareXIV/MyDalamudPlugins/main/pluginmaster.json
@@ -72,9 +56,7 @@ This Plugins are Optional and not needed unless you have it enabled in the setti
 
     -> AutoRetainer : (for Retainers [Retainers])   https://love.puni.sh/ment.json
     -> Deliveroo : (for gc turn ins [TurnIn])   https://plugins.carvel.li/
-    -> Bossmod/BossModReborn: (for AI dodging)  https://puni.sh/api/repository/veyn
-                                                https://raw.githubusercontent.com/FFXIV-CombatReborn/CombatRebornRepo/main/pluginmaster.json
-    -> ChatCoordinates : (for setting a flag on the next Fate) available via base /xlplugins
+    -> YesAlready : (for extracting materia)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 ]]

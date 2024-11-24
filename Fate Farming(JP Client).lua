@@ -2,13 +2,15 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.18.0                                 *
+*                               Version 2.18.1                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.18.0   Updated rotation plugins stuff
+    -> 2.18.1   Changed RSR auto settings to remember what auto type you were
+                    already on
+                Updated rotation plugins stuff
                 Fixed typo
                 Substituted empty zone names for unsupported zones
                 Updated index for bicolor vouchers
@@ -84,13 +86,17 @@ CompletionToJoinBossFate = 0                   --If the boss fate has less than 
     CompletionToJoinSpecialBossFates = 20          --For the Special Fates like the Serpentlord Seethes or Mascot Murder
     ClassForBossFates = ""                         --If you want to use a different class for boss fates, set this to the 3 letter abbreviation
                                                    --for the class. Ex: "PLD"
-JoinCollectionsFates = false        --Set to false if you never want to do collections fates
-RSRAoeType = "Cleave"               --Options: Cleave/Full/Off
-RSRAutoType = "LowHP"                          --Options: LowHP/HighHP/Big/Small/HighMaxHP/LowMaxHP/Nearest/Farthest.
-                                    
-RotationPlugin = "BMR"              --Options: BMR/VBM/Wrath/None
-    MeleeDist = 2.5                                --distance for BMRAI melee. Melee attacks (auto attacks) max distance is 2.59y, 2.60 is "target out of range"
-    RangedDist = 20                                --distance for BMRAI ranged. Ranged attacks and spells max distance to be usable is 25.49y, 25.5 is "target out of range"=
+JoinCollectionsFates = true         --Set to false if you never want to do collections fates
+
+MeleeDist = 2.5                     --Distance for melee. Melee attacks (auto attacks) max distance is 2.59y, 2.60 is "target out of range"
+RangedDist = 20                     --Distance for ranged. Ranged attacks and spells max distance to be usable is 25.49y, 25.5 is "target out of range"=
+
+RotationPlugin = "RSR"              --Options: RSR/BMR/VBM/Wrath/None
+    RSRAoeType = "Cleave"                 --Options: Cleave/Full/Off
+
+    -- For BMR/VBM only
+    RotationSingleTargetPreset = ""     --Preset name for aoe mode.
+    RotationAoePreset = ""              --For BMR/VBM only. Prset name for single target mode (for forlorns).
 
 IgnoreForlorns = false
     IgnoreBigForlornOnly = false
@@ -108,11 +114,7 @@ Retainers = true                               --should it do Retainers
 ShouldGrandCompanyTurnIn = true                --should it to Turn ins at the GC (requires Deliveroo)
     InventorySlotsLeft = 5                         --how much inventory space before turning in
 
---Change this value for how much echos u want in chat 
---0 no echos
---1 echo how many bicolor gems you have after every fate
---2 echo how many bicolor gems you have after every fate and the next fate you're moving to
-Echo = 0
+Echo = "None"                                   --Options: All/Gems/None
 
 CompanionScriptMode = false                      --Set to true if you are using the fate script with a companion script (such as the Atma Farmer)
 
@@ -130,40 +132,38 @@ FatePriority = "Distance"                      --Distance or Timeleft(default po
 
 --#region Plugin Checks and Setting Init
 
---Required Plugin Warning
 if not HasPlugin("vnavmesh") then
-    yield("/echo [FATE] Please Install vnavmesh")
+    yield("/echo [FATE] Please install vnavmesh")
+end
+
+if not HasPlugin("BossMod") and not HasPlugin("BossModReborn") then
+    yield("/echo [FATE] Please install an AI dodging plugin, either Veyn's BossMod or BossMod Reborn")
 end
 
 if not HasPlugin("TextAdvance") then
-    yield("/echo [FATE] Please Install TextAdvance")
+    yield("/echo [FATE] Please install TextAdvance")
 end
 
---Optional Plugin Warning
 if EnableChangeInstance == true  then
     if HasPlugin("Lifestream") == false then
-        yield("/echo [FATE] Please Install Lifestream or Disable ChangeInstance in the settings")
+        yield("/echo [FATE] Please install Lifestream or Disable ChangeInstance in the settings")
     end
 end
 if Retainers then
     if not HasPlugin("AutoRetainer") then
-        yield("/echo [FATE] Please Install AutoRetainer")
+        yield("/echo [FATE] Please install AutoRetainer")
     end
 end
 if ShouldGrandCompanyTurnIn then
     if not HasPlugin("Deliveroo") then
         ShouldGrandCompanyTurnIn = false
-        yield("/echo [FATE] Please Install Deliveroo")
+        yield("/echo [FATE] Please install Deliveroo")
     end
 end
 if ShouldExtractMateria then
     if HasPlugin("YesAlready") == false then
-        yield("/echo [FATE] Please Install YesAlready")
-    end 
+        yield("/echo [FATE] Please install YesAlready")
 end   
-
-if not HasPlugin("ChatCoordinates") then
-    yield("/echo [FATE] ChatCoordinates is not installed. Map will not show flag when moving to next Fate.")
 end
 
 yield("/at y")
@@ -1012,7 +1012,7 @@ function SelectNextFate()
 
     if nextFate == nil then
         LogInfo("[FATE] No eligible fates found.")
-        if Echo == 2 then
+        if Echo == "All" then
             yield("/echo [FATE] No eligible fates found.")
         end
     else
@@ -1405,7 +1405,6 @@ function MoveToFate()
     SuccessiveInstanceChanges = 0
 
     if not IsPlayerAvailable() then
-        yield("/echo [FATE] Player not available")
         return
     end
 
@@ -1494,7 +1493,7 @@ function MoveToFate()
     if not MovingAnnouncementLock then
         LogInfo("[FATE] Moving to fate #"..CurrentFate.fateId.." "..CurrentFate.fateName)
         MovingAnnouncementLock = true
-        if Echo == 2 then
+        if Echo == "All" then
             yield("/echo [FATE] Moving to fate #"..CurrentFate.fateId.." "..CurrentFate.fateName)
         end
     end
@@ -1716,16 +1715,20 @@ end
 
 function TurnOnAoes()
     if not AoesOn then
-        if rotationMode == "manual" then
-            yield("/rotation manual")
-        else
+        if RotationPlugin == "RSR" then
+            yield("/rotation off")
             yield("/rotation auto on")
-        end
+            LogInfo("[FATE] TurnOnAoes /rotation auto on")
         
-        if RSRAoeType == "Cleave" then
-            yield("/rotation settings aoetype 1")
-        elseif RSRAoeType == "Full" then
-            yield("/rotation settings aoetype 2")
+            if RSRAoeType == "Off" then
+                yield("/rotation settings aoetype 0")
+            elseif RSRAoeType == "Cleave" then
+                yield("/rotation settings aoetype 1")
+            elseif RSRAoeType == "Full" then
+                yield("/rotation settings aoetype 2")
+            end
+        elseif RotationPlugin == "BMR" or RotationPlugin == "VBM" then
+            yield("/bmrai setpresetname "..RotationAoePreset)
         end
         AoesOn = true
     end
@@ -1733,8 +1736,13 @@ end
 
 function TurnOffAoes()
     if AoesOn then
-        yield("/rotation settings aoetype 0")
-        yield("/rotation manual")
+        if RotationPlugin == "RSR" then
+            yield("/rotation settings aoetype 0")
+            yield("/rotation manual")
+            LogInfo("[FATE] TurnOffAoes /rotation manual")
+        elseif RotationPlugin == "BMR" then
+            yield("/bmrai setpresetname "..RotationSingleTargetPreset)
+        end
         AoesOn = false
     end
 end
@@ -1752,34 +1760,32 @@ function TurnOnCombatMods(rotationMode)
     if not CombatModsOn then
         CombatModsOn = true
         -- turn on RSR in case you have the RSR 30 second out of combat timer set
-        if rotationMode == "manual" then
-            yield("/rotation manual")
-        else
-            yield("/rotation auto on")
+        if RotationPlugin == "RSR" then
+            if rotationMode == "manual" then
+                yield("/rotation manual")
+                LogInfo("[FATE] TurnOnCombatMods /rotation manual")
+            else
+                yield("/rotation off")
+                yield("/rotation auto on")
+                LogInfo("[FATE] TurnOnCombatMods /rotation auto on")
+            end
+        elseif RotationPlugin == "BMR" or RotationPlugin == "VBM" then
+            yield("/bmrai setpresetname "..RotationAoePreset)
+        elseif RotationPlugin == "Wrath" then
+            yield("/wrath toggle")
         end
 
         local class = GetClassJobTableFromId(GetClassJobId())
 
-        TurnOnAoes()
-        
-        if not CombatPluginActive then
+        if not AiDodgingOn then
             SetMaxDistance()
             
-            if RotationPlugin == "BMR" then
-                yield("/bmrai on")
-                yield("/bmrai followtarget on") -- overrides navmesh path and runs into walls sometimes
-                yield("/bmrai followcombat on")
-                -- yield("/bmrai followoutofcombat on")
-                yield("/bmrai maxdistancetarget " .. MaxDistance)
-                yield("/bmrai positional any")
-                yield("/bmrai forbidactions on")
-            elseif RotationPlugin == "VBM" then
---                yield("/vbmai on")
---                yield("/vbmai followtarget on")
---                yield("/vbmai followcombat on")
-                --yield("/vbmai followoutofcombat on")
-            end
-            CombatPluginActive = true
+            yield("/bmrai on")
+            yield("/bmrai followtarget on") -- overrides navmesh path and runs into walls sometimes
+            yield("/bmrai followcombat on")
+            -- yield("/bmrai followoutofcombat on")
+            yield("/bmrai maxdistancetarget " .. MaxDistance)
+            AiDodgingOn = true
         end
     end
 end
@@ -1789,24 +1795,22 @@ function TurnOffCombatMods()
         LogInfo("[FATE] Turning off combat mods")
         CombatModsOn = false
 
-        yield("/rotation manual")
-        -- yield("/wait 0.5")
-        -- yield("/rotation off") -- rotation off doesn't always stick
+        if RotationPlugin == "RSR" then
+            yield("/rotation off")
+            LogInfo("[FATE] TurnOffCombatMods /rotation off")
+        elseif RotationPlugin == "BMR" or RotationPlugin == "VBM" then
+            yield("/bmrai setpresetname null")
+        elseif RotationPlugin == "Wrath" then
+            yield("/wrath toggle")
+        end
 
         -- turn off BMR so you don't start following other mobs
-        if CombatPluginActive then
-            if RotationPlugin == "BMR" then
---                yield("/bmrai off")
---                yield("/bmrai followtarget off")
---                yield("/bmrai followcombat off")
---                yield("/bmrai followoutofcombat off")
-            else
---                yield("/vbmai off")
-                --yield("/vbmai followtarget off")
-                --yield("/vbmai followcombat off")
-                --yield("/vbmai followoutofcombat off")
-            end
-            bossModAIActive = false
+        if AiDodgingOn then
+            yield("/bmrai off")
+            yield("/bmrai followtarget off")
+            yield("/bmrai followcombat off")
+            yield("/bmrai followoutofcombat off")
+            AiDodgingOn = false
         end
     end
 end
@@ -2090,7 +2094,6 @@ function Ready()
     elseif not LogInfo("[FATE] Ready -> GC TurnIn") and ShouldGrandCompanyTurnIn and
         GetInventoryFreeSlotCount() < InventorySlotsLeft and not shouldWaitForBonusBuff
     then
-        yield("/echo "..tostring(ShouldGrandCompanyTurnIn))
         State = CharacterState.gcTurnIn
         LogInfo("[FATE] State Change: GCTurnIn")
     elseif not LogInfo("[FATE] Ready -> TeleportBackToFarmingZone") and not IsInZone(SelectedZone.zoneId) then
@@ -2119,7 +2122,7 @@ function Ready()
         LogInfo("[FATE] State Change: MovingtoFate "..CurrentFate.fateName)
     end
 
-    if not GemAnnouncementLock and Echo >= 1 then
+    if not GemAnnouncementLock and (Echo == "All" or Echo == "Gems") then
         GemAnnouncementLock = true
         if BicolorGemCount >= 1400 then
             yield("/echo [FATE] You're almost capped with "..tostring(BicolorGemCount).."/1500 gems! <se.3>")
@@ -2140,7 +2143,9 @@ function HandleDeath()
     if GetCharacterCondition(CharacterCondition.dead) then --Condition Dead
         if Echo and not DeathAnnouncementLock then
             DeathAnnouncementLock = true
+            if Echo == "All" then
             yield("/echo [FATE] You have died. Returning to home aetheryte.")
+        end
         end
 
         if IsAddonVisible("SelectYesno") then --rez addon yes
@@ -2279,7 +2284,9 @@ function ProcessRetainers()
             yield("/interact")
             if IsAddonVisible("RetainerList") then
                 yield("/ays e")
-                yield("/echo [FATE] Processing retainers")
+                if Echo == "All" then
+                    yield("/echo [FATE] Processing retainers")
+                end
                 yield("/wait 1")
             end
         end
@@ -2370,7 +2377,9 @@ function Repair()
             end
         elseif ShouldAutoBuyDarkMatter then
             if not IsInZone(129) then
-                yield("/echo Out of Dark Matter! Purchasing more from Limsa Lominsa.")
+                if Echo == "All" then
+                    yield("/echo Out of Dark Matter! Purchasing more from Limsa Lominsa.")
+                end
                 TeleportTo("リムサ・ロミンサ：下甲板層")
                 return
             end
@@ -2397,7 +2406,9 @@ function Repair()
                 end
             end
         else
-            yield("/echo Out of Dark Matter and ShouldAutoBuyDarkMatter is false. Switching to Limsa mender.")
+            if Echo == "All" then
+                yield("/echo Out of Dark Matter and ShouldAutoBuyDarkMatter is false. Switching to Limsa mender.")
+            end
             SelfRepair = false
         end
     else
@@ -2512,7 +2523,7 @@ end
 SetMaxDistance()
 
 SelectedZone = SelectNextZone()
-if SelectedZone.zoneName ~= "" then
+if SelectedZone.zoneName ~= "" and Echo == "All" then
 	yield("/echo Farming "..SelectedZone.zoneName)
 end
 

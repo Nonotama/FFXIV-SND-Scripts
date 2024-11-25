@@ -117,12 +117,11 @@ WonderousTailsDuties = {
             { dutyName="Alliance Raids (Stormblood)", dutyId=734 },
             { dutyName="Alliance Raids (Shadowbringers)", dutyId=882 },
             { dutyName="Alliance Raids (Endwalker)", dutyId=1054 },
-            { dutyName="Asphodelos= First or Second Circles", dutyId=1002 },
-            { dutyName="Asphodelos= Third or Fourth Circles", dutyId=1006 },
-            { dutyName="Abyssos= Fifth or Sixth Circles", dutyId=1081 },
-            { dutyName="Abyssos= Seventh or Eighth Circles", dutyId=1085 },
-            { dutyName="Anabaseios= Ninth or Tenth Circles", dutyId=1147 },
-            { dutyName="Anabaseios= Eleventh or Twelfth Circles", dutyId=1151 }
+            { dutyName="万魔殿パンデモニウム：辺獄編1-4", dutyId=1002 },
+            { dutyName="万魔殿パンデモニウム：煉獄編1-4", dutyId=1081 },
+            { dutyName="万魔殿パンデモニウム：天獄編1-4", dutyId=1147 },
+            { dutyName="至天の座アルカディア：ライトヘビー級1-2", dutyId=1125 },
+            { dutyName="至天の座アルカディア：ライトヘビー級3-4", dutyId=1231 }
         }
     }
 }

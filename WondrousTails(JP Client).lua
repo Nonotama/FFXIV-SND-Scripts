@@ -112,11 +112,11 @@ WonderousTailsDuties = {
             { dutyName="Treasure Dungeons" }
         },
         {
-            { dutyName="Alliance Raids (A Realm Reborn)", dutyId=174 },
-            { dutyName="Alliance Raids (Heavensward)", dutyId=508 },
-            { dutyName="Alliance Raids (Stormblood)", dutyId=734 },
-            { dutyName="Alliance Raids (Shadowbringers)", dutyId=882 },
-            { dutyName="Alliance Raids (Endwalker)", dutyId=1054 },
+            { dutyName="アライアンスレイド（新生エオルゼア）", dutyId=174 },
+            { dutyName="アライアンスレイド（蒼天のイシュガルド）", dutyId=508 },
+            { dutyName="アライアンスレイド（紅蓮のリベレーター）", dutyId=734 },
+            { dutyName="アライアンスレイド（漆黒のヴィランズ）", dutyId=882 },
+            { dutyName="アライアンスレイド（暁月のフィナーレ）", dutyId=1054 },
             { dutyName="万魔殿パンデモニウム：辺獄編1-4", dutyId=1002 },
             { dutyName="万魔殿パンデモニウム：煉獄編1-4", dutyId=1081 },
             { dutyName="万魔殿パンデモニウム：天獄編1-4", dutyId=1147 },

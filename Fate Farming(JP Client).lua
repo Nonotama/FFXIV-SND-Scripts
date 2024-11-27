@@ -2,13 +2,16 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.18.1                                 *
+*                               Version 2.18.4                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.18.1   Changed RSR auto settings to remember what auto type you were
+    -> 2.18.4   Added setting for dodging plugin
+                Added chocobo stance
+                Made fixes to aetheryteY location
+                Changed RSR auto settings to remember what auto type you were
                     already on
                 Updated rotation plugins stuff
                 Fixed typo
@@ -75,7 +78,8 @@ This Plugins are Optional and not needed unless you have it enabled in the setti
 Food = ""                                      --Leave "" Blank if you don't want to use any food. If its HQ include <hq> next to the name "Baked Eggplant <hq>"
 Potion = ""                                    --Leave "" Blank if you don't want to use any potions.
 ShouldSummonChocobo = true                     --Summon chocobo?
-    ResummonChocoboTimeLeft = 3 * 60            --Resummons chocobo if there's less than this many seconds left on the timer, so it doesn't disappear on you in the middle of a fate.
+    ResummonChocoboTimeLeft = 3 * 60               --Resummons chocobo if there's less than this many seconds left on the timer, so it doesn't disappear on you in the middle of a fate.
+    ChocoboStance = "ヒーラースタンス"             --Options: 追従/フリーファイト/ディフェンダースタンス/ヒーラースタンス/アタッカースタンス
     ShouldAutoBuyGysahlGreens = false              --Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if you're out
 MountToUse = "チャイチャ"                      --The mount you'd like to use when flying between fates
 
@@ -97,6 +101,7 @@ RotationPlugin = "RSR"              --Options: RSR/BMR/VBM/Wrath/None
     -- For BMR/VBM only
     RotationSingleTargetPreset = ""     --Preset name for aoe mode.
     RotationAoePreset = ""              --For BMR/VBM only. Prset name for single target mode (for forlorns).
+DodgingPlugin = "BMR"               --Options: BMR/VBM. If your RotationPlugin is BMR/VBM, then this will be overriden.
 
 IgnoreForlorns = false
     IgnoreBigForlornOnly = false
@@ -125,9 +130,9 @@ FatePriority = "Distance"                      --Distance or Timeleft(default po
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --[[
-**************************************************************
-*  Code: Don't touch this unless you know what you're doing  *
-**************************************************************
+********************************************************************************
+*           Code: Don't touch this unless you know what you're doing           *
+********************************************************************************
 ]]
 
 --#region Plugin Checks and Setting Init
@@ -163,7 +168,12 @@ end
 if ShouldExtractMateria then
     if HasPlugin("YesAlready") == false then
         yield("/echo [FATE] Please install YesAlready")
-end   
+    end
+end
+if RotationPlugin == "BMR" and DodgingPlugin ~= "BMR" then
+    DodgingPlugin = "BMR"
+elseif RotationPlugin == "VBM" and DodgingPlugin ~= "VBM"  then
+    DodgingPlugin = "VBM"
 end
 
 yield("/at y")
@@ -855,7 +865,7 @@ function SelectNextZone()
             aetheryteName = GetAetheryteName(aetheryteIds[i]),
             aetheryteId = aetheryteIds[i],
             x = aetherytePos.Item1,
-            y = 0,
+            y = QueryMeshPointOnFloorY(aetherytePos.Item1, 1024, aetherytePos.Item2, true, 50),
             z = aetherytePos.Item2
         }
         table.insert(nextZone.aetheryteList, aetheryteTable)
@@ -1278,6 +1288,7 @@ function FlyBackToAetheryte()
     
     if not (PathfindInProgress() or PathIsRunning()) then
         local closestAetheryte = GetClosestAetheryte(GetPlayerRawXPos(), GetPlayerRawYPos(), GetPlayerRawZPos(), 0)
+        LogInfo("[FATE] ClosestAetheryte.y: "..closestAetheryte.y)
         if closestAetheryte ~= nil then
             SetMapFlag(SelectedZone.zoneId, closestAetheryte.x, closestAetheryte.y, closestAetheryte.z)
             PathfindAndMoveTo(closestAetheryte.x, closestAetheryte.y, closestAetheryte.z, GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
@@ -1645,6 +1656,8 @@ function SummonChocobo()
     if ShouldSummonChocobo and GetBuddyTimeRemaining() <= ResummonChocoboTimeLeft then
         if GetItemCount(4868) > 0 then
             yield("/item ギサールの野菜")
+            yield("/wait 3")
+            yield("/cac "..ChocoboStance)
         elseif ShouldAutoBuyGysahlGreens then
             State = CharacterState.autoBuyGysahlGreens
             LogInfo("[State] State Change: AutoBuyGysahlGreens")
@@ -1727,8 +1740,10 @@ function TurnOnAoes()
             elseif RSRAoeType == "Full" then
                 yield("/rotation settings aoetype 2")
             end
-        elseif RotationPlugin == "BMR" or RotationPlugin == "VBM" then
+        elseif RotationPlugin == "BMR" then
             yield("/bmrai setpresetname "..RotationAoePreset)
+        elseif RotationPlugin == "VBM" then
+            yield("/vbmai setpresetname "..RotationAoePreset)
         end
         AoesOn = true
     end
@@ -1742,6 +1757,8 @@ function TurnOffAoes()
             LogInfo("[FATE] TurnOffAoes /rotation manual")
         elseif RotationPlugin == "BMR" then
             yield("/bmrai setpresetname "..RotationSingleTargetPreset)
+        elseif RotationPlugin == "VBM" then
+            yield("/vbmai setpresetname "..RotationSingleTargetPreset)
         end
         AoesOn = false
     end
@@ -1780,11 +1797,19 @@ function TurnOnCombatMods(rotationMode)
         if not AiDodgingOn then
             SetMaxDistance()
             
-            yield("/bmrai on")
-            yield("/bmrai followtarget on") -- overrides navmesh path and runs into walls sometimes
-            yield("/bmrai followcombat on")
-            -- yield("/bmrai followoutofcombat on")
-            yield("/bmrai maxdistancetarget " .. MaxDistance)
+            if DodgingPlugin == "BMR" then
+                yield("/bmrai on")
+                yield("/bmrai followtarget on") -- overrides navmesh path and runs into walls sometimes
+                yield("/bmrai followcombat on")
+                -- yield("/bmrai followoutofcombat on")
+                yield("/bmrai maxdistancetarget " .. MaxDistance)
+            else
+                yield("/vbmai on")
+                yield("/vbmai followtarget on") -- overrides navmesh path and runs into walls sometimes
+                yield("/vbmai followcombat on")
+                -- yield("/bmrai followoutofcombat on")
+                yield("/vbmai maxdistancetarget " .. MaxDistance)
+            end
             AiDodgingOn = true
         end
     end
@@ -1806,10 +1831,17 @@ function TurnOffCombatMods()
 
         -- turn off BMR so you don't start following other mobs
         if AiDodgingOn then
-            yield("/bmrai off")
-            yield("/bmrai followtarget off")
-            yield("/bmrai followcombat off")
-            yield("/bmrai followoutofcombat off")
+            if DodgingPlugin == "BMR" then
+                yield("/bmrai off")
+                yield("/bmrai followtarget off")
+                yield("/bmrai followcombat off")
+                yield("/bmrai followoutofcombat off")
+            else
+                yield("/vbmai off")
+                yield("/vbmai followtarget off")
+                yield("/vbmai followcombat off")
+                yield("/vbmai followoutofcombat off")
+            end
             AiDodgingOn = false
         end
     end

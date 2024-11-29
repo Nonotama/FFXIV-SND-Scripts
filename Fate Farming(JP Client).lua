@@ -2,13 +2,14 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.18.4                                 *
+*                               Version 2.18.5                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.18.4   Added setting for dodging plugin
+    -> 2.18.5   Fixed bug that causes you to dodge back and forth too much
+                Added setting for dodging plugin
                 Added chocobo stance
                 Made fixes to aetheryteY location
                 Changed RSR auto settings to remember what auto type you were
@@ -20,17 +21,6 @@ State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/Fa
                 Updated to support 2 instances, updated prints to use hardcoded
                     zoneName
                 Released companion mode, banned flying in some ARR zones
-                Changed movement so it teleports and then mounts
-                Added param for ResummonChocoboTimeLeft
-                Added option to ignore forlorns
-                Updated aetheryte code to use new SND aetheryte functions, fixed
-                    bug that causes character to path to center of mob even when
-                    playing as ranged
-                Fixed partial support feature
-                Added support for ARR base classes
-                Added a 5s wait for casts to go off. If character is still not
-                    in combat by the end of 5s, attempts to move to edge of
-                    hitbox and try again
     -> 2.0.0    State system
 
 ********************************************************************************
@@ -101,7 +91,7 @@ RotationPlugin = "RSR"              --Options: RSR/BMR/VBM/Wrath/None
     -- For BMR/VBM only
     RotationSingleTargetPreset = ""     --Preset name for aoe mode.
     RotationAoePreset = ""              --For BMR/VBM only. Prset name for single target mode (for forlorns).
-DodgingPlugin = "BMR"               --Options: BMR/VBM. If your RotationPlugin is BMR/VBM, then this will be overriden.
+DodgingPlugin = "BMR"               --Options: BMR/VBM/None. If your RotationPlugin is BMR/VBM, then this will be overriden.
 
 IgnoreForlorns = false
     IgnoreBigForlornOnly = false
@@ -170,7 +160,9 @@ if ShouldExtractMateria then
         yield("/echo [FATE] Please install YesAlready")
     end
 end
-if RotationPlugin == "BMR" and DodgingPlugin ~= "BMR" then
+if DodgingPlugin == "None" then
+    -- do nothing
+elseif RotationPlugin == "BMR" and DodgingPlugin ~= "BMR" then
     DodgingPlugin = "BMR"
 elseif RotationPlugin == "VBM" and DodgingPlugin ~= "VBM"  then
     DodgingPlugin = "VBM"
@@ -1752,7 +1744,7 @@ end
 function TurnOffAoes()
     if AoesOn then
         if RotationPlugin == "RSR" then
-            yield("/rotation settings aoetype 0")
+            yield("/rotation settings aoetype 1")
             yield("/rotation manual")
             LogInfo("[FATE] TurnOffAoes /rotation manual")
         elseif RotationPlugin == "BMR" then
@@ -1803,7 +1795,7 @@ function TurnOnCombatMods(rotationMode)
                 yield("/bmrai followcombat on")
                 -- yield("/bmrai followoutofcombat on")
                 yield("/bmrai maxdistancetarget " .. MaxDistance)
-            else
+            elseif DodgingPlugin == "VBM" then
                 yield("/vbmai on")
                 yield("/vbmai followtarget on") -- overrides navmesh path and runs into walls sometimes
                 yield("/vbmai followcombat on")
@@ -1836,7 +1828,7 @@ function TurnOffCombatMods()
                 yield("/bmrai followtarget off")
                 yield("/bmrai followcombat off")
                 yield("/bmrai followoutofcombat off")
-            else
+            elseif DodgingPlugin == "VBM" then
                 yield("/vbmai off")
                 yield("/vbmai followtarget off")
                 yield("/vbmai followcombat off")

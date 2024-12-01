@@ -1781,7 +1781,7 @@ function TurnOnCombatMods(rotationMode)
         elseif RotationPlugin == "BMR" or RotationPlugin == "VBM" then
             yield("/bmrai setpresetname "..RotationAoePreset)
         elseif RotationPlugin == "Wrath" then
-            yield("/wrath toggle")
+            yield("/wrath auto on")
         end
 
         local class = GetClassJobTableFromId(GetClassJobId())
@@ -1818,7 +1818,7 @@ function TurnOffCombatMods()
         elseif RotationPlugin == "BMR" or RotationPlugin == "VBM" then
             yield("/bmrai setpresetname null")
         elseif RotationPlugin == "Wrath" then
-            yield("/wrath toggle")
+            yield("/wrath auto off")
         end
 
         -- turn off BMR so you don't start following other mobs
@@ -2031,7 +2031,7 @@ function DoFate()
             yield("/vnav stop")
             end
         else
-            if not (PathfindInProgress() or PathIsRunning()) and not UseBM then
+            if not (PathfindInProgress() or PathIsRunning()) then
                 yield("/wait 1")
                 local x,y,z = GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos()
                 if x ~= 0 and z~=0 then
@@ -2139,9 +2139,7 @@ function Ready()
         return
     elseif not LogInfo("[FATE] Ready -> MovingToFate") then -- and ((CurrentFate == nil) or (GetFateProgress(CurrentFate.fateId) == 100) and NextFate ~= nil) then
         CurrentFate = NextFate
-        if HasPlugin("ChatCoordinates") then
-            SetMapFlag(SelectedZone.zoneId, CurrentFate.x, CurrentFate.y, CurrentFate.z)
-        end
+        SetMapFlag(SelectedZone.zoneId, CurrentFate.x, CurrentFate.y, CurrentFate.z)
         State = CharacterState.moveToFate
         LogInfo("[FATE] State Change: MovingtoFate "..CurrentFate.fateName)
     end

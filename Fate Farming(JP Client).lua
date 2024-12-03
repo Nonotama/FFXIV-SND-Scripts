@@ -2,13 +2,14 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.18.5                                 *
+*                               Version 2.18.6                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.18.5   Fixed bug that causes you to dodge back and forth too much
+    -> 2.18.6   Added check to stop /vnav if you die
+                Fixed bug that causes you to dodge back and forth too much
                 Added setting for dodging plugin
                 Added chocobo stance
                 Made fixes to aetheryteY location
@@ -2162,12 +2163,17 @@ function HandleDeath()
         TurnOffCombatMods()
     end
 
+    if PathfindInProgress() or PathIsRunning() then
+        yield("/vnav stop")
+    end
+
+
     if GetCharacterCondition(CharacterCondition.dead) then --Condition Dead
         if Echo and not DeathAnnouncementLock then
             DeathAnnouncementLock = true
             if Echo == "All" then
-            yield("/echo [FATE] You have died. Returning to home aetheryte.")
-        end
+                yield("/echo [FATE] You have died. Returning to home aetheryte.")
+            end
         end
 
         if IsAddonVisible("SelectYesno") then --rez addon yes

@@ -1,7 +1,7 @@
 --[[
 ********************************************************************************
 *                             Wondrous Tails Doer                              *
-*                                Version 0.1.0                                 *
+*                                Version 0.2.1                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
@@ -14,7 +14,8 @@ For dungeons:
 Support is available
 
 For EX Trials:
-- Attempts any duty unsynced if it is 20 levels below you
+- Attempts any duty unsynced if it is 20 levels below you and skips any that are
+within 20 levels
 - Note: Not all EX trials have BossMod support, but this script will attempt
 each one once anyways
 - Some EX trials are blacklisted due to mechanics that cannot be done solo
@@ -22,6 +23,10 @@ each one once anyways
 
 Alliance Raids/PVP/Treasure Maps/Palace of the Dead
 - Skips them all
+
+
+    -> 0.2.0    Fixes for ex trials
+                Update for patch 7.1
 
 ********************************************************************************
 *                               Required Plugins                               *
@@ -34,7 +39,7 @@ Alliance Raids/PVP/Treasure Maps/Palace of the Dead
 -- Region: Data ---------------------------------------------------------------------------------
 
 WonderousTailsDuties = {
-    { -- type 0:極 trials
+    { -- type 0:extreme trials
         { instanceId=20010, dutyId=297, dutyName="極ガルーダ討滅戦", minLevel=50 },
         { instanceId=20009, dutyId=296, dutyName="極タイタン討滅戦", minLevel=50 },
         { instanceId=20008, dutyId=295, dutyName="極イフリート討滅戦", minLevel=50 },
@@ -71,12 +76,12 @@ WonderousTailsDuties = {
         { instanceId=20090, dutyId=1141, dutyName="極ゴルベーザ討滅戦", minLevel=90 },
         { instanceId=20092, dutyId=1169, dutyName="極ゼロムス討滅戦", minLevel=90 }
     },
-    1,
-    2,
-    { -- type 3: special content
-        -- { dutyName="Deep Dungeons" }
+    { -- type 1: expansion cap dungeons
+        { dutyName="Lv100ダンジョン", dutyId=1242, minLevel=100 } --廃地討究 ユウェヤーワータ
     },
-    { -- type 4: raids
+    2,
+    3,
+    { -- type 4: normal raids
         { dutyName="大迷宮バハムート：邂逅編1", dutyId=241, minLevel=50 },
         { dutyName="大迷宮バハムート：侵攻編1", dutyId=355, minLevel=50 },
         { dutyName="大迷宮バハムート：真成編1", dutyId=193, minLevel=50 },
@@ -88,30 +93,43 @@ WonderousTailsDuties = {
         { dutyName="次元の狭間オメガ：オメガ編1", dutyId=798, minLevel=70 },
         { dutyName="希望の園エデン：覚醒編1", dutyId=849, minLevel=80 },
         { dutyName="希望の園エデン：共鳴編1", dutyId=903, minLevel=80 },
-        { dutyName="希望の園エデン：再生編1", dutyId=942, minLevel=80 }
+        { dutyName="希望の園エデン：再生編1", dutyId=942, minLevel=80 },
     },
     { -- type 5: leveling dungeons
-        { dutyName="レベリングダンジョン Lv1-49", dutyId=172 }, --The Aurum Vale
-        { dutyName="レベリングダンジョン Lv51-79", dutyId=434 }, --The Dusk Vigil
-        { dutyName="レベリングダンジョン Lv81-99", dutyId=952 } --The Tower of Zot
+        { dutyName="レベリングダンジョン Lv1-49", dutyId=172, minLevel=15 }, --霧中行軍 オーラムヴェイル
+        { dutyName="レベリングダンジョン Lv51-79", dutyId=434, minLevel=51 }, --廃砦捜索 ダスクヴィジル
+        { dutyName="レベリングダンジョン Lv81-99", dutyId=952, minLevel=81 }, --異形楼閣 ゾットの塔
     },
     { -- type 6: expansion cap dungeons
-        { dutyName="ハイレベリングダンジョン Lv50-60", dutyId=362 }, --Brayflox Longstop (Hard)
-        { dutyName="ハイレベリングダンジョン Lv70-80", dutyId=1146 }, --Ala Mhigo
-        { dutyName="ハイレベリングダンジョン Lv90", dutyId=973 } --The Dead Ends
+        { dutyName="ハイレベリングダンジョン Lv50-60", dutyId=362, minLevel=50 }, --盟友支援 ブレイフロクスの野営地 (Hard)
+        { dutyName="ハイレベリングダンジョン Lv70-80", dutyId=788, minLevel=70 }, --草木汚染 聖モシャーヌ植物園 (Hard)
+        { dutyName="ハイレベリングダンジョン Lv90", dutyId=973, minLevel=90 }, --最終幻想 レムナント
+    },
+    { -- type 7: ex trials
+        {
+            { instanceId=20008, dutyId=295, dutyName="Trials (Lv. 50-60)", minLevel=50 }, -- Bowl of Embers
+            { instanceId=20049, dutyId=720, dutyName="Trials (Lv. 70-100)", minLevel=70 }
+        }
+    },
+    { -- type 8: alliance raids
+
+    },
+    { -- type 9: normal raids
+        { dutyName="Normal Raids (Lv. 50-60)", dutyId=241, minLevel=50 },
+        { dutyName="Normal Raids (Lv. 70-80)", dutyId=693, minLevel=70 },
     },
     Blacklisted= {
-        {
+        { -- 0
             { instanceId=20052, dutyId=758, dutyName="極白虎征魂戦", minLevel=70 }, -- cannot solo double tankbuster vuln
-            { instanceId=20047, dutyId=677, dutyName="極スサノオ討滅戦", minLevel=70 }, -- cannot solo active time maneuver
+            { instanceId=20047, dutyId=677, dutyName="極スサノオ討滅戦", minLevel=70 }, -- アクティブタイムマニューバができないため
             { instanceId=20056, dutyId=779, dutyName="極ツクヨミ討滅戦", minLevel=70 } -- cannot solo meteors
         },
-        {},
-        {},
-        {
+        {}, -- 1
+        {}, -- 2
+        { -- 3
             { dutyName="Treasure Dungeons" }
         },
-        {
+        { -- 4
             { dutyName="アライアンスレイド（新生エオルゼア）", dutyId=174 },
             { dutyName="アライアンスレイド（蒼天のイシュガルド）", dutyId=508 },
             { dutyName="アライアンスレイド（紅蓮のリベレーター）", dutyId=734 },
@@ -119,7 +137,7 @@ WonderousTailsDuties = {
             { dutyName="アライアンスレイド（暁月のフィナーレ）", dutyId=1054 },
             { dutyName="万魔殿パンデモニウム：辺獄編1-4", dutyId=1002 },
             { dutyName="万魔殿パンデモニウム：煉獄編1-4", dutyId=1081 },
-            { dutyName="万魔殿パンデモニウム：天獄編1-4", dutyId=1147 },
+            { dutyName="魔殿パンデモニウム：天獄編1-4", dutyId=1147 },
             { dutyName="至天の座アルカディア：ライトヘビー級1-2", dutyId=1125 },
             { dutyName="至天の座アルカディア：ライトヘビー級3-4", dutyId=1231 }
         }
@@ -136,27 +154,19 @@ Khloe = {
 -- Region: Functions ---------------------------------------------------------------------------------
 
 function SearchWonderousTailsTable(type, data, text)
-    if type == 0 then -- trials are indexed by instance#
+    if type == 0 then -- ex trials are indexed by instance#
         for _, duty in ipairs(WonderousTailsDuties[type+1]) do
             if duty.instanceId == data then
                 return duty
             end
         end
-    elseif type == 5 then
+    elseif type == 1 or type == 5 or type == 6 or type == 7 then -- dungeons, level range ex trials
         for _, duty in ipairs(WonderousTailsDuties[type+1]) do
             if duty.dutyName == text then
-                duty.minLevel = data
                 return duty
             end
         end
-    elseif type == 6 then
-        for _, duty in ipairs(WonderousTailsDuties[type+1]) do
-            if duty.dutyName == text then
-                duty.minLevel = data - 9
-                return duty
-            end
-        end
-    elseif type == 3 or type == 4 then
+    elseif type == 4 or type == 8 then -- normal raids
         for _, duty in ipairs(WonderousTailsDuties[type+1]) do
             if duty.dutyName == text then
                 return duty

@@ -137,7 +137,7 @@ WonderousTailsDuties = {
             { dutyName="アライアンスレイド（暁月のフィナーレ）", dutyId=1054 },
             { dutyName="万魔殿パンデモニウム：辺獄編1-4", dutyId=1002 },
             { dutyName="万魔殿パンデモニウム：煉獄編1-4", dutyId=1081 },
-            { dutyName="魔殿パンデモニウム：天獄編1-4", dutyId=1147 },
+            { dutyName="万魔殿パンデモニウム：天獄編1-4", dutyId=1147 },
             { dutyName="至天の座アルカディア：ライトヘビー級1-2", dutyId=1125 },
             { dutyName="至天の座アルカディア：ライトヘビー級3-4", dutyId=1231 }
         }

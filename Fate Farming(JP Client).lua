@@ -2,13 +2,17 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.18.7                                 *
+*                               Version 2.19.0                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.18.7   Added extra check for chocobo healer stance if you start script
+    -> 2.19.0   Added anti-botting changes:
+                    - /slightly/ smoother dismount (not by much tbh)
+                    - added check to prevent vnav from interrupting casters
+                    - turned off vnav pathing for boss fates while in combat
+                Added extra check for chocobo healer stance if you start script
                     with chocobo already out
                 Added check to stop /vnav if you die
                 Fixed bug that causes you to dodge back and forth too much
@@ -68,55 +72,57 @@ This Plugins are Optional and not needed unless you have it enabled in the setti
 ]]
 
 --Pre Fate Settings
-Food = ""                                      --Leave "" Blank if you don't want to use any food. If its HQ include <hq> next to the name "Baked Eggplant <hq>"
-Potion = ""                                    --Leave "" Blank if you don't want to use any potions.
-ShouldSummonChocobo = true                     --Summon chocobo?
-    ResummonChocoboTimeLeft = 3 * 60               --Resummons chocobo if there's less than this many seconds left on the timer, so it doesn't disappear on you in the middle of a fate.
-    ChocoboStance = "ヒーラースタンス"             --Options: 追従/フリーファイト/ディフェンダースタンス/ヒーラースタンス/アタッカースタンス
-    ShouldAutoBuyGysahlGreens = false              --Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if you're out
-MountToUse = "チャイチャ"                      --The mount you'd like to use when flying between fates
+Food                                = ""            --Leave "" Blank if you don't want to use any food. If its HQ include <hq> next to the name "Baked Eggplant <hq>"
+Potion                              = ""            --Leave "" Blank if you don't want to use any potions.
+ShouldSummonChocobo                 = true          --Summon chocobo?
+    ResummonChocoboTimeLeft         = 3 * 60        --Resummons chocobo if there's less than this many seconds left on the timer, so it doesn't disappear on you in the middle of a fate.
+    ChocoboStance                   = "ヒーラースタンス"             --Options: 追従/フリーファイト/ディフェンダースタンス/ヒーラースタンス/アタッカースタンス
+    ShouldAutoBuyGysahlGreens       = false          --Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if you're out
+MountToUse                          = "チャイチャ"   --The mount you'd like to use when flying between fates
 
 --Fate Combat Settings
-CompletionToIgnoreFate = 80                    --If the fate has more than this much progress already, skip it
-MinTimeLeftToIgnoreFate = 1.5*60                 --If the fate has less than this many seconds left on the timer, skip it
-CompletionToJoinBossFate = 0                   --If the boss fate has less than this much progress, skip it (used to avoid soloing bosses)
-    CompletionToJoinSpecialBossFates = 20          --For the Special Fates like the Serpentlord Seethes or Mascot Murder
-    ClassForBossFates = ""                         --If you want to use a different class for boss fates, set this to the 3 letter abbreviation
-                                                   --for the class. Ex: "PLD"
-JoinCollectionsFates = true         --Set to false if you never want to do collections fates
+CompletionToIgnoreFate              = 80            --If the fate has more than this much progress already, skip it
+MinTimeLeftToIgnoreFate             = 1.5*60        --If the fate has less than this many seconds left on the timer, skip it
+CompletionToJoinBossFate            = 0             --If the boss fate has less than this much progress, skip it (used to avoid soloing bosses)
+    CompletionToJoinSpecialBossFates = 20           --For the Special Fates like the Serpentlord Seethes or Mascot Murder
+    ClassForBossFates               = ""            --If you want to use a different class for boss fates, set this to the 3 letter abbreviation
+                                                        --for the class. Ex: "PLD"
+JoinCollectionsFates                = true          --Set to false if you never want to do collections fates
 
-MeleeDist = 2.5                     --Distance for melee. Melee attacks (auto attacks) max distance is 2.59y, 2.60 is "target out of range"
-RangedDist = 20                     --Distance for ranged. Ranged attacks and spells max distance to be usable is 25.49y, 25.5 is "target out of range"=
+MeleeDist                           = 2.5           --Distance for melee. Melee attacks (auto attacks) max distance is 2.59y, 2.60 is "target out of range"
+RangedDist                          = 20            --Distance for ranged. Ranged attacks and spells max distance to be usable is 25.49y, 25.5 is "target out of range"=
 
-RotationPlugin = "RSR"              --Options: RSR/BMR/VBM/Wrath/None
-    RSRAoeType = "Cleave"                 --Options: Cleave/Full/Off
+RotationPlugin                      = "RSR"         --Options: RSR/BMR/VBM/Wrath/None
+    RSRAoeType                      = "Cleave"      --Options: Cleave/Full/Off
 
     -- For BMR/VBM only
-    RotationSingleTargetPreset = ""     --Preset name for aoe mode.
-    RotationAoePreset = ""              --For BMR/VBM only. Prset name for single target mode (for forlorns).
-DodgingPlugin = "BMR"               --Options: BMR/VBM/None. If your RotationPlugin is BMR/VBM, then this will be overriden.
+    RotationSingleTargetPreset      = ""            --Preset name for aoe mode.
+    RotationAoePreset               = ""            --For BMR/VBM only. Prset name for single target mode (for forlorns).
+DodgingPlugin                       = "BMR"         --Options: BMR/VBM/None. If your RotationPlugin is BMR/VBM, then this will be overriden
 
-IgnoreForlorns = false
-    IgnoreBigForlornOnly = false
+IgnoreForlorns                      = false
+    IgnoreBigForlornOnly            = false
 
 --Post Fate Settings
-EnableChangeInstance = true                    --should it Change Instance when there is no Fate (only works on DT fates)
-    WaitIfBonusBuff = true                         --Don't change instances if you have the Twist of Fate bonus buff
-ShouldExchangeBicolorVouchers = true           --Should it exchange Bicolor Gemstone Vouchers?
-    VoucherTown = "ソリューションナイン"           -- Old Sharlayan for "オールド・シャーレアン" and Solution Nine for "ソリューションナイン"
-SelfRepair = true                              --if false, will go to Limsa mender
-    RepairAmount = 20                              --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
-    ShouldAutoBuyDarkMatter = false                --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
-ShouldExtractMateria = true                    --should it Extract Materia
-Retainers = true                               --should it do Retainers
-ShouldGrandCompanyTurnIn = true                --should it to Turn ins at the GC (requires Deliveroo)
-    InventorySlotsLeft = 5                         --how much inventory space before turning in
+WaitUpTo                            = 10            --Max number of seconds it should wait until mounting up for next fate.
+                                                        --Actual wait time will be a randomly generated number between zero and this value
+EnableChangeInstance                = true          --should it Change Instance when there is no Fate (only works on DT fates)
+    WaitIfBonusBuff                 = true          --Don't change instances if you have the Twist of Fate bonus buff
+ShouldExchangeBicolorVouchers       = false         --Should it exchange Bicolor Gemstone Vouchers?
+    VoucherTown                     = "ソリューションナイン"        -- Old Sharlayan for "オールド・シャーレアン" and Solution Nine for "ソリューションナイン"
+SelfRepair                          = false         --if false, will go to Limsa mender
+    RepairAmount                    = 20            --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
+    ShouldAutoBuyDarkMatter         = true          --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
+ShouldExtractMateria                = true          --should it Extract Materia
+Retainers                           = true          --should it do Retainers
+ShouldGrandCompanyTurnIn            = false         --should it to Turn ins at the GC (requires Deliveroo)
+    InventorySlotsLeft              = 5             --how much inventory space before turning in
 
-Echo = "None"                                   --Options: All/Gems/None
+Echo                                = "None"        --Options: All/Gems/None
 
-CompanionScriptMode = false                      --Set to true if you are using the fate script with a companion script (such as the Atma Farmer)
+CompanionScriptMode                 = false         --Set to true if you are using the fate script with a companion script (such as the Atma Farmer)
 
-FatePriority = "Distance"                      --Distance or Timeleft(default pot0to script)
+FatePriority                        = "Distance"    --Distance (default pot0to "")
 
 --#endregion Settings
 
@@ -895,18 +901,18 @@ function SelectNextFateHelper(tempFate, nextFate)
                 return nextFate
             elseif tempFate.isBonusFate then
                 return tempFate
-            elseif tempFate.progress > nextFate.progress and FatePriority == "Timeleft" then
+            elseif tempFate.progress > nextFate.progress and FatePriority == "" then
                 LogInfo("[FATE] Selecting #"..tempFate.fateId.." because other fate #"..nextFate.fateId.." has less progress.")
                 return tempFate
-            elseif tempFate.progress < nextFate.progress and FatePriority == "Timeleft" then
+            elseif tempFate.progress < nextFate.progress and FatePriority == "" then
                 LogInfo("[FATE] Selecting #"..nextFate.fateId.." because other fate #"..tempFate.fateId.." has less progress.")
                 return nextFate
             else
                 if (nextFate.isBonusFate and tempFate.isBonusFate) or (not nextFate.isBonusFate and not tempFate.isBonusFate) then
-                    if tempFate.timeLeft < nextFate.timeLeft and FatePriority == "Timeleft" then -- select based on time left
+                    if tempFate.timeLeft < nextFate.timeLeft and FatePriority == "" then -- select based on time left
                         LogInfo("[FATE] Selecting #"..tempFate.fateId.." because other fate #"..nextFate.fateId.." has more time left.")
                         return tempFate
-                    elseif tempFate.timeLeft > nextFate.timeLeft and FatePriority == "Timeleft" then
+                    elseif tempFate.timeLeft > nextFate.timeLeft and FatePriority == "" then
                         LogInfo("[FATE] Selecting #"..tempFate.fateId.." because other fate #"..nextFate.fateId.." has more time left.")
                         return nextFate
                     else
@@ -1313,11 +1319,6 @@ function Mount()
 end
 
 function Dismount()
-    if PathIsRunning() or PathfindInProgress() then
-        yield("/vnav stop")
-        return
-    end
-
     if GetCharacterCondition(CharacterCondition.flying) then
         yield("/gaction 降りる")
 
@@ -1357,12 +1358,12 @@ function MiddleOfFateDismount()
     if HasTarget() then
         if DistanceBetween(GetPlayerRawXPos(), 0, GetPlayerRawZPos(), GetTargetRawXPos(), 0, GetTargetRawZPos()) > (MaxDistance + GetTargetHitboxRadius()) then
             if not (PathfindInProgress() or PathIsRunning()) then
-                LogInfo("[FATE DEBUG] MiddleOfFateDismount PathfindAndMoveTo")
+                LogInfo("[FATE] MiddleOfFateDismount PathfindAndMoveTo")
                 PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), GetCharacterCondition(CharacterCondition.flying))
             end
         else
             if GetCharacterCondition(CharacterCondition.mounted) then
-                LogInfo("[FATE DEBUG] MiddleOfFateDismount Dismount()")
+                LogInfo("[FATE] MiddleOfFateDismount Dismount()")
                 Dismount()
             else
                 State = CharacterState.doFate
@@ -1397,11 +1398,8 @@ function MoveToNPC()
     yield("/target "..CurrentFate.npcName)
     if HasTarget() and GetTargetName()==CurrentFate.npcName then
         if GetDistanceToTarget() > 5 then
-            PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
-        else
-            yield("/vnav stop")
+            PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos(), false)
         end
-        return
     end
 end
 
@@ -1451,26 +1449,22 @@ function MoveToFate()
 
     -- upon approaching fate, pick a target and switch to pathing towards target
     if HasTarget() then
+        LogInfo("[FATE] Found FATE target, immediate rerouting")
+        PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos())
         if GetTargetName() == CurrentFate.npcName then
-            yield("/vnav stop")
             State = CharacterState.interactWithNpc
         elseif GetTargetFateID() == CurrentFate.fateId then
-            yield("/vnav stop")
             State = CharacterState.middleOfFateDismount
             LogInfo("[FATE] State Change: MiddleOfFateDismount")
         else
             ClearTarget()
         end
         return
-    elseif GetDistanceToPoint(CurrentFate.x, CurrentFate.y, CurrentFate.z) < 40 then
+    elseif GetDistanceToPoint(CurrentFate.x, CurrentFate.y, CurrentFate.z) < 60 then
         if (CurrentFate.isOtherNpcFate or CurrentFate.isCollectionsFate) and not IsInFate() then
             yield("/target "..CurrentFate.npcName)
         else
             TargetClosestFateEnemy()
-        end
-
-        if HasTarget() and GetDistanceToTarget() < 30 then
-            yield("/vnav stop")
         end
         return
     end
@@ -1532,7 +1526,7 @@ function InteractWithFateNpc()
         State = CharacterState.ready
         LogInfo("[FATE] State Change: Ready")
     elseif PathfindInProgress() or PathIsRunning() then
-        if HasTarget() and GetTargetName() == CurrentFate.npcName and GetDistanceToTarget() < 5 then
+        if HasTarget() and GetTargetName() == CurrentFate.npcName and GetDistanceToTarget() < (5*math.random()) then
             yield("/vnav stop")
         end
         return
@@ -1543,14 +1537,14 @@ function InteractWithFateNpc()
             return
         end
 
-        if GetDistanceToPoint(GetTargetRawXPos(), GetPlayerRawYPos(), GetTargetRawZPos()) > 5 then
-            MoveToNPC()
-            return
-        end
-
         if GetCharacterCondition(CharacterCondition.mounted) then
             State = CharacterState.npcDismount
             LogInfo("[FATE] State Change: NPCDismount")
+            return
+        end
+
+        if GetDistanceToPoint(GetTargetRawXPos(), GetPlayerRawYPos(), GetTargetRawZPos()) > 5 then
+            MoveToNPC()
             return
         end
 
@@ -1856,7 +1850,7 @@ function HandleUnexpectedCombat()
         TurnOffCombatMods()
         State = CharacterState.ready
         LogInfo("[FATE] State Change: Ready")
-        local randomWait = math.floor(math.random()*3 * 1000)/1000 -- truncated to 3 decimal places
+        local randomWait = (math.floor(math.random()*WaitUpTo * 1000)/1000) + 3 -- truncated to 3 decimal places
         yield("/wait "..randomWait)
         return
     end
@@ -2002,6 +1996,11 @@ function DoFate()
         ClearTarget()
     end
 
+    -- do not interrupt casts to path towards enemies
+    if GetCharacterCondition(CharacterCondition.casting) then
+        return
+    end
+
     -- pathfind closer if enemies are too far
     if not GetCharacterCondition(CharacterCondition.inCombat) then
         if HasTarget() then
@@ -2033,7 +2032,7 @@ function DoFate()
             if PathfindInProgress() or PathIsRunning() then
             yield("/vnav stop")
             end
-        else
+        elseif not CurrentFate.isBossFate then
             if not (PathfindInProgress() or PathIsRunning()) then
                 yield("/wait 1")
                 local x,y,z = GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos()

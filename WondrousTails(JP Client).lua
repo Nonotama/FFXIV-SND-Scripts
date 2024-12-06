@@ -77,7 +77,7 @@ WonderousTailsDuties = {
         { instanceId=20092, dutyId=1169, dutyName="極ゼロムス討滅戦", minLevel=90 }
     },
     { -- type 1: expansion cap dungeons
-        { dutyName="Lv100ダンジョン", dutyId=1242, minLevel=100 } --廃地討究 ユウェヤーワータ
+        { dutyName="Lv100ダンジョン", dutyId=1199, minLevel=100 } --記憶幻想 アレクサンドリア
     },
     2,
     3,
@@ -96,7 +96,7 @@ WonderousTailsDuties = {
         { dutyName="希望の園エデン：再生編1", dutyId=942, minLevel=80 },
     },
     { -- type 5: leveling dungeons
-        { dutyName="レベリングダンジョン Lv1-49", dutyId=172, minLevel=15 }, --霧中行軍 オーラムヴェイル
+        { dutyName="レベリングダンジョン Lv1-49", dutyId=1045, minLevel=15 }, --イフリート討伐戦
         { dutyName="レベリングダンジョン Lv51-79", dutyId=434, minLevel=51 }, --廃砦捜索 ダスクヴィジル
         { dutyName="レベリングダンジョン Lv81-99", dutyId=952, minLevel=81 }, --異形楼閣 ゾットの塔
     },

@@ -2,13 +2,14 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.19.1                                 *
+*                               Version 2.19.2                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.19.1   Added feature to walk towards center of fate if you are too far
+    -> 2.19.2   Fixed flying ban in Outer La Noscea and Southern Thanalan
+                Added feature to walk towards center of fate if you are too far
                     away to target the collections fate npc
                 Added anti-botting changes:
                     - /slightly/ smoother dismount (not by much tbh)
@@ -296,7 +297,8 @@ FatesData = {
             otherNpcFates= {},
             fatesWithContinuations = {},
             blacklistedFates= {}
-        }
+        },
+        flying = false
     },
     {
         zoneName = "外地ラノシア",
@@ -306,7 +308,8 @@ FatesData = {
             otherNpcFates= {},
             fatesWithContinuations = {},
             blacklistedFates= {}
-        }
+        },
+        flying = false
     },
     {
         zoneName = "クルザス中央高地",

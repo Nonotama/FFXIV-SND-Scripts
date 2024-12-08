@@ -78,7 +78,7 @@ ShouldSummonChocobo                 = true          --Summon chocobo?
     ResummonChocoboTimeLeft         = 3 * 60        --Resummons chocobo if there's less than this many seconds left on the timer, so it doesn't disappear on you in the middle of a fate.
     ChocoboStance                   = "ヒーラースタンス"             --Options: 追従/フリーファイト/ディフェンダースタンス/ヒーラースタンス/アタッカースタンス
     ShouldAutoBuyGysahlGreens       = false          --Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if you're out
-MountToUse                          = "チャイチャ"   --The mount you'd like to use when flying between fates
+MountToUse                          = "ウィング・オブ・ディザスター"   --The mount you'd like to use when flying between fates (ルーレット使用の場合は"")
 
 --Fate Combat Settings
 CompletionToIgnoreFate              = 80            --If the fate has more than this much progress already, skip it
@@ -1272,7 +1272,7 @@ function FlyBackToAetheryte()
             State = CharacterState.ready
             LogInfo("[FATE] State Change: Ready")
         else
-            if MountToUse == "マウント・ルーレット" then
+            if MountToUse == "" then
                 yield("/gaction マウント・ルーレット")
             else
                 yield('/mount "' .. MountToUse)
@@ -1309,7 +1309,7 @@ function Mount()
             yield("/gaction ジャンプ")
         end
     else
-        if MountToUse == "マウント・ルーレット" then
+        if MountToUse == "" then
             yield("/gaction マウント・ルーレット")
         else
             yield('/mount "' .. MountToUse)

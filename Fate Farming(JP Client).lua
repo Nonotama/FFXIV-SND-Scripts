@@ -80,7 +80,7 @@ CompletionToJoinBossFate            = 0             --If the boss fate has less 
     CompletionToJoinSpecialBossFates = 20           --For the Special Fates like the Serpentlord Seethes or Mascot Murder
     ClassForBossFates               = ""            --If you want to use a different class for boss fates, set this to the 3 letter abbreviation
                                                         --for the class. Ex: "PLD"
-JoinCollectionsFates                = true          --Set to false if you never want to do collections fates
+JoinCollectionsFates                = false         --Set to false if you never want to do collections fates
 
 MeleeDist                           = 2.5           --Distance for melee. Melee attacks (auto attacks) max distance is 2.59y, 2.60 is "target out of range"
 RangedDist                          = 20            --Distance for ranged. Ranged attacks and spells max distance to be usable is 25.49y, 25.5 is "target out of range"=
@@ -103,7 +103,7 @@ EnableChangeInstance                = true          --should it Change Instance 
     WaitIfBonusBuff                 = true          --Don't change instances if you have the Twist of Fate bonus buff
 ShouldExchangeBicolorVouchers       = false         --Should it exchange Bicolor Gemstone Vouchers?
     VoucherTown                     = "ソリューションナイン"        -- Old Sharlayan for "オールド・シャーレアン" and Solution Nine for "ソリューションナイン"
-SelfRepair                          = false         --if false, will go to Limsa mender
+SelfRepair                          = true          --if false, will go to Limsa mender
     RepairAmount                    = 20            --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
     ShouldAutoBuyDarkMatter         = true          --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
 ShouldExtractMateria                = true          --should it Extract Materia
@@ -646,7 +646,8 @@ FatesData = {
                 { fateName="素晴らしき、キノコの世界", continuationIsBoss=true }
             },
             blacklistedFates= {
-                "奸臣、大寒心" -- 同名NPCが、同一箇所に複数いるため
+                "奸臣、大寒心", -- 同名NPCが、同一箇所に複数いるため
+                "落ち石拾い" -- 地形が複雑でスタックする可能性が高いため
             }
         }
     },
@@ -1270,7 +1271,7 @@ function FlyBackToAetheryte()
             if MountToUse == "" then
                 yield("/gaction マウント・ルーレット")
             else
-                yield('/mount "' .. MountToUse)
+                yield("/mount " .. MountToUse)
             end
         end
         return
@@ -1825,10 +1826,10 @@ function TurnOffCombatMods()
         -- turn off BMR so you don't start following other mobs
         if AiDodgingOn then
             if DodgingPlugin == "BMR" then
-                yield("/bmrai off")
-                yield("/bmrai followtarget off")
-                yield("/bmrai followcombat off")
-                yield("/bmrai followoutofcombat off")
+--                yield("/bmrai off")
+--                yield("/bmrai followtarget off")
+--                yield("/bmrai followcombat off")
+--                yield("/bmrai followoutofcombat off")
             elseif DodgingPlugin == "VBM" then
                 yield("/vbmai off")
                 yield("/vbmai followtarget off")

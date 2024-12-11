@@ -36,10 +36,10 @@ Teleporter
 
 ScripColorToFarm                    = "Orange"  --Options: Orange/Purple
 ItemToExchange                      = "‹Rb‚ÌŒğŠ·èŒ`"
-SwitchLocationsAfter                = 10        --Number of minutes to fish at this spot before changing spots.
+SwitchLocationsAfter                = 20        --Number of minutes to fish at this spot before changing spots.
 
-Retainers                           = true      --If true, will do AR (autoretainers)
-GrandCompanyTurnIn                  = true      --If true, will do GC deliveries using deliveroo everytime retainers are processed
+Retainers                           = false      --If true, will do AR (autoretainers)
+GrandCompanyTurnIn                  = false      --If true, will do GC deliveries using deliveroo everytime retainers are processed
 ReturnToGCTown                      = false     --if true will use fast return to GC town for retainers and scrip exchange (that assumes you set return location to your gc town else turn it false), else falase
 --needs a yesalready set up like "/Return to New Gridania/"
 
@@ -52,7 +52,7 @@ ReduceEphemerals                    = true      --If true, will reduce ephemeral
 SelfRepair                          = true      --If true, will do repair if possible set repair amount below
 RepairAmount                        = 1         --repair threshold, adjust as needed
 
-MinInventoryFreeSlots               = 1         --set !!!carefully how much inventory before script stops gathering and does additonal tasks!!!
+MinInventoryFreeSlots               = 10         --set !!!carefully how much inventory before script stops gathering and does additonal tasks!!!
 
 HubCity                             = "ƒŠƒ€ƒTEƒƒ~ƒ“ƒTF‰ºb”Â‘w"   --Options: Limsa/Gridania/Ul'dah/Solution Nine
 

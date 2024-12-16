@@ -1,13 +1,20 @@
 --[[
 ********************************************************************************
 *                            Fishing Gatherer Scrips                           *
-*                                Version 1.2.10                                 *
+*                                Version 1.2.14                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 Loosely based on Ahernika's NonStopFisher
 
-    -> 1.2.10   Fixed purple scrip exchange, changed purple fishing point to
+    -> 1.2.14   Reverted dismount -> fishing
+                Fixed dismounting
+                Adjusted tree coords to give an even wider berth, shortened
+                    fishing range to avoid unfishable area, changed state
+                    transition dismount -> goToFishingHole to avoid flying out
+                    to pointToFace
+                Added IsAddonReady("RetainerList") check
+                Fixed purple scrip exchange, changed purple fishing point to
                     face to be further south, fixed coordinates for ul'dah and
                     gridania
                 Added purple scrip exchange code bc i forgot lol
@@ -24,10 +31,11 @@ Loosely based on Ahernika's NonStopFisher
 *                               Required Plugins                               *
 ********************************************************************************
 
-AutoHook
-VnavMesh
-Lifestream
-Teleporter
+1. AutoHook
+2. VnavMesh
+3. Lifestream
+4. Teleporter
+5. YesAlready: YesNo > ... (the 3 dots) > Auto Collectables https://github.com/PunishXIV/AutoHook/blob/main/AcceptCollectable.md
 
 ********************************************************************************
 *                                   Settings                                   *
@@ -36,7 +44,7 @@ Teleporter
 
 ScripColorToFarm                    = "Orange"  --Options: Orange/Purple
 ItemToExchange                      = "騎獣の交換手形"
-SwitchLocationsAfter                = 20        --Number of minutes to fish at this spot before changing spots.
+SwitchLocationsAfter                = 10        --Number of minutes to fish at this spot before changing spots.
 
 Retainers                           = false      --If true, will do AR (autoretainers)
 GrandCompanyTurnIn                  = false      --If true, will do GC deliveries using deliveroo everytime retainers are processed
@@ -54,7 +62,7 @@ RepairAmount                        = 1         --repair threshold, adjust as ne
 
 MinInventoryFreeSlots               = 10         --set !!!carefully how much inventory before script stops gathering and does additonal tasks!!!
 
-HubCity                             = "リムサ・ロミンサ：下甲板層"   --Options: Limsa/Gridania/Ul'dah/Solution Nine
+HubCity                             = "ソリューション・ナイン"   --Options: Limsa/Gridania/Ul'dah/Solution Nine
 
 --[[
 ********************************************************************************
@@ -94,9 +102,8 @@ FishTable =
         fishingSpots = {
             maxHeight = 1024,
             waypoints = {
-                { x=-115.85, y=-27.7, z=723.95 },
-                { x=-11.04, y=-7.64, z=746.06 },
-                { x=64.24, y=1.78, z=729.25 }, -- tree
+                { x=-4.47, y=-6.85, z=747.47 },
+                { x=59.27, y=-2.0, z=735.09 }, -- tree
                 { x=135.71, y=6.12, z=715.0 },
                 { x=212.5, y=12.2, z=739.26 },
             },
@@ -276,7 +283,7 @@ function GoToFishingHole()
         return
     end
 
-    if GetDistanceToPoint(SelectedFishingSpot.waypointX, SelectedFishingSpot.waypointY, SelectedFishingSpot.waypointZ) > 1 then
+    if GetDistanceToPoint(SelectedFishingSpot.waypointX, SelectedFishingSpot.waypointY, SelectedFishingSpot.waypointZ) > 10 then
         if not GetCharacterCondition(CharacterCondition.mounted) then
             State = CharacterState.mounting
             LogInfo("State Change: Mounting")
@@ -617,7 +624,9 @@ function ProcessRetainers()
     LogInfo("[FishingGatherer] Handling retainers...")
     if not LogInfo("[FishingGatherer] check retainers ready") and not ARRetainersWaitingToBeProcessed() or GetInventoryFreeSlotCount() <= 1 then
         if IsAddonVisible("RetainerList") then
-            yield("/callback RetainerList true -1")
+            if IsAddonReady("RetainerList") then
+                yield("/callback RetainerList true -1")
+            end
         elseif not GetCharacterCondition(CharacterCondition.occupiedSummoningBell) then
             State = CharacterState.ready
             LogInfo("[FishingGatherer] State Change: Ready")
@@ -649,7 +658,7 @@ function ProcessRetainers()
         return
     elseif not GetCharacterCondition(CharacterCondition.occupiedSummoningBell) then
         yield("/interact")
-    elseif IsAddonVisible("RetainerList") then
+    elseif IsAddonReady("RetainerList") and IsAddonVisible("RetainerList") then
         yield("/ays e")
         if Echo == "All" then
             yield("/echo [FishingGatherer] Processing retainers")
@@ -886,7 +895,7 @@ CharacterState = {
     goToFishingHole = GoToFishingHole,
     extractMateria = ExecuteExtractMateria,
     repair = ExecuteRepair,
-    exchangingVouchers = ExchangeVouchers,
+    exchangingVouchers = ExecuteBicolorExchange,
     processRetainers = ProcessRetainers,
     gcTurnIn = ExecuteGrandCompanyTurnIn,
     fishing = Fishing,

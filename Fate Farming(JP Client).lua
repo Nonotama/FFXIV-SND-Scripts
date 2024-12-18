@@ -2,13 +2,14 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.20.0                                 *
+*                               Version 2.20.1                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.20.0   Rework bicolor exchange
+    -> 2.20.1   Added height limit check for flying  back to aetheryte
+                Rework bicolor exchange
                 Added checks and debugs for bicolor gemstone shopkeeper
                 Fixed flying ban in Outer La Noscea and Southern Thanalan
                 Added feature to walk towards center of fate if you are too far
@@ -119,8 +120,6 @@ CompanionScriptMode                 = false         --Set to true if you are usi
 FatePriority                        = "Distance"    --Distance (default pot0to "")
 
 --#endregion Settings
-
-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --[[
 ********************************************************************************
@@ -1287,6 +1286,17 @@ function FlyBackToAetheryte()
         return
     end
 
+    local x = GetPlayerRawXPos()
+    local y = GetPlayerRawYPos()
+    local z = GetPlayerRawZPos()
+    local closestAetheryte = GetClosestAetheryte(x, y, z, 0)
+    -- if you get any sort of error while flying back, then just abort and tp back
+    if IsAddonVisible("_TextError") and GetNodeText("_TextError", 1) == "Your mount can fly no higher." then
+        yield("/vnav stop")
+        TeleportTo(closestAetheryte.aetheryteName)
+        return
+    end
+
     yield("/target エーテライト")
 
     if HasTarget() and GetTargetName() == "エーテライト" and GetDistanceToTarget() <= 20 then
@@ -1316,7 +1326,6 @@ function FlyBackToAetheryte()
     end
     
     if not (PathfindInProgress() or PathIsRunning()) then
-        local closestAetheryte = GetClosestAetheryte(GetPlayerRawXPos(), GetPlayerRawYPos(), GetPlayerRawZPos(), 0)
         LogInfo("[FATE] ClosestAetheryte.y: "..closestAetheryte.y)
         if closestAetheryte ~= nil then
             SetMapFlag(SelectedZone.zoneId, closestAetheryte.x, closestAetheryte.y, closestAetheryte.z)
@@ -1325,7 +1334,7 @@ function FlyBackToAetheryte()
     end
 end
 
-function Mount()
+function NextNodeMount()
     if GetCharacterCondition(CharacterCondition.flying) then
         State = CharacterState.moveToFate
         LogInfo("[FATE] State Change: MoveToFate")
@@ -2523,7 +2532,7 @@ CharacterState = {
     ready = Ready,
     dead = HandleDeath,
     unexpectedCombat = HandleUnexpectedCombat,
-    mounting = Mount,
+    mounting = NextNodeMount,
     npcDismount = NPCDismount,
     middleOfFateDismount = MiddleOfFateDismount,
     moveToFate = MoveToFate,

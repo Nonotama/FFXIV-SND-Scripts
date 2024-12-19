@@ -2,13 +2,16 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.20.1                                 *
+*                               Version 2.20.3                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.20.1   Added height limit check for flying  back to aetheryte
+    -> 2.20.3   Added some thanalan npc fates
+                Cleanup for Yak'tel fates and landing condition when flying back
+                    to aetheryte
+                Added height limit check for flying  back to aetheryte
                 Rework bicolor exchange
                 Added checks and debugs for bicolor gemstone shopkeeper
                 Fixed flying ban in Outer La Noscea and Southern Thanalan
@@ -107,7 +110,7 @@ ShouldExchangeBicolorGemstones      = false         --Should it exchange Bicolor
     ItemToPurchase                  = "バイカラージェム納品証【黄金】"        -- Old Sharlayan for "Bicolor Gemstone Voucher" and Solution Nine for "Turali Bicolor Gemstone Voucher"
 SelfRepair                          = true          --if false, will go to Limsa mender
     RepairAmount                    = 20            --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
-    ShouldAutoBuyDarkMatter         = true          --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
+    ShouldAutoBuyDarkMatter         = false         --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
 ShouldExtractMateria                = true          --should it Extract Materia
 Retainers                           = true          --should it do Retainers
 ShouldGrandCompanyTurnIn            = false         --should it to Turn ins at the GC (requires Deliveroo)
@@ -288,11 +291,14 @@ FatesData = {
         fatesList = {
             collectionsFates= {},
             otherNpcFates= {
-                { fateName="Thwack-a-Mole" , npcName="Troubled Tiller" },
-                { fateName="Yellow-bellied Greenbacks", npcName="Yellowjacket Drill Sergeant"},
-                { fateName="The Orange Boxes", npcName="Farmer in Need" }
+                { fateName="海軍式の通過儀礼" , npcName="イエロージャケット訓練教官" },
+                { fateName="デネペール関門防衛訓練", npcName="鬼のデューンファル甲軍曹"},
+                { fateName="上には上がある", npcName="助けを求める農夫"},
+                { fateName="果てなきモグラ叩き", npcName="困り果てた農夫" }
             },
-            fatesWithContinuations = {},
+            fatesWithContinuations = {
+                "追う者と追われる者",
+            },
             blacklistedFates= {}
         }
     },
@@ -302,10 +308,14 @@ FatesData = {
         fatesList = {
             collectionsFates= {},
             otherNpcFates= {
-                { fateName="Away in a Bilge Hold" , npcName="Yellowjacket Veteran" },
-                { fateName="Fight the Flower", npcName="Furious Farmer" }
+                { fateName="迷惑千万「密航のアクトシュティム」" , npcName="熟練の警備兵" },
+                { fateName="小麦粉戦争" , npcName="助けを求める風車番" },
+                { fateName="俺たちゃ海賊" , npcName="イエロージャケット陸戦兵" },
+                { fateName="危ない野良仕事", npcName="怒りに燃える農夫" }
             },
-            fatesWithContinuations = {},
+            fatesWithContinuations = {
+                "シダーウッドの戦い",
+            },
             blacklistedFates= {}
         }
     },
@@ -313,9 +323,26 @@ FatesData = {
         zoneName = "中央ザナラーン",
         zoneId = 141,
         fatesList = {
+            collectionsFates= {
+                { fateName="キヴロン家の住人" , npcName="途方に暮れた商人" },
+                { fateName="サボテンサラダ", npcName="腹を減らした少女"},
+            },
+            otherNpcFates= {
+                { fateName="底無の酒豪「飲んべえググルン」", npcName="コッファー＆コフィンの用心棒" }, --22 ボス
+                { fateName="粗野な勝負師「無頼のグリスヒルド」", npcName="敗北した冒険者" }, --22 ボス
+                { fateName="殺人魚スポーニングキラー", npcName="クリス少年" }
+            },
+            fatesWithContinuations = {},
+            blacklistedFates= {}
+        }
+    },
+    {
+        zoneName = "東ザナラーン",
+        zoneId = 145,
+        fatesList = {
             collectionsFates= {},
             otherNpcFates= {
-                { fateName="" , npcName="Crestfallen Merchant" }
+                { fateName="ハイブリッジの死闘：市民奪還作戦" , npcName="銅刃団の衛兵" } --22 ボス
             },
             fatesWithContinuations = {},
             blacklistedFates= {}
@@ -1183,8 +1210,12 @@ end
 
 function ChangeInstance()
     if SuccessiveInstanceChanges >= 2 then
-        yield("/wait 1")
-        SuccessiveInstanceChanges = 0
+        if CompanionScriptMode then
+            StopScript = true
+        else
+            yield("/wait 10")
+            SuccessiveInstanceChanges = 0
+        end
         return
     end
 
@@ -1485,25 +1516,27 @@ function MoveToFate()
     end
 
     -- upon approaching fate, pick a target and switch to pathing towards target
-    if HasTarget() then
-        LogInfo("[FATE] Found FATE target, immediate rerouting")
-        PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos())
-        if GetTargetName() == CurrentFate.npcName then
-            State = CharacterState.interactWithNpc
-        elseif GetTargetFateID() == CurrentFate.fateId then
-            State = CharacterState.middleOfFateDismount
-            LogInfo("[FATE] State Change: MiddleOfFateDismount")
+    if GetDistanceToPoint(CurrentFate.x, CurrentFate.y, CurrentFate.z) < 60 then
+	    if HasTarget() then
+	        LogInfo("[FATE] Found FATE target, immediate rerouting")
+	        PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos())
+	        if GetTargetName() == CurrentFate.npcName then
+	            State = CharacterState.interactWithNpc
+	        elseif GetTargetFateID() == CurrentFate.fateId then
+	            State = CharacterState.middleOfFateDismount
+	            LogInfo("[FATE] State Change: MiddleOfFateDismount")
+	        else
+	            ClearTarget()
+	        end
+	        return
         else
-            ClearTarget()
-        end
-        return
-    elseif GetDistanceToPoint(CurrentFate.x, CurrentFate.y, CurrentFate.z) < 60 then
-        if (CurrentFate.isOtherNpcFate or CurrentFate.isCollectionsFate) and not IsInFate() then
-            yield("/target "..CurrentFate.npcName)
-        else
-            TargetClosestFateEnemy()
-        end
-        return
+	        if (CurrentFate.isOtherNpcFate or CurrentFate.isCollectionsFate) and not IsInFate() then
+	            yield("/target "..CurrentFate.npcName)
+	        else
+	            TargetClosestFateEnemy()
+	        end
+	        return
+    	end
     end
 
     -- check for stuck
@@ -2021,7 +2054,9 @@ function DoFate()
         elseif GetTargetHP() > 0 then
             if not ForlornMarked then
 --                yield("/enemysign attack1")
---                yield("/echo Found Forlorn! <se.3>")
+                if Echo == "All" then
+                    yield("/echo Found Forlorn! <se.3>")
+                end
 --                TurnOffAoes()
                 ForlornMarked = true
             end
@@ -2180,8 +2215,12 @@ function Ready()
             State = CharacterState.changingInstances
             LogInfo("[FATE] State Change: ChangingInstances")
         elseif not HasTarget() or GetTargetName() ~= "エーテライト" or GetDistanceToTarget() > 20 then
-            State = CharacterState.flyBackToAetheryte
-            LogInfo("[FATE] State Change: FlyBackToAetheryte")
+            if CompanionScriptMode then
+                StopScript = true
+            else
+	            State = CharacterState.flyBackToAetheryte
+	            LogInfo("[FATE] State Change: FlyBackToAetheryte")
+            end
         else
             yield("/wait 10")
         end

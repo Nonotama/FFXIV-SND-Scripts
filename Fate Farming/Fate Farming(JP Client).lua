@@ -2666,7 +2666,11 @@ if IsInFate() and GetFateProgress(GetNearestFate()) < 100 then
 end
 
 if ShouldSummonChocobo and GetBuddyTimeRemaining() > 0 then
-    yield("/cac "..ChocoboStance)
+    if GetZoneID() == 960 or GetZoneID() == 961 then
+        yield("/cac アタッカースタンス")
+    else
+        yield("/cac "..ChocoboStance)
+    end
 end
 
 while not StopScript do

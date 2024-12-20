@@ -65,11 +65,11 @@ function TeleportTo(aetheryteName)
 end
 
 FarmingZoneIndex = 3
-NearestFateName = nil
+NearestFateName = 0
 OldBicolorGemCount = GetItemCount(26807)
 while true do
     NearestFateName = GetFateName(GetNearestFate())
-    if NearestFateName == nil then
+    if NearestFateName == 0 then
         FarmingZoneIndex = FarmingZoneIndex + 1
         if FarmingZoneIndex > #ZonesToFarm then
             FarmingZoneIndex = 2

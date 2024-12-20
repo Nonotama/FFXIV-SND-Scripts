@@ -485,7 +485,7 @@
         "$values": []
       }
     },
-    "D:\\SquareEnix\\Tools\\XIVLauncher\\XIVMODS\\�}�X�^�[�t�@�C��\\PartyListLayoutRevived\\PartyListLayoutRevived.dll": {
+    "D:\\SquareEnix\\Tools\\XIVLauncher\\XIVMODS\\マスターファイル\\PartyListLayoutRevived\\PartyListLayoutRevived.dll": {
       "$type": "Dalamud.Configuration.Internal.DevPluginSettings, Dalamud",
       "StartOnBoot": false,
       "AutomaticReloading": false,
@@ -3043,7 +3043,7 @@
           ]
         },
         "id": "c9ebe5a5-e810-422d-b4a6-4ef93da1ca66",
-        "n": "�V�X�e����o�b�N�O���E���h�œ��삷�����"
+        "n": "システムやバックグラウンドで動作するもの"
       },
       {
         "$type": "Dalamud.Plugin.Internal.Profiles.ProfileModelV1, Dalamud",
@@ -3074,7 +3074,7 @@
           ]
         },
         "id": "d4313997-dcaf-4b2a-bf74-edd400f4822d",
-        "n": "�S�[���h�\�[�T�[�Ɋւ�����"
+        "n": "ゴールドソーサーに関わるもの"
       },
       {
         "$type": "Dalamud.Plugin.Internal.Profiles.ProfileModelV1, Dalamud",
@@ -3135,7 +3135,7 @@
           ]
         },
         "id": "7b73ba9e-3fab-4071-bef6-808d188cd02a",
-        "n": "����̎������Ɋւ�����"
+        "n": "動作の自動化に関わるもの"
       },
       {
         "$type": "Dalamud.Plugin.Internal.Profiles.ProfileModelV1, Dalamud",
@@ -3250,7 +3250,7 @@
           ]
         },
         "id": "a893e270-8835-4cb0-91b9-892434949713",
-        "n": "�퓬�Ɋւ�����"
+        "n": "戦闘に関わるもの"
       },
       {
         "$type": "Dalamud.Plugin.Internal.Profiles.ProfileModelV1, Dalamud",
@@ -3293,7 +3293,7 @@
           ]
         },
         "id": "7db67e7a-04fc-4055-8954-90ba20b6e1e5",
-        "n": "�M���U�N���Ɋւ�����"
+        "n": "ギャザクラに関わるもの"
       },
       {
         "$type": "Dalamud.Plugin.Internal.Profiles.ProfileModelV1, Dalamud",
@@ -3396,7 +3396,7 @@
           ]
         },
         "id": "36962c68-a075-4a91-8eb7-d9fbf99f1ac5",
-        "n": "UI�ύX�E�ǉ��𔺂�����"
+        "n": "UI変更・追加を伴うもの"
       },
       {
         "$type": "Dalamud.Plugin.Internal.Profiles.ProfileModelV1, Dalamud",

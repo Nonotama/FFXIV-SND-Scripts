@@ -1724,7 +1724,11 @@ function SummonChocobo()
         if GetItemCount(4868) > 0 then
             yield("/item ギサールの野菜")
             yield("/wait 3")
-            yield("/cac "..ChocoboStance)
+            if GetZoneID() == 960 or GetZoneID() == 961 then
+                yield("/cac アタッカースタンス")
+            else
+                yield("/cac "..ChocoboStance)
+            end
         elseif ShouldAutoBuyGysahlGreens then
             State = CharacterState.autoBuyGysahlGreens
             LogInfo("[FATE] State Change: AutoBuyGysahlGreens")

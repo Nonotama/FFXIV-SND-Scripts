@@ -26,12 +26,12 @@ FateMacro = "Fate Farming(JP Client)"      -- Name of whatever you nicknamed the
 -- Ctrl+F through Fate Farming.lua to find the zoneIds, or find them in Godbert
 ZonesToFarm =
 {
-    { zoneName = "ƒIƒ‹ƒREƒpƒ`ƒƒ", zoneId = 1187 },
-    { zoneName = "ƒRƒUƒ}ƒ‹EƒJ", zoneId = 1188 },
-    { zoneName = "ƒ„ƒNƒeƒ‹÷ŠC", zoneId = 1189 },
-    { zoneName = "ƒVƒƒ[ƒ[ƒjr–ì", zoneId = 1190 },
-    { zoneName = "ƒwƒŠƒe[ƒWƒtƒ@ƒEƒ“ƒh", zoneId = 1191 },
-    { zoneName = "ƒŠƒrƒ“ƒOEƒƒ‚ƒŠ[", zoneId = 1192 }
+    { zoneName = "ã‚ªãƒ«ã‚³ãƒ»ãƒ‘ãƒãƒ£", zoneId = 1187 },
+    { zoneName = "ã‚³ã‚¶ãƒãƒ«ãƒ»ã‚«", zoneId = 1188 },
+    { zoneName = "ãƒ¤ã‚¯ãƒ†ãƒ«æ¨¹æµ·", zoneId = 1189 },
+    { zoneName = "ã‚·ãƒ£ãƒ¼ãƒ­ãƒ¼ãƒ‹è’é‡", zoneId = 1190 },
+    { zoneName = "ãƒ˜ãƒªãƒ†ãƒ¼ã‚¸ãƒ•ã‚¡ã‚¦ãƒ³ãƒ‰", zoneId = 1191 },
+    { zoneName = "ãƒªãƒ“ãƒ³ã‚°ãƒ»ãƒ¡ãƒ¢ãƒªãƒ¼", zoneId = 1192 }
 }
 
 --#endregion Settings

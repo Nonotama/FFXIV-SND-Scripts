@@ -21,17 +21,19 @@ Created by: pot0to (https://ko-fi.com/pot0to)
 ********************************************************************************
 ]]
 
-FateMacro = "Fate Farming(JP Client)"      -- Name of whatever you nicknamed the base fate farming SND script
+FateMacro = "Fate Farming ( JP Client )"      -- Name of whatever you nicknamed the base fate farming SND script
 
 -- Ctrl+F through Fate Farming.lua to find the zoneIds, or find them in Godbert
 ZonesToFarm =
 {
-    { zoneName = "ã‚ªãƒ«ã‚³ãƒ»ãƒ‘ãƒãƒ£", zoneId = 1187 },
-    { zoneName = "ã‚³ã‚¶ãƒžãƒ«ãƒ»ã‚«", zoneId = 1188 },
-    { zoneName = "ãƒ¤ã‚¯ãƒ†ãƒ«æ¨¹æµ·", zoneId = 1189 },
-    { zoneName = "ã‚·ãƒ£ãƒ¼ãƒ­ãƒ¼ãƒ‹è’é‡Ž", zoneId = 1190 },
-    { zoneName = "ãƒ˜ãƒªãƒ†ãƒ¼ã‚¸ãƒ•ã‚¡ã‚¦ãƒ³ãƒ‰", zoneId = 1191 },
-    { zoneName = "ãƒªãƒ“ãƒ³ã‚°ãƒ»ãƒ¡ãƒ¢ãƒªãƒ¼", zoneId = 1192 }
+--    { zoneName = "ƒIƒ‹ƒREƒpƒ`ƒƒ", zoneId = 1187 },
+--    { zoneName = "ƒRƒUƒ}ƒ‹EƒJ", zoneId = 1188 },
+--    { zoneName = "ƒ„ƒNƒeƒ‹Ž÷ŠC", zoneId = 1189 },
+    { zoneName = "ƒVƒƒ[ƒ[ƒjr–ì", zoneId = 1190 },
+    { zoneName = "ƒwƒŠƒe[ƒWƒtƒ@ƒEƒ“ƒh", zoneId = 1191 },
+--    { zoneName = "ƒŠƒrƒ“ƒOEƒƒ‚ƒŠ[", zoneId = 1192 }
+    { zoneName = "ƒGƒ‹ƒsƒX", zoneId = 961 },
+    { zoneName = "ƒEƒ‹ƒeƒBƒ}EƒgƒD[ƒŒ", zoneId = 960 },
 }
 
 --#endregion Settings
@@ -62,9 +64,19 @@ function TeleportTo(aetheryteName)
     yield("/wait 1")
 end
 
-FarmingZoneIndex = 1
+FarmingZoneIndex = 3
+NearestFateName = nil
 OldBicolorGemCount = GetItemCount(26807)
 while true do
+    NearestFateName = GetFateName(GetNearestFate())
+    if NearestFateName == nil then
+        FarmingZoneIndex = FarmingZoneIndex + 1
+        if FarmingZoneIndex > #ZonesToFarm then
+            FarmingZoneIndex = 2
+        end
+        LogInfo("[MultiZone] Teleporting to "..ZonesToFarm[FarmingZoneIndex].zoneName)
+        TeleportTo(GetAetheryteName(GetAetherytesInZone(ZonesToFarm[FarmingZoneIndex].zoneId)[0]))
+    end
     if not IsPlayerOccupied() and not IsMacroRunningOrQueued(FateMacro) then
         if GetZoneID() ~= ZonesToFarm[FarmingZoneIndex].zoneId then
             LogInfo("[MultiZone] Teleporting to "..ZonesToFarm[FarmingZoneIndex].zoneName)

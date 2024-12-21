@@ -316,6 +316,43 @@ FatesData = {
         }
     },
     {
+        zoneName = "東ラノシア",
+        zoneId = 137,
+        fatesList = {
+            collectionsFates= {
+                { fateName="コリブリたちの食卓" , npcName="虹蝶貝を探す女" }
+            },
+            otherNpcFates= {
+                { fateName="新鮮な生肉" , npcName="リムサ・ロミンサの商人" },
+                { fateName="蜜蜂誘う甘い蜜" , npcName="ワインポートの農夫" }
+            },
+            fatesWithContinuations = {},
+            blacklistedFates= {}
+        }
+    },
+    {
+        zoneName = "西ラノシア",
+        zoneId = 138,
+        fatesList = {
+            collectionsFates= {},
+            otherNpcFates= {},
+            fatesWithContinuations = {},
+            blacklistedFates= {}
+        }
+    },
+    {
+        zoneName = "高地ラノシア",
+        zoneId = 139,
+        fatesList = {
+            collectionsFates= {},
+            otherNpcFates= {
+                { fateName="悲運の傭兵「美男のブガージャ」" , npcName="黒渦団甲軍曹" },
+            },
+            fatesWithContinuations = {},
+            blacklistedFates= {}
+        }
+    },
+    {
         zoneName = "中央ザナラーン",
         zoneId = 141,
         fatesList = {
@@ -360,7 +397,9 @@ FatesData = {
         zoneId = 180,
         fatesList = {
             collectionsFates= {},
-            otherNpcFates= {},
+            otherNpcFates= {
+                { fateName="試掘地強襲作戦", npcName="黒渦団二等甲兵"},
+            },
             fatesWithContinuations = {},
             blacklistedFates= {}
         },
@@ -377,7 +416,7 @@ FatesData = {
         }
     },
     {
-        zoneName = "クルザス西部高知",
+        zoneName = "クルザス西部高地",
         zoneId = 397,
         fatesList= {
             collectionsFates= {},
@@ -417,7 +456,7 @@ FatesData = {
         }
     },
     {
-        zoneName = "高知ドラヴァニア",
+        zoneName = "高地ドラヴァニア",
         zoneId = 398,
         fatesList= {
             collectionsFates= {},

@@ -96,7 +96,7 @@ WonderousTailsDuties = {
         { dutyName="希望の園エデン：再生編1", dutyId=942, minLevel=80 },
     },
     { -- type 5: leveling dungeons
-        { dutyName="レベリングダンジョン Lv1-49", dutyId=1045, minLevel=15 }, --イフリート討伐戦
+        { dutyName="レベリングダンジョン Lv1-49", dutyId=1045, minLevel=20 }, --イフリート討伐戦
         { dutyName="レベリングダンジョン Lv51-79", dutyId=434, minLevel=51 }, --廃砦捜索 ダスクヴィジル
         { dutyName="レベリングダンジョン Lv81-99", dutyId=952, minLevel=81 }, --異形楼閣 ゾットの塔
     },
@@ -165,6 +165,7 @@ function SearchWonderousTailsTable(type, data, text)
             if duty.dutyName == text then
                 return duty
             end
+            if
         end
     elseif type == 4 or type == 8 then -- normal raids
         for _, duty in ipairs(WonderousTailsDuties[type+1]) do
@@ -249,6 +250,9 @@ for i = 0, 12 do
                 -- yield("/autoduty cfg dutyModeEnum 1") -- TODO: test this when it gets released
                 -- yield("/autoduty cfg Unsynced false")
                 dutyMode = "Support"
+            elseif duty.dutyId == 1045 then -- レベリングID Lv1-49の場合のみイフリート討伐戦を実行するため
+                yield("/autoduty cfg Unsynced true")
+                dutyMode = "Trial"
             else
                 -- yield("/autoduty cfg dutyModeEnum 8")
                 yield("/autoduty cfg Unsynced true")

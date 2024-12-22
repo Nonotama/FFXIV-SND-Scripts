@@ -165,7 +165,6 @@ function SearchWonderousTailsTable(type, data, text)
             if duty.dutyName == text then
                 return duty
             end
-            if
         end
     elseif type == 4 or type == 8 then -- normal raids
         for _, duty in ipairs(WonderousTailsDuties[type+1]) do

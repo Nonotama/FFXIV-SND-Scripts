@@ -245,13 +245,16 @@ for i = 0, 12 do
             elseif type == 4 then -- raids
                 yield("/autoduty cfg Unsynced true")
                 dutyMode = "Raid"
+            elseif duty.dutyId == 1045 then -- レベリングID Lv1-49の場合のみイフリート討伐戦を実行する
+                yield("/autoduty cfg Unsynced true")
+                dutyMode = "Trial"
+            elseif type == 5 then -- regular
+                yield("/autoduty cfg Unsynced true")
+                dutyMode = "Regular"
             elseif CurrentLevel - duty.minLevel <= 20 then
                 -- yield("/autoduty cfg dutyModeEnum 1") -- TODO: test this when it gets released
                 -- yield("/autoduty cfg Unsynced false")
                 dutyMode = "Support"
-            elseif duty.dutyId == 1045 then -- レベリングID Lv1-49の場合のみイフリート討伐戦を実行するため
-                yield("/autoduty cfg Unsynced true")
-                dutyMode = "Trial"
             else
                 -- yield("/autoduty cfg dutyModeEnum 8")
                 yield("/autoduty cfg Unsynced true")
@@ -263,6 +266,7 @@ for i = 0, 12 do
                 yield("/autoduty run "..dutyMode.." "..duty.dutyId.." 1 true")
                 yield("/bmrai on")
                 yield("/rotation auto")
+                yield("/rotation settings aoetype 2")
                 yield("/wait 10")
                 while GetCharacterCondition(34) or GetCharacterCondition(51) or GetCharacterCondition(56) do -- wait for duty to be finished
                     if GetCharacterCondition(2) and i > 4 then -- dead, not a dungeon
@@ -298,4 +302,5 @@ for i = 0, 12 do
     -- end
 end
 
+yield("/rotation settings aoetype 1")
 yield("/echo Completed all Wonderous Tails entries it is capable of.<se.3>")

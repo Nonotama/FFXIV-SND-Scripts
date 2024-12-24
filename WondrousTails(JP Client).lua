@@ -40,70 +40,70 @@ Alliance Raids/PVP/Treasure Maps/Palace of the Dead
 
 WonderousTailsDuties = {
     { -- type 0:extreme trials
-        { instanceId=20010, dutyId=297, dutyName="極ガルーダ討滅戦", minLevel=50 },
-        { instanceId=20009, dutyId=296, dutyName="極タイタン討滅戦", minLevel=50 },
-        { instanceId=20008, dutyId=295, dutyName="極イフリート討滅戦", minLevel=50 },
-        { instanceId=20012, dutyId=364, dutyName="極王モグル・モグXII世討滅戦", minLevel=50 },
-        { instanceId=20018, dutyId=359, dutyName="極リヴァイアサン討滅戦", minLevel=50 },
-        { instanceId=20023, dutyId=375, dutyName="極ラムウ討滅戦", minLevel=50 },
-        { instanceId=20025, dutyId=378, dutyName="極シヴァ討滅戦", minLevel=50 },
-        { instanceId=20013, dutyId=348, dutyName="究極幻想 アルテマウェポン破壊作戦", minLevel=50 },
-        { instanceId=20034, dutyId=447, dutyName="極ビスマルク討滅戦", minLevel=60 },
-        { instanceId=20032, dutyId=446, dutyName="極ラーヴァナ討滅戦", minLevel=60 },
-        { instanceId=20036, dutyId=448, dutyName="蒼天幻想 ナイツ・オブ・ラウンド討滅戦", minLevel=60 },
-        { instanceId=20038, dutyId=524, dutyName="極魔神セフィロト討滅戦", minLevel=60 },
-        { instanceId=20040, dutyId=566, dutyName="極ニーズヘッグ征竜戦", minLevel=60 },
-        { instanceId=20042, dutyId=577, dutyName="極女神ソフィア討滅戦", minLevel=60 },
-        { instanceId=20044, dutyId=638, dutyName="極鬼神ズルワーン討滅戦", minLevel=60 },
-        { instanceId=20049, dutyId=720, dutyName="極ラクシュミ討滅戦", minLevel=70 },
-        { instanceId=20056, dutyId=779, dutyName="極ツクヨミ討滅戦", minLevel=70 },
-        { instanceId=20058, dutyId=811, dutyName="極朱雀征魂戦", minLevel=70 },
-        { instanceId=20054, dutyId=762, dutyName="極リオレウス狩猟戦", minLevel=70 },
-        { instanceId=20061, dutyId=825, dutyName="極極青龍征魂戦", minLevel=70 },
-        { instanceId=20063, dutyId=858, dutyName="極ティターニア討滅戦", minLevel=80 },
-        { instanceId=20065, dutyId=848, dutyName="極イノセンス討滅戦", minLevel=80 },
-        { instanceId=20067, dutyId=885, dutyName="極ハーデス討滅戦", minLevel=80 },
-        { instanceId=20069, dutyId=912, dutyName="極ルビーウェポン破壊作戦", minLevel=80 },
-        { instanceId=20070, dutyId=913, dutyName="極シタデル・ボズヤ追憶戦", minLevel=80 },
-        { instanceId=20072, dutyId=923, dutyName="極ウォーリイア・オブ・ライト討滅戦", minLevel=80 },
-        { instanceId=20074, dutyId=935, dutyName="極エメラルドウェポン破壊作戦", minLevel=80 },
-        { instanceId=20076, dutyId=951, dutyName="極ダイヤウェポン破壊作戦", minLevel=80 },
-        { instanceId=20078, dutyId=996, dutyName="極ハイデリン討滅戦", minLevel=90 },
-        { instanceId=20081, dutyId=993, dutyName="極ゾディアーク討滅戦", minLevel=90 },
-        { instanceId=20083, dutyId=998, dutyName="終極の戦い", minLevel=90 },
-        { instanceId=20085, dutyId=1072, dutyName="極バルバリシア討滅戦", minLevel=90 },
-        { instanceId=20087, dutyId=1096, dutyName="極ルビカンテ討滅戦", minLevel=90 },
-        { instanceId=20090, dutyId=1141, dutyName="極ゴルベーザ討滅戦", minLevel=90 },
-        { instanceId=20092, dutyId=1169, dutyName="極ゼロムス討滅戦", minLevel=90 }
+        { dutyMode="Trial", instanceId=20010, dutyId=297, dutyName="極ガルーダ討滅戦", minLevel=50 },
+        { dutyMode="Trial", instanceId=20009, dutyId=296, dutyName="極タイタン討滅戦", minLevel=50 },
+        { dutyMode="Trial", instanceId=20008, dutyId=295, dutyName="極イフリート討滅戦", minLevel=50 },
+        { dutyMode="Trial", instanceId=20012, dutyId=364, dutyName="極王モグル・モグXII世討滅戦", minLevel=50 },
+        { dutyMode="Trial", instanceId=20018, dutyId=359, dutyName="極リヴァイアサン討滅戦", minLevel=50 },
+        { dutyMode="Trial", instanceId=20023, dutyId=375, dutyName="極ラムウ討滅戦", minLevel=50 },
+        { dutyMode="Trial", instanceId=20025, dutyId=378, dutyName="極シヴァ討滅戦", minLevel=50 },
+        { dutyMode="Trial", instanceId=20013, dutyId=348, dutyName="究極幻想 アルテマウェポン破壊作戦", minLevel=50 },
+        { dutyMode="Trial", instanceId=20034, dutyId=447, dutyName="極ビスマルク討滅戦", minLevel=60 },
+        { dutyMode="Trial", instanceId=20032, dutyId=446, dutyName="極ラーヴァナ討滅戦", minLevel=60 },
+        { dutyMode="Trial", instanceId=20036, dutyId=448, dutyName="蒼天幻想 ナイツ・オブ・ラウンド討滅戦", minLevel=60 },
+        { dutyMode="Trial", instanceId=20038, dutyId=524, dutyName="極魔神セフィロト討滅戦", minLevel=60 },
+        { dutyMode="Trial", instanceId=20040, dutyId=566, dutyName="極ニーズヘッグ征竜戦", minLevel=60 },
+        { dutyMode="Trial", instanceId=20042, dutyId=577, dutyName="極女神ソフィア討滅戦", minLevel=60 },
+        { dutyMode="Trial", instanceId=20044, dutyId=638, dutyName="極鬼神ズルワーン討滅戦", minLevel=60 },
+        { dutyMode="Trial", instanceId=20049, dutyId=720, dutyName="極ラクシュミ討滅戦", minLevel=70 },
+--        { dutyMode="Trial", instanceId=20056, dutyId=779, dutyName="極ツクヨミ討滅戦", minLevel=70 },
+--        { dutyMode="Trial", instanceId=20058, dutyId=811, dutyName="極朱雀征魂戦", minLevel=70 },
+--        { dutyMode="Trial", instanceId=20054, dutyId=762, dutyName="極リオレウス狩猟戦", minLevel=70 },
+--        { dutyMode="Trial", instanceId=20061, dutyId=825, dutyName="極極青龍征魂戦", minLevel=70 },
+--        { dutyMode="Trial", instanceId=20063, dutyId=858, dutyName="極ティターニア討滅戦", minLevel=80 },
+--        { dutyMode="Trial", instanceId=20065, dutyId=848, dutyName="極イノセンス討滅戦", minLevel=80 },
+--        { dutyMode="Trial", instanceId=20067, dutyId=885, dutyName="極ハーデス討滅戦", minLevel=80 },
+--        { dutyMode="Trial", instanceId=20069, dutyId=912, dutyName="極ルビーウェポン破壊作戦", minLevel=80 },
+--        { dutyMode="Trial", instanceId=20070, dutyId=913, dutyName="極シタデル・ボズヤ追憶戦", minLevel=80 },
+--        { dutyMode="Trial", instanceId=20072, dutyId=923, dutyName="極ウォーリイア・オブ・ライト討滅戦", minLevel=80 },
+--        { dutyMode="Trial", instanceId=20074, dutyId=935, dutyName="極エメラルドウェポン破壊作戦", minLevel=80 },
+--        { dutyMode="Trial", instanceId=20076, dutyId=951, dutyName="極ダイヤウェポン破壊作戦", minLevel=80 },
+--        { dutyMode="Trial", instanceId=20078, dutyId=996, dutyName="極ハイデリン討滅戦", minLevel=90 },
+--        { dutyMode="Trial", instanceId=20081, dutyId=993, dutyName="極ゾディアーク討滅戦", minLevel=90 },
+--        { dutyMode="Trial", instanceId=20083, dutyId=998, dutyName="終極の戦い", minLevel=90 },
+--        { dutyMode="Trial", instanceId=20085, dutyId=1072, dutyName="極バルバリシア討滅戦", minLevel=90 },
+--        { dutyMode="Trial", instanceId=20087, dutyId=1096, dutyName="極ルビカンテ討滅戦", minLevel=90 },
+--        { dutyMode="Trial", instanceId=20090, dutyId=1141, dutyName="極ゴルベーザ討滅戦", minLevel=90 },
+--        { dutyMode="Trial", instanceId=20092, dutyId=1169, dutyName="極ゼロムス討滅戦", minLevel=90 }
     },
     { -- type 1: expansion cap dungeons
-        { dutyName="Lv100ダンジョン", dutyId=1199, minLevel=100 } --記憶幻想 アレクサンドリア
+        { dutyMode="Trust", dutyName="Lv100ダンジョン", dutyId=1199, minLevel=100 } --記憶幻想 アレクサンドリア
     },
     2,
     3,
     { -- type 4: normal raids
-        { dutyName="大迷宮バハムート：邂逅編1", dutyId=241, minLevel=50 },
-        { dutyName="大迷宮バハムート：侵攻編1", dutyId=355, minLevel=50 },
-        { dutyName="大迷宮バハムート：真成編1", dutyId=193, minLevel=50 },
-        { dutyName="機工城アレキサンダー：起動編1", dutyId=442, minLevel=60 },
-        { dutyName="機工城アレキサンダー：律動編1", dutyId=520, minLevel=60 },
-        { dutyName="機工城アレキサンダー：天道編1", dutyId=580, minLevel=60 },
-        { dutyName="次元の狭間オメガ：デルタ編1", dutyId=693, minLevel=70 },
-        { dutyName="次元の狭間オメガ：シグマ編1", dutyId=748, minLevel=70 },
-        { dutyName="次元の狭間オメガ：オメガ編1", dutyId=798, minLevel=70 },
-        { dutyName="希望の園エデン：覚醒編1", dutyId=849, minLevel=80 },
-        { dutyName="希望の園エデン：共鳴編1", dutyId=903, minLevel=80 },
-        { dutyName="希望の園エデン：再生編1", dutyId=942, minLevel=80 },
+        { dutyMode="Regular", dutyName="大迷宮バハムート：邂逅編1", dutyId=241, minLevel=50 },
+        { dutyMode="Regular", dutyName="大迷宮バハムート：侵攻編1", dutyId=355, minLevel=50 },
+        { dutyMode="Regular", dutyName="大迷宮バハムート：真成編1", dutyId=193, minLevel=50 },
+        { dutyMode="Regular", dutyName="機工城アレキサンダー：起動編1", dutyId=442, minLevel=60 },
+        { dutyMode="Regular", dutyName="機工城アレキサンダー：律動編1", dutyId=520, minLevel=60 },
+        { dutyMode="Regular", dutyName="機工城アレキサンダー：天道編1", dutyId=580, minLevel=60 },
+        { dutyMode="Regular", dutyName="次元の狭間オメガ：デルタ編1", dutyId=693, minLevel=70 },
+        { dutyMode="Regular", dutyName="次元の狭間オメガ：シグマ編1", dutyId=748, minLevel=70 },
+        { dutyMode="Regular", dutyName="次元の狭間オメガ：オメガ編1", dutyId=798, minLevel=70 },
+--        { dutyMode="Regular", dutyName="希望の園エデン：覚醒編1", dutyId=849, minLevel=80 },
+--        { dutyMode="Regular", dutyName="希望の園エデン：共鳴編1", dutyId=903, minLevel=80 },
+--        { dutyMode="Regular", dutyName="希望の園エデン：再生編1", dutyId=942, minLevel=80 },
     },
     { -- type 5: leveling dungeons
-        { dutyName="レベリングダンジョン Lv1-49", dutyId=1045, minLevel=20 }, --イフリート討伐戦
-        { dutyName="レベリングダンジョン Lv51-79", dutyId=434, minLevel=51 }, --廃砦捜索 ダスクヴィジル
-        { dutyName="レベリングダンジョン Lv81-99", dutyId=952, minLevel=81 }, --異形楼閣 ゾットの塔
+        { dutyMode="Trial", dutyName="レベリングダンジョン Lv1-49", dutyId=1045, minLevel=20 }, --イフリート討伐戦
+        { dutyMode="Regular", dutyName="レベリングダンジョン Lv51-79", dutyId=434, minLevel=51 }, --廃砦捜索 ダスクヴィジル
+        { dutyMode="Regular", dutyName="レベリングダンジョン Lv81-99", dutyId=952, minLevel=81 }, --異形楼閣 ゾットの塔
     },
     { -- type 6: expansion cap dungeons
-        { dutyName="ハイレベリングダンジョン Lv50-60", dutyId=362, minLevel=50 }, --盟友支援 ブレイフロクスの野営地 (Hard)
-        { dutyName="ハイレベリングダンジョン Lv70-80", dutyId=788, minLevel=70 }, --草木汚染 聖モシャーヌ植物園 (Hard)
-        { dutyName="ハイレベリングダンジョン Lv90", dutyId=973, minLevel=90 }, --最終幻想 レムナント
+        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv50-60", dutyId=362, minLevel=50 }, --盟友支援 ブレイフロクスの野営地 (Hard)
+        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv70-80", dutyId=788, minLevel=70 }, --草木汚染 聖モシャーヌ植物園 (Hard)
+        { dutyMode="Trust", dutyName="ハイレベリングダンジョン Lv90", dutyId=973, minLevel=90 }, --最終幻想 レムナント
     },
     { -- type 7: ex trials
         {
@@ -234,31 +234,13 @@ for i = 0, 12 do
         if duty == nil then
             yield("/echo duty is nil")
         end
-        local dutyMode = "Support"
+        local dutyMode = duty.dutyMode
         if duty ~= nil then
             if CurrentLevel < duty.minLevel then
                 yield("/echo [WonderousTails] Cannot queue for "..duty.dutyName.." as level is too low.")
                 duty.dutyId = nil
-            elseif type == 0 then -- trials
-                yield("/autoduty cfg Unsynced true")
-                dutyMode = "Trial"
-            elseif type == 4 then -- raids
-                yield("/autoduty cfg Unsynced true")
-                dutyMode = "Raid"
-            elseif duty.dutyId == 1045 then -- レベリングID Lv1-49の場合のみイフリート討伐戦を実行する
-                yield("/autoduty cfg Unsynced true")
-                dutyMode = "Trial"
-            elseif type == 5 then -- regular
-                yield("/autoduty cfg Unsynced true")
-                dutyMode = "Regular"
-            elseif CurrentLevel - duty.minLevel <= 20 then
-                -- yield("/autoduty cfg dutyModeEnum 1") -- TODO: test this when it gets released
-                -- yield("/autoduty cfg Unsynced false")
-                dutyMode = "Support"
             else
-                -- yield("/autoduty cfg dutyModeEnum 8")
                 yield("/autoduty cfg Unsynced true")
-                dutyMode = "Regular"
             end
 
             if duty.dutyId ~= nil then
@@ -279,7 +261,7 @@ for i = 0, 12 do
                     end
                     yield("/wait 1")
                 end
-                yield("/wait 10")
+                yield("/wait 7")
             else
                 if duty.dutyName ~= nil then
                     yield("/echo Wonderous Tails Script does not support Wonderous Tails entry #"..(i+1).." "..duty.dutyName)
@@ -291,15 +273,6 @@ for i = 0, 12 do
             end
         end
     end
-
-    -- if GetWeeklyBingoTaskStatus(i) == 1
-    --    and (not StopPlacingStickersAt7 or WeeklyBingoNumPlacedStickers() < 7)
-    -- then
-    --     if not IsAddonVisible("WeeklyBingo") then
-    --         yield("/callback WeeklyBingo true 2 "..i)
-    --         yield("/wait 1")
-    --     end
-    -- end
 end
 
 yield("/rotation settings aoetype 1")

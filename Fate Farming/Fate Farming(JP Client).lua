@@ -118,6 +118,7 @@ Echo                                = "None"        --Options: All/Gems/None
 CompanionScriptMode                 = true          --Set to true if you are using the fate script with a companion script (such as the Atma Farmer)
 
 FatePriority                        = "Distance"    --Distance (default pot0to "")
+TradeGemCount                       = 1500
 
 --#endregion Settings
 
@@ -1436,7 +1437,7 @@ function Dismount()
 
             if GetCharacterCondition(CharacterCondition.flying) and GetDistanceToPoint(LastStuckCheckPosition.x, LastStuckCheckPosition.y, LastStuckCheckPosition.z) < 2 then
                 LogInfo("[FATE] Unable to dismount here. Moving to another spot.")
-                local random_x, random_y, random_z = RandomAdjustCoordinates(x, y, z, 10)
+                local random_x, random_y, random_z = RandomAdjustCoordinates(x, y, z, 5)
                 local nearestPointX = QueryMeshNearestPointX(random_x, random_y, random_z, 100, 100)
                 local nearestPointY = QueryMeshNearestPointY(random_x, random_y, random_z, 100, 100)
                 local nearestPointZ = QueryMeshNearestPointZ(random_x, random_y, random_z, 100, 100)
@@ -1624,7 +1625,7 @@ function MoveToFate()
 
     local nearestLandX, nearestLandY, nearestLandZ = CurrentFate.x, CurrentFate.y, CurrentFate.z
     if not (CurrentFate.isCollectionsFate or CurrentFate.isOtherNpcFate) then
-        nearestLandX, nearestLandY, nearestLandZ = RandomAdjustCoordinates(CurrentFate.x, CurrentFate.y, CurrentFate.z, 10)
+        nearestLandX, nearestLandY, nearestLandZ = RandomAdjustCoordinates(CurrentFate.x, CurrentFate.y, CurrentFate.z, 5)
     end
 
     PathfindAndMoveTo(nearestLandX, nearestLandY - 2, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying)
@@ -2240,7 +2241,7 @@ function Ready()
         end
         return
     elseif not LogInfo("[FATE] Ready -> ExchangingVouchers") and WaitingForFateRewards == 0 and
-        ShouldExchangeBicolorGemstones and (BicolorGemCount >= 1400) and not shouldWaitForBonusBuff
+        ShouldExchangeBicolorGemstones and (BicolorGemCount >= TradeGemCount) and not shouldWaitForBonusBuff
     then
         State = CharacterState.exchangingVouchers
         LogInfo("[FATE] State Change: ExchangingVouchers")
@@ -2295,7 +2296,7 @@ function Ready()
 
     if not GemAnnouncementLock and (Echo == "All" or Echo == "Gems") then
         GemAnnouncementLock = true
-        if BicolorGemCount >= 1400 then
+        if BicolorGemCount >= TradeGemCount then
             yield("/echo [FATE] You're almost capped with "..tostring(BicolorGemCount).."/1500 gems! <se.3>")
         else
             yield("/echo [FATE] Gems: "..tostring(BicolorGemCount).."/1500")
@@ -2337,7 +2338,7 @@ end
 function ExecuteBicolorExchange()
     CurrentFate = nil
 
-    if BicolorGemCount >= 1400 then
+    if BicolorGemCount >= TradeGemCount then
         if IsAddonVisible("SelectYesno") then
             yield("/callback SelectYesno true 0")
             return

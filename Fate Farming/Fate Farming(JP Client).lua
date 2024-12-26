@@ -1628,7 +1628,7 @@ function MoveToFate()
         nearestLandX, nearestLandY, nearestLandZ = RandomAdjustCoordinates(CurrentFate.x, CurrentFate.y, CurrentFate.z, 5)
     end
 
-    PathfindAndMoveTo(nearestLandX, nearestLandY - 2, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying)
+    PathfindAndMoveTo(nearestLandX, nearestLandY, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying)
 end
 
 function InteractWithFateNpc()
@@ -1641,7 +1641,7 @@ function InteractWithFateNpc()
         State = CharacterState.ready
         LogInfo("[FATE] State Change: Ready")
     elseif PathfindInProgress() or PathIsRunning() then
-        if HasTarget() and GetTargetName() == CurrentFate.npcName and GetDistanceToTarget() < (5*math.random()) then
+        if HasTarget() and GetTargetName() == CurrentFate.npcName and GetDistanceToTarget() < (4*math.random()) then
             yield("/vnav stop")
         end
         return

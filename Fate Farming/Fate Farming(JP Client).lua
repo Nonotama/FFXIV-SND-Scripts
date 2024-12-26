@@ -115,7 +115,7 @@ ShouldGrandCompanyTurnIn            = false         --should it to Turn ins at t
 
 Echo                                = "None"        --Options: All/Gems/None
 
-CompanionScriptMode                 = false         --Set to true if you are using the fate script with a companion script (such as the Atma Farmer)
+CompanionScriptMode                 = true          --Set to true if you are using the fate script with a companion script (such as the Atma Farmer)
 
 FatePriority                        = "Distance"    --Distance (default pot0to "")
 
@@ -1627,7 +1627,7 @@ function MoveToFate()
         nearestLandX, nearestLandY, nearestLandZ = RandomAdjustCoordinates(CurrentFate.x, CurrentFate.y, CurrentFate.z, 10)
     end
 
-    PathfindAndMoveTo(nearestLandX, nearestLandY, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying)
+    PathfindAndMoveTo(nearestLandX, nearestLandY - 2, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying)
 end
 
 function InteractWithFateNpc()
@@ -1657,7 +1657,7 @@ function InteractWithFateNpc()
             return
         end
 
-        if GetDistanceToPoint(GetTargetRawXPos(), GetPlayerRawYPos(), GetTargetRawZPos()) > 5 then
+        if GetDistanceToPoint(GetTargetRawXPos(), GetPlayerRawYPos(), GetTargetRawZPos()) > 3 then
             MoveToNPC()
             return
         end
@@ -1827,7 +1827,7 @@ function AutoBuyGysahlGreens()
                 yield("/target "..gysahlGreensVendor.npcName)
             end
         end
-end
+    end
 end
 
 --Paths to the enemy (for Meele)
@@ -2057,7 +2057,7 @@ function DoFate()
         else
             DidFate = true
             LogInfo("[FATE] No continuation for "..CurrentFate.fateName)
-            local randomWait = (math.floor(math.random() * (math.max(0, WaitUpTo - 3)) * 1000)/1000) + 3 -- truncated to 3 decimal places
+            local randomWait = (math.floor(math.random() * (math.max(0, WaitUpTo - 3)) * 1000)/1000) + 1 -- truncated to 3 decimal places
             yield("/wait "..randomWait)
             TurnOffCombatMods()
             State = CharacterState.ready

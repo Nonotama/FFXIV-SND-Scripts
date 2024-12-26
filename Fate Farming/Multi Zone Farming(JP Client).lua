@@ -27,13 +27,13 @@ FateMacro = "Fate Farming ( JP Client )"      -- Name of whatever you nicknamed 
 ZonesToFarm =
 {
 --    { zoneName = "オルコ・パチャ", zoneId = 1187 },
---    { zoneName = "コザマル・カ", zoneId = 1188 },
 --    { zoneName = "ヤクテル樹海", zoneId = 1189 },
 --    { zoneName = "シャーローニ荒野", zoneId = 1190 },
 --    { zoneName = "リビング・メモリー", zoneId = 1192 }
     { zoneName = "ヘリテージファウンド", zoneId = 1191 },
     { zoneName = "エルピス", zoneId = 961 },
     { zoneName = "ウルティマ・トゥーレ", zoneId = 960 },
+    { zoneName = "コザマル・カ", zoneId = 1188 },
 }
 
 --#endregion Settings

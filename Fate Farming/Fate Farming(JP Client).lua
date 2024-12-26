@@ -98,11 +98,12 @@ IgnoreForlorns                      = false
     IgnoreBigForlornOnly            = false
 
 --Post Fate Settings
-WaitUpTo                            = 10            --Max number of seconds it should wait until mounting up for next fate.
+WaitUpTo                            = 0             --Max number of seconds it should wait until mounting up for next fate.
                                                         --Actual wait time will be a randomly generated number between 3s and this value
 EnableChangeInstance                = true          --should it Change Instance when there is no Fate (only works on DT fates)
     WaitIfBonusBuff                 = true          --Don't change instances if you have the Twist of Fate bonus buff
-ShouldExchangeBicolorGemstones      = false         --Should it exchange Bicolor Gemstone Vouchers?
+    NumberOfInstances               = 2
+ShouldExchangeBicolorGemstones      = true         --Should it exchange Bicolor Gemstone Vouchers?
     ItemToPurchase                  = "バイカラージェム納品証【黄金】"        -- Old Sharlayan for "Bicolor Gemstone Voucher" and Solution Nine for "Turali Bicolor Gemstone Voucher"
 SelfRepair                          = true          --if false, will go to Limsa mender
     RepairAmount                    = 20            --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
@@ -1402,7 +1403,7 @@ function FlyBackToAetheryte()
     end
 end
 
-function NextNodeMount()
+function Mount()
     if GetCharacterCondition(CharacterCondition.flying) then
         State = CharacterState.moveToFate
         LogInfo("[FATE] State Change: MoveToFate")
@@ -1420,7 +1421,7 @@ function NextNodeMount()
             yield('/mount "' .. MountToUse)
         end
     end
-    yield("/wait 0.1")
+    yield("/wait 1")
 end
 
 function Dismount()
@@ -1557,11 +1558,17 @@ function MoveToFate()
 	    if HasTarget() then
 	        LogInfo("[FATE] Found FATE target, immediate rerouting")
 	        PathfindAndMoveTo(GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos())
-	        if GetTargetName() == CurrentFate.npcName then
-	            State = CharacterState.interactWithNpc
-	        elseif GetTargetFateID() == CurrentFate.fateId then
+            if IsInFate() then
 	            State = CharacterState.middleOfFateDismount
 	            LogInfo("[FATE] State Change: MiddleOfFateDismount")
+            elseif (CurrentFate.isOtherNpcFate or CurrentFate.isCollectionsFate) then
+                State = CharacterState.interactWithNpc
+                LogInfo("[FATE] State Change: Interact with npc")
+            -- if GetTargetName() == CurrentFate.npcName then
+            --     State = CharacterState.interactWithNpc
+            -- elseif GetTargetFateID() == CurrentFate.fateId then
+            --     State = CharacterState.middleOfFateDismount
+            --     LogInfo("[FATE] State Change: MiddleOfFateDismount")
 	        else
 	            ClearTarget()
 	        end
@@ -1620,12 +1627,12 @@ function MoveToFate()
         nearestLandX, nearestLandY, nearestLandZ = RandomAdjustCoordinates(CurrentFate.x, CurrentFate.y, CurrentFate.z, 10)
     end
 
-    PathfindAndMoveTo(nearestLandX, nearestLandY + 10, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying)
+    PathfindAndMoveTo(nearestLandX, nearestLandY, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying)
 end
 
 function InteractWithFateNpc()
-    
     if IsInFate() or GetFateStartTimeEpoch(CurrentFate.fateId) > 0 then
+        yield("/vnav stop")
         State = CharacterState.doFate
         LogInfo("[FATE] State Change: DoFate")
         yield("/wait 1") -- give the fate a second to register before dofate and lsync
@@ -2008,7 +2015,7 @@ function HandleUnexpectedCombat()
             end
         end
     end
-    yield("/wait 0.5")
+    yield("/wait 1")
 end
 
 function DoFate()
@@ -2133,13 +2140,13 @@ function DoFate()
             if GetDistanceToTarget() <= (MaxDistance + GetTargetHitboxRadius() + 1) then
                 if PathfindInProgress() or PathIsRunning() then
                     yield("/vnav stop")
-                    yield("/wait 1") -- wait 5s before inching any closer
+                    yield("/wait 5") -- wait 5s before inching any closer
                 elseif GetDistanceToTarget() > (1 + GetTargetHitboxRadius()) then -- never move into hitbox
                     PathfindAndMoveTo(x, y, z)
                     yield("/wait 1") -- inch closer by 1s
                 end
             elseif not (PathfindInProgress() or PathIsRunning()) then
-                yield("/wait 1") -- give 5s for casts to go off before attempting to move closer
+                yield("/wait 5") -- give 5s for casts to go off before attempting to move closer
                 if x ~= 0 and z~=0 and not GetCharacterCondition(CharacterCondition.inCombat) then
                     PathfindAndMoveTo(x, y, z)
                 end
@@ -2159,7 +2166,7 @@ function DoFate()
             end
         elseif not CurrentFate.isBossFate then
             if not (PathfindInProgress() or PathIsRunning()) then
-                yield("/wait 1")
+                yield("/wait 5")
                 local x,y,z = GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos()
                 if x ~= 0 and z~=0 then
                     PathfindAndMoveTo(x,y,z, GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
@@ -2229,7 +2236,7 @@ function Ready()
             State = CharacterState.flyBackToAetheryte
             LogInfo("[FATE] State Change: FlyBackToAetheryte")
         else
-            yield("/wait 3")
+            yield("/wait 10")
         end
         return
     elseif not LogInfo("[FATE] Ready -> ExchangingVouchers") and WaitingForFateRewards == 0 and
@@ -2625,7 +2632,7 @@ CharacterState = {
     ready = Ready,
     dead = HandleDeath,
     unexpectedCombat = HandleUnexpectedCombat,
-    mounting = NextNodeMount,
+    mounting = Mount,
     npcDismount = NPCDismount,
     middleOfFateDismount = MiddleOfFateDismount,
     moveToFate = MoveToFate,

@@ -29,9 +29,9 @@ ZonesToFarm =
 --    { zoneName = "オルコ・パチャ", zoneId = 1187 },
 --    { zoneName = "コザマル・カ", zoneId = 1188 },
 --    { zoneName = "ヤクテル樹海", zoneId = 1189 },
-    { zoneName = "シャーローニ荒野", zoneId = 1190 },
-    { zoneName = "ヘリテージファウンド", zoneId = 1191 },
+--    { zoneName = "シャーローニ荒野", zoneId = 1190 },
 --    { zoneName = "リビング・メモリー", zoneId = 1192 }
+    { zoneName = "ヘリテージファウンド", zoneId = 1191 },
     { zoneName = "エルピス", zoneId = 961 },
     { zoneName = "ウルティマ・トゥーレ", zoneId = 960 },
 }
@@ -64,19 +64,10 @@ function TeleportTo(aetheryteName)
     yield("/wait 1")
 end
 
-FarmingZoneIndex = 3
+FarmingZoneIndex = 1
 TargetName = ""
 OldBicolorGemCount = GetItemCount(26807)
 while true do
-    NearestFateName = GetFateName(GetNearestFate())
-    TargetName = GetTargetName()
-    if TargetName == "エーテライト" then
-        if FarmingZoneIndex > #ZonesToFarm then
-            FarmingZoneIndex = 2
-        end
-        LogInfo("[MultiZone] Teleporting to "..ZonesToFarm[FarmingZoneIndex].zoneName)
-        TeleportTo(GetAetheryteName(GetAetherytesInZone(ZonesToFarm[FarmingZoneIndex].zoneId)[0]))
-    end
     if not IsPlayerOccupied() and not IsMacroRunningOrQueued(FateMacro) then
         if GetZoneID() ~= ZonesToFarm[FarmingZoneIndex].zoneId then
             LogInfo("[MultiZone] Teleporting to "..ZonesToFarm[FarmingZoneIndex].zoneName)

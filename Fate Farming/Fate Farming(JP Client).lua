@@ -1641,7 +1641,7 @@ function InteractWithFateNpc()
         State = CharacterState.ready
         LogInfo("[FATE] State Change: Ready")
     elseif PathfindInProgress() or PathIsRunning() then
-        if HasTarget() and GetTargetName() == CurrentFate.npcName and GetDistanceToTarget() < (4*math.random()) then
+        if HasTarget() and GetTargetName() == CurrentFate.npcName and GetDistanceToTarget() < (3*math.random()) then
             yield("/vnav stop")
         end
         return

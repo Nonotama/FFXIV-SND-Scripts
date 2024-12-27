@@ -2108,7 +2108,7 @@ function DoFate()
                 if Echo == "All" then
                     yield("/echo Found Forlorn! <se.3>")
                 end
---                TurnOffAoes()
+                TurnOffAoes()
                 ForlornMarked = true
             end
         else

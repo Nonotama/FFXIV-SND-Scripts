@@ -66,7 +66,11 @@ function TeleportTo(aetheryteName)
 end
 
 FarmingZoneIndex = 1
-TargetName = ""
+for i=1, #ZonesToFarm do
+    if GetZoneID() == ZonesToFarm[i].zoneId then
+        FarmingZoneIndex = i
+    end
+end
 OldBicolorGemCount = GetItemCount(26807)
 while true do
     if not IsPlayerOccupied() and not IsMacroRunningOrQueued(FateMacro) then

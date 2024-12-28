@@ -25,16 +25,29 @@ Created by: pot0to (https://ko-fi.com/pot0to)
 FateMacro = "Fate Farming (JP Client)"      -- Name of whatever you nicknamed the base fate farming SND script
 
 -- Ctrl+F through Fate Farming.lua to find the zoneIds, or find them in Godbert
-ZonesToFarm =
+ZonesToFarmTable =
 {
---    { zoneName = "オルコ・パチャ", zoneId = 1187 },
---    { zoneName = "コザマル・カ", zoneId = 1188 },
---    { zoneName = "ヤクテル樹海", zoneId = 1189 },
---    { zoneName = "リビング・メモリー", zoneId = 1192 }
-    { zoneName = "ヘリテージファウンド", zoneId = 1191 },
-    { zoneName = "エルピス", zoneId = 961 },
-    { zoneName = "ウルティマ・トゥーレ", zoneId = 960 },
-    { zoneName = "シャーローニ荒野", zoneId = 1190 },
+    -- ShB
+    { farmFlag = 0, zoneName = "レイクランド", zoneId = 813 },
+    { farmFlag = 0, zoneName = "コルシア島", zoneId = 814 },
+    { farmFlag = 0, zoneName = "アム・アレーン", zoneId = 815 },
+    { farmFlag = 0, zoneName = "イル・メグ", zoneId = 816 },
+    { farmFlag = 1, zoneName = "ラケティカ大森林", zoneId = 817 },
+    { farmFlag = 1, zoneName = "テンペスト", zoneId = 818 },
+    -- EW
+    { farmFlag = 0, zoneName = "ラヴィリンソス", zoneId = 956 },
+    { farmFlag = 0, zoneName = "サベネア島", zoneId = 957 },
+    { farmFlag = 0, zoneName = "ガレマルド", zoneId = 958 },
+    { farmFlag = 0, zoneName = "嘆きの海", zoneId = 959 },
+    { farmFlag = 1, zoneName = "ウルティマ・トゥーレ", zoneId = 960 },
+    { farmFlag = 1, zoneName = "エルピス", zoneId = 961 },
+    -- DT
+    { farmFlag = 0, zoneName = "オルコ・パチャ", zoneId = 1187 },
+    { farmFlag = 0, zoneName = "コザマル・カ", zoneId = 1188 },
+    { farmFlag = 0, zoneName = "ヤクテル樹海", zoneId = 1189 },
+    { farmFlag = 1, zoneName = "シャーローニ荒野", zoneId = 1190 },
+    { farmFlag = 1, zoneName = "ヘリテージファウンド", zoneId = 1191 },
+    { farmFlag = 0, zoneName = "リビング・メモリー", zoneId = 1192 },
 }
 
 --#endregion Settings
@@ -65,6 +78,15 @@ function TeleportTo(aetheryteName)
     yield("/wait 1")
 end
 
+ZonesToFarm = {}
+for i=1, #ZonesToFarmTable do
+    if ZonesToFarmTable[i].farmFlag == 1 then
+        ZonesToFarm[#ZonesToFarm + 1] = ZonesToFarmTable[i]
+    end
+end
+for i=1, #ZonesToFarm do
+    LogInfo("[MultiZone] CreateFarmTable:" .. ZonesToFarm[i].zoneName)
+end
 FarmingZoneIndex = 1
 for i=1, #ZonesToFarm do
     if GetZoneID() == ZonesToFarm[i].zoneId then

@@ -1771,10 +1771,10 @@ function SummonChocobo()
         if GetItemCount(4868) > 0 then
             yield("/item ギサールの野菜")
             yield("/wait 3")
-            if GetZoneID() == 960 or GetZoneID() == 961 then
-                yield("/cac アタッカースタンス")
-            else
+            if GetZoneID() == 1190 or GetZoneID() == 1191 then
                 yield("/cac "..ChocoboStance)
+            else
+                yield("/cac アタッカースタンス")
             end
         elseif ShouldAutoBuyGysahlGreens then
             State = CharacterState.autoBuyGysahlGreens
@@ -2713,10 +2713,10 @@ if IsInFate() and GetFateProgress(GetNearestFate()) < 100 then
 end
 
 if ShouldSummonChocobo and GetBuddyTimeRemaining() > 0 then
-    if GetZoneID() == 960 or GetZoneID() == 961 then
-        yield("/cac アタッカースタンス")
-    else
+    if GetZoneID() == 1190 or GetZoneID() == 1191 then
         yield("/cac "..ChocoboStance)
+    else
+        yield("/cac アタッカースタンス")
     end
 end
 

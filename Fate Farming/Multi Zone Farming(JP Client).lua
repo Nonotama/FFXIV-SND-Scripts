@@ -25,29 +25,30 @@ Created by: pot0to (https://ko-fi.com/pot0to)
 FateMacro = "Fate Farming (JP Client)"      -- Name of whatever you nicknamed the base fate farming SND script
 
 -- Ctrl+F through Fate Farming.lua to find the zoneIds, or find them in Godbert
+-- ジョブを設定していないゾーンは実行されない
 ZonesToFarmTable =
 {
     -- ShB
-    { farmFlag = 0, zoneName = "レイクランド", zoneId = 813 },
-    { farmFlag = 0, zoneName = "コルシア島", zoneId = 814 },
-    { farmFlag = 0, zoneName = "アム・アレーン", zoneId = 815 },
-    { farmFlag = 0, zoneName = "イル・メグ", zoneId = 816 },
-    { farmFlag = 1, zoneName = "ラケティカ大森林", zoneId = 817 },
-    { farmFlag = 1, zoneName = "テンペスト", zoneId = 818 },
-    -- EW
-    { farmFlag = 0, zoneName = "ラヴィリンソス", zoneId = 956 },
-    { farmFlag = 0, zoneName = "サベネア島", zoneId = 957 },
-    { farmFlag = 0, zoneName = "ガレマルド", zoneId = 958 },
-    { farmFlag = 0, zoneName = "嘆きの海", zoneId = 959 },
-    { farmFlag = 1, zoneName = "ウルティマ・トゥーレ", zoneId = 960 },
-    { farmFlag = 1, zoneName = "エルピス", zoneId = 961 },
+    { zoneName="レイクランド",         zoneId=813,  jobName="" },
+    { zoneName="コルシア島",           zoneId=814,  jobName="" },
+    { zoneName="アム・アレーン",       zoneId=815,  jobName="" },
+    { zoneName="イル・メグ",           zoneId=816,  jobName="ヴァイパー" },
+    { zoneName="ラケティカ大森林",     zoneId=817,  jobName="" },
+    { zoneName="テンペスト",           zoneId=818,  jobName="ヴァイパー" },
+    -- EW                                 
+    { zoneName="ラヴィリンソス",       zoneId=956,  jobName="" },
+    { zoneName="サベネア島",           zoneId=957,  jobName="" },
+    { zoneName="ガレマルド",           zoneId=958,  jobName="" },
+    { zoneName="嘆きの海",             zoneId=959,  jobName="" },
+    { zoneName="ウルティマ・トゥーレ", zoneId=960,  jobName="ヴァイパー" },
+    { zoneName="エルピス",             zoneId=961,  jobName="ヴァイパー" },
     -- DT
-    { farmFlag = 0, zoneName = "オルコ・パチャ", zoneId = 1187 },
-    { farmFlag = 0, zoneName = "コザマル・カ", zoneId = 1188 },
-    { farmFlag = 0, zoneName = "ヤクテル樹海", zoneId = 1189 },
-    { farmFlag = 1, zoneName = "シャーローニ荒野", zoneId = 1190 },
-    { farmFlag = 1, zoneName = "ヘリテージファウンド", zoneId = 1191 },
-    { farmFlag = 0, zoneName = "リビング・メモリー", zoneId = 1192 },
+    { zoneName="オルコ・パチャ",       zoneId=1187, jobName="" },
+    { zoneName="コザマル・カ",         zoneId=1188, jobName="" },
+    { zoneName="ヤクテル樹海",         zoneId=1189, jobName="" },
+    { zoneName="シャーローニ荒野",     zoneId=1190, jobName="ヴァイパー" },
+    { zoneName="ヘリテージファウンド", zoneId=1191, jobName="ヴァイパー" },
+    { zoneName="リビング・メモリー",   zoneId=1192, jobName="ヴァイパー" },
 }
 
 --#endregion Settings
@@ -80,7 +81,7 @@ end
 
 ZonesToFarm = {}
 for i=1, #ZonesToFarmTable do
-    if ZonesToFarmTable[i].farmFlag == 1 then
+    if ZonesToFarmTable[i].jobName ~= "" then
         ZonesToFarm[#ZonesToFarm + 1] = ZonesToFarmTable[i]
     end
 end
@@ -97,10 +98,11 @@ OldBicolorGemCount = GetItemCount(26807)
 while true do
     if not IsPlayerOccupied() and not IsMacroRunningOrQueued(FateMacro) then
         if GetCharacterCondition(2) or GetCharacterCondition(26) or GetZoneID() == ZonesToFarm[FarmingZoneIndex].zoneId then
+            yield("/gs change "..ZonesToFarm[FarmingZoneIndex].jobName)
             LogInfo("[MultiZone] Starting FateMacro")
             yield("/snd run "..FateMacro)
             repeat
-                yield("/wait 3")
+                yield("/wait 1")
             until not IsMacroRunningOrQueued(FateMacro)
             LogInfo("[MultiZone] FateMacro has stopped")
             NewBicolorGemCount = GetItemCount(26807)

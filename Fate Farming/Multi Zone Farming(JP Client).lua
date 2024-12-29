@@ -35,7 +35,7 @@ ZonesToFarmTable =
     { zoneName="イル・メグ",           zoneId=816,  jobName="ヴァイパー" },
     { zoneName="ラケティカ大森林",     zoneId=817,  jobName="" },
     { zoneName="テンペスト",           zoneId=818,  jobName="ヴァイパー" },
-    -- EW                                 
+    -- EW
     { zoneName="ラヴィリンソス",       zoneId=956,  jobName="" },
     { zoneName="サベネア島",           zoneId=957,  jobName="" },
     { zoneName="ガレマルド",           zoneId=958,  jobName="" },

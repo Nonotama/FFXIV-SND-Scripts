@@ -118,7 +118,7 @@ Echo                                = "None"        --Options: All/Gems/None
 CompanionScriptMode                 = true          --Set to true if you are using the fate script with a companion script (such as the Atma Farmer)
 
 FatePriority                        = "Distance"    --Distance (default pot0to "")
-TradeGemCount                       = 1500
+TradeGemCount                       = 1501
 
 --#endregion Settings
 
@@ -1772,7 +1772,7 @@ function SummonChocobo()
         if GetItemCount(4868) > 0 then
             yield("/item ギサールの野菜")
             yield("/wait 3")
-            if GetZoneID() == 1190 or GetZoneID() == 1191 then
+            if GetZoneID() == 1190 or GetZoneID() == 1191 or GetZoneID() == 1192 then
                 yield("/cac "..ChocoboStance)
             else
                 yield("/cac アタッカースタンス")
@@ -2714,7 +2714,7 @@ if IsInFate() and GetFateProgress(GetNearestFate()) < 100 then
 end
 
 if ShouldSummonChocobo and GetBuddyTimeRemaining() > 0 then
-    if GetZoneID() == 1190 or GetZoneID() == 1191 then
+    if GetZoneID() == 1190 or GetZoneID() == 1191 or GetZoneID() == 1192 then
         yield("/cac "..ChocoboStance)
     else
         yield("/cac アタッカースタンス")

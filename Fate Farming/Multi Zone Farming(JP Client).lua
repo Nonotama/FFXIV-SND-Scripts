@@ -83,10 +83,8 @@ ZonesToFarm = {}
 for i=1, #ZonesToFarmTable do
     if ZonesToFarmTable[i].jobName ~= "" then
         ZonesToFarm[#ZonesToFarm + 1] = ZonesToFarmTable[i]
+        LogInfo("[MultiZone] AddFarmTable:" .. ZonesToFarmTable[i].zoneName)
     end
-end
-for i=1, #ZonesToFarm do
-    LogInfo("[MultiZone] CreateFarmTable:" .. ZonesToFarm[i].zoneName)
 end
 FarmingZoneIndex = 1
 for i=1, #ZonesToFarm do

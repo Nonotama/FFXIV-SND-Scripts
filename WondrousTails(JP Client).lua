@@ -38,6 +38,16 @@ Alliance Raids/PVP/Treasure Maps/Palace of the Dead
 
 -- Region: Data ---------------------------------------------------------------------------------
 
+DungeonNameList = {
+    { dutyId=1045, dungeonName="イフリート討伐戦" },
+    { dutyId=362, dungeonName="盟友支援 ブレイフロクスの野営地 (Hard)" },
+    { dutyId=434, dungeonName="廃砦捜索 ダスクヴィジル" },
+    { dutyId=788, dungeonName="草木汚染 聖モシャーヌ植物園 (Hard)" },
+    { dutyId=952, dungeonName="異形楼閣 ゾットの塔" },
+    { dutyId=973, dungeonName="最終幻想 レムナント" },
+    { dutyId=1199, dungeonName="記憶幻想 アレクサンドリア" },
+}
+
 WonderousTailsDuties = {
     { -- type 0:extreme trials
         { dutyMode="Trial", instanceId=20010, dutyId=297, dutyName="極ガルーダ討滅戦", minLevel=50 },
@@ -77,7 +87,7 @@ WonderousTailsDuties = {
 --        { dutyMode="Trial", instanceId=20092, dutyId=1169, dutyName="極ゼロムス討滅戦", minLevel=90 }
     },
     { -- type 1: expansion cap dungeons
-        { dutyMode="Trust", dutyName="Lv100ダンジョン", dutyId=1199, minLevel=100 } --記憶幻想 アレクサンドリア
+        { dutyMode="Trust", dutyName="Lv100ダンジョン", dutyId=1199, minLevel=100, dungeonName="記憶幻想 アレクサンドリア" }
     },
     2,
     3,
@@ -244,12 +254,14 @@ for i = 0, 12 do
             end
 
             if duty.dutyId ~= nil then
-                if duty.duId == 1045 or duty.duId == 434 or duty.duId == 952 or duty.duId == 362 or duty.duId == 788 or duty.duId == 973 then
-                    yield("/echo [WonderousTails] 実行中（"..(i+1).."個目）："..duty.dungeonName)
-                else
-                    yield("/echo [WonderousTails] 実行中（"..(i+1).."個目）："..duty.dutyName)
-                end
                 yield("/autoduty run "..dutyMode.." "..duty.dutyId.." 1 true")
+                for i = 0, #DungeonNameList do
+                    if duty.dutyId == DungeonNameList[i].dutyId then
+                        duty.dutyName = DungeonNameList[i].dungeonName
+                        break
+                    end
+                end
+                yield("/echo [WonderousTails] 実行中（"..(i+1).."個目）："..duty.dutyName)
                 yield("/bmrai on")
                 yield("/rotation auto")
                 yield("/rotation settings aoetype 2")

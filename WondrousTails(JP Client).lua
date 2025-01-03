@@ -96,14 +96,14 @@ WonderousTailsDuties = {
 --        { dutyMode="Regular", dutyName="希望の園エデン：再生編1", dutyId=942, minLevel=80 },
     },
     { -- type 5: leveling dungeons
-        { dutyMode="Trial", dutyName="レベリングダンジョン Lv1-49", dutyId=1045, minLevel=20 }, --イフリート討伐戦
-        { dutyMode="Regular", dutyName="レベリングダンジョン Lv51-79", dutyId=434, minLevel=51 }, --廃砦捜索 ダスクヴィジル
-        { dutyMode="Regular", dutyName="レベリングダンジョン Lv81-99", dutyId=952, minLevel=81 }, --異形楼閣 ゾットの塔
+        { dutyMode="Trial", dutyName="レベリングダンジョン Lv1-49", dutyId=1045, minLevel=20, dungeonName="イフリート討伐戦" },
+        { dutyMode="Regular", dutyName="レベリングダンジョン Lv51-79", dutyId=434, minLevel=51, dungeonName="廃砦捜索 ダスクヴィジル" },
+        { dutyMode="Regular", dutyName="レベリングダンジョン Lv81-99", dutyId=952, minLevel=81, dungeonName="異形楼閣 ゾットの塔" },
     },
     { -- type 6: expansion cap dungeons
-        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv50-60", dutyId=362, minLevel=50 }, --盟友支援 ブレイフロクスの野営地 (Hard)
-        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv70-80", dutyId=788, minLevel=70 }, --草木汚染 聖モシャーヌ植物園 (Hard)
-        { dutyMode="Trust", dutyName="ハイレベリングダンジョン Lv90", dutyId=973, minLevel=90 }, --最終幻想 レムナント
+        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv50-60", dutyId=362, minLevel=50, dungeonName="盟友支援 ブレイフロクスの野営地 (Hard)" },
+        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv70-80", dutyId=788, minLevel=70, dungeonName="草木汚染 聖モシャーヌ植物園 (Hard)" },
+        { dutyMode="Trust", dutyName="ハイレベリングダンジョン Lv90", dutyId=973, minLevel=90, dungeonName="最終幻想 レムナント" },
     },
     { -- type 7: ex trials
         {
@@ -232,19 +232,23 @@ for i = 0, 12 do
 
         local duty = SearchWonderousTailsTable(type, data, text)
         if duty == nil then
-            yield("/echo duty is nil")
+            yield("/echo [WonderousTails] クロの空想帳で実行可能な行き先がありません。")
         end
         local dutyMode = duty.dutyMode
         if duty ~= nil then
             if CurrentLevel < duty.minLevel then
-                yield("/echo [WonderousTails] Cannot queue for "..duty.dutyName.." as level is too low.")
+                yield("/echo [WonderousTails] "..duty.dutyName.."は必要レベル未満のため実行できませんでした。")
                 duty.dutyId = nil
             else
                 yield("/autoduty cfg Unsynced true")
             end
 
             if duty.dutyId ~= nil then
-                yield("/echo Queuing duty TerritoryId#"..duty.dutyId.." for Wonderous Tails #"..(i+1))
+                if duty.duId == 1045 or duty.duId == 434 or duty.duId == 952 or duty.duId == 362 or duty.duId == 788 or duty.duId == 973 then
+                    yield("/echo [WonderousTails] 実行中（"..(i+1).."個目）："..duty.dungeonName)
+                else
+                    yield("/echo [WonderousTails] 実行中（"..(i+1).."個目）："..duty.dutyName)
+                end
                 yield("/autoduty run "..dutyMode.." "..duty.dutyId.." 1 true")
                 yield("/bmrai on")
                 yield("/rotation auto")
@@ -252,7 +256,7 @@ for i = 0, 12 do
                 yield("/wait 10")
                 while GetCharacterCondition(34) or GetCharacterCondition(51) or GetCharacterCondition(56) do -- wait for duty to be finished
                     if GetCharacterCondition(2) and i > 4 then -- dead, not a dungeon
-                        yield("/echo Died to "..duty.dutyName..". Skipping.")
+                        yield("/echo [WonderousTails] 死亡したため"..duty.dutyName.."の実行をスキップしました。")
                         repeat
                             yield("/wait 1")
                         until not GetCharacterCondition(2)
@@ -276,4 +280,4 @@ for i = 0, 12 do
 end
 
 yield("/rotation settings aoetype 1")
-yield("/echo Completed all Wonderous Tails entries it is capable of.<se.3>")
+yield("/echo エントリー可能な空想帳をすべて完了しました。 <se.3>")

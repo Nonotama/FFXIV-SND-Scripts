@@ -244,23 +244,16 @@ for i = 0, 12 do
         if duty == nil then
             yield("/echo [WonderousTails] クロの空想帳で実行可能な行き先がありません。")
         end
-        local dutyMode = duty.dutyMode
+
         if duty ~= nil then
-            if CurrentLevel < duty.minLevel then
-                yield("/echo [WonderousTails] "..duty.dutyName.."は必要レベル未満のため実行できませんでした。")
-                duty.dutyId = nil
+            if duty.dutyMode == "Trust" then
+                yield("/autoduty cfg Unsynced false")
             else
                 yield("/autoduty cfg Unsynced true")
             end
 
             if duty.dutyId ~= nil then
-                yield("/autoduty run "..dutyMode.." "..duty.dutyId.." 1 true")
-                for i = 0, #DungeonNameList do
-                    if duty.dutyId == DungeonNameList[i].dutyId then
-                        duty.dutyName = DungeonNameList[i].dungeonName
-                        break
-                    end
-                end
+                yield("/autoduty run "..duty.dutyMode.." "..duty.dutyId.." 1 true")
                 yield("/echo [WonderousTails] 実行中（"..(i+1).."個目）："..duty.dutyName)
                 yield("/bmrai on")
                 yield("/rotation auto")
@@ -280,11 +273,11 @@ for i = 0, 12 do
                 yield("/wait 7")
             else
                 if duty.dutyName ~= nil then
-                    yield("/echo Wonderous Tails Script does not support Wonderous Tails entry #"..(i+1).." "..duty.dutyName)
-                    LogInfo("[WonderousTails] Wonderous Tails Script does not support Wonderous Tails entry #"..(i+1).." "..duty.dutyName)
+                    yield("/echo 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."個目）："..duty.dutyName)
+                    LogInfo("[WonderousTails] 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."個目）："..duty.dutyName)
                 else
-                    yield("/echo Wonderous Tails Script does not support Wonderous Tails entry #"..(i+1))
-                    LogInfo("[WonderousTails] Wonderous Tails Script does not support Wonderous Tails entry #"..(i+1))
+                    yield("/echo 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."個目）：")
+                    LogInfo("[WonderousTails] 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."個目）：")
                 end
             end
         end

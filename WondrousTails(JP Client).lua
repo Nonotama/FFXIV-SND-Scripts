@@ -92,18 +92,18 @@ WonderousTailsDuties = {
     2,
     3,
     { -- type 4: normal raids
-        { dutyMode="Regular", dutyName="大迷宮バハムート：邂逅編1", dutyId=241, minLevel=50 },
-        { dutyMode="Regular", dutyName="大迷宮バハムート：侵攻編1", dutyId=355, minLevel=50 },
-        { dutyMode="Regular", dutyName="大迷宮バハムート：真成編1", dutyId=193, minLevel=50 },
-        { dutyMode="Regular", dutyName="機工城アレキサンダー：起動編1", dutyId=442, minLevel=60 },
-        { dutyMode="Regular", dutyName="機工城アレキサンダー：律動編1", dutyId=520, minLevel=60 },
-        { dutyMode="Regular", dutyName="機工城アレキサンダー：天道編1", dutyId=580, minLevel=60 },
-        { dutyMode="Regular", dutyName="次元の狭間オメガ：デルタ編1", dutyId=693, minLevel=70 },
-        { dutyMode="Regular", dutyName="次元の狭間オメガ：シグマ編1", dutyId=748, minLevel=70 },
-        { dutyMode="Regular", dutyName="次元の狭間オメガ：オメガ編1", dutyId=798, minLevel=70 },
---        { dutyMode="Regular", dutyName="希望の園エデン：覚醒編1", dutyId=849, minLevel=80 },
---        { dutyMode="Regular", dutyName="希望の園エデン：共鳴編1", dutyId=903, minLevel=80 },
---        { dutyMode="Regular", dutyName="希望の園エデン：再生編1", dutyId=942, minLevel=80 },
+        { dutyMode="Raid", dutyName="大迷宮バハムート：邂逅編1-4", dutyId=241, minLevel=50 },
+        { dutyMode="Raid", dutyName="大迷宮バハムート：侵攻編1-4", dutyId=355, minLevel=50 },
+        { dutyMode="Raid", dutyName="大迷宮バハムート：真成編1-4", dutyId=193, minLevel=50 },
+        { dutyMode="Raid", dutyName="機工城アレキサンダー：起動編1-4", dutyId=442, minLevel=60 },
+        { dutyMode="Raid", dutyName="機工城アレキサンダー：律動編1-4", dutyId=520, minLevel=60 },
+        { dutyMode="Raid", dutyName="機工城アレキサンダー：天道編1-4", dutyId=580, minLevel=60 },
+        { dutyMode="Raid", dutyName="次元の狭間オメガ：デルタ編1-4", dutyId=693, minLevel=70 },
+        { dutyMode="Raid", dutyName="次元の狭間オメガ：シグマ編1-4", dutyId=748, minLevel=70 },
+        { dutyMode="Raid", dutyName="次元の狭間オメガ：オメガ編1-4", dutyId=798, minLevel=70 },
+--        { dutyMode="Raid", dutyName="希望の園エデン：覚醒編1", dutyId=849, minLevel=80 },
+--        { dutyMode="Raid", dutyName="希望の園エデン：共鳴編1", dutyId=903, minLevel=80 },
+--        { dutyMode="Raid", dutyName="希望の園エデン：再生編1", dutyId=942, minLevel=80 },
     },
     { -- type 5: leveling dungeons
         { dutyMode="Trial", dutyName="レベリングダンジョン Lv1-49", dutyId=1045, minLevel=20, dungeonName="イフリート討伐戦" },
@@ -241,9 +241,6 @@ for i = 0, 12 do
         LogInfo("[WonderousTails] Wonderous Tails #"..(i+1).." Text: "..text)
 
         local duty = SearchWonderousTailsTable(type, data, text)
-        if duty == nil then
-            yield("/echo [WonderousTails] クロの空想帳で実行可能な行き先がありません。")
-        end
 
         if duty ~= nil then
             if duty.dutyMode == "Trust" then

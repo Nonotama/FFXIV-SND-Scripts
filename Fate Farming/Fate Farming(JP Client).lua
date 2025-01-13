@@ -498,106 +498,145 @@ FatesData = {
         }
     },
     {
-        zoneName = "The Fringes",
+        zoneName = "ギラバニア辺境地帯",
         zoneId = 612,
         fatesList= {
             collectionsFates= {
-                { fateName="Showing The Recruits What For", npcName="Storm Commander Bharbennsyn" },
-                { fateName="Get Sharp", npcName="M Tribe Youth" },
+                { fateName="血をわけた姉妹", npcName="ウィルラの職人" },
+                { fateName="新石器時代", npcName="メ族の少女" },
             },
             otherNpcFates= {
-                { fateName="The Mail Must Get Through", npcName="Storm Herald" },
-                { fateName="The Antlion's Share", npcName="M Tribe Ranger" },
-                { fateName="Double Dhara", npcName="Resistence Fighter" },
-                { fateName="Keeping the Peace", npcName="Resistence Fighter" }
+                { fateName="ブートキャンプ：兵卒編", npcName="フレーラク少甲佐" },
+                { fateName="混交林の大熊「シャープアイ・グリズリー」", npcName="不滅隊の斥候" },
+                { fateName="果しなき河よ我を誘え", npcName="黒渦団の伝令" },
+                { fateName="辺境パトロール", npcName="アラミゴ解放軍の闘士" },
+                { fateName="続・辺境パトロール", npcName="アラミゴ解放軍の闘士" }
             },
-            fatesWithContinuations = {},
-            blacklistedFates= {}
-        }
-    },
-    {
-        zoneName = "The Peaks",
-        zoneId = 620,
-        fatesList= {
-            collectionsFates= {
-                { fateName="Fletching Returns", npcName="Sorry Sutler" }
+            fatesWithContinuations = {
+                "ブートキャンプ：兵卒編",
+                "ブートキャンプ：下士編",
+                "暴走の巨象「ランページング・マーリド」"
             },
-            otherNpcFates= {
-                { fateName="Resist, Die, Repeat", npcName="Wounded Fighter" },
-                { fateName="And the Bandits Played On", npcName="Frightened Villager" },
-                { fateName="Forget-me-not", npcName="Coldhearth Resident" },
-                { fateName="Of Mice and Men", npcName="Furious Farmer" }
+            specialFates = {
+                "樹人の長老「キルニス」" --アチーブメント
             },
-            fatesWithContinuations = {},
             blacklistedFates= {
-                "The Magitek Is Back", --escort
-                "A New Leaf" --escort
+                "辺境パトロール", --escort
+                "続・辺境パトロール" --escort
             }
         }
     },
     {
-        zoneName = "The Lochs",
+        zoneName = "ギラバニア山岳地帯",
+        zoneId = 620,
+        fatesList= {
+            collectionsFates= {
+                { fateName="グリフィンの物語", npcName="流れの酒保商人" }
+            },
+            otherNpcFates= {
+                { fateName="完全菜食主義", npcName="菜食のミミルン" },
+                { fateName="血の収穫", npcName="屈強な農夫" },
+                { fateName="死ぬのは奴らだ", npcName="アラガーナの住人" },
+                { fateName="チャプリの勇敢", npcName="負傷した闘士" },
+                { fateName="グリフィンの物語", npcName="流れの酒保商人" },
+                { fateName="ジャ族の戦士", npcName="陽炎のジャ・ナジャク" },
+                { fateName="待ってたんだ！", npcName="コールドハースの住人" }
+            },
+            fatesWithContinuations = {
+                "ジャ族の戦士"
+            },
+            specialFates = {
+                "豪腕の襲撃者「フンババ」" --アチーブメント
+            },
+            blacklistedFates= {
+                "完全菜食主義", --escort
+                "暴走最終兵器「リーサルウェポン」" --escort
+            }
+        }
+    },
+    {
+        zoneName = "ギラバニア湖畔地帯",
         zoneId = 621,
         fatesList= {
             collectionsFates= {},
             otherNpcFates= {},
-            fatesWithContinuations = {},
+            fatesWithContinuations = {
+                "ナンカ移動時代"
+            },
             specialFates = {
-                "A Horse Outside" --ixion
+                "白色大顔面「トール・マウンテン」", --アチーブメント
+                "伝説の雷馬「イクシオン」"
             },
             blacklistedFates= {}
         }
     },
     {
-        zoneName = "The Ruby Sea",
+        zoneName = "紅玉海",
         zoneId = 613,
         fatesList= {
             collectionsFates= {
-                { fateName="Treasure Island", npcName="Blue Avenger" },
+                { fateName="赤い珊瑚礁", npcName="おっとりした海賊" },
                 { fateName="The Coral High Ground", npcName="Busy Beachcomber" }
             },
             otherNpcFates= {
-                { fateName="Another One Bites The Dust", npcName="Pirate Youth" },
-                { fateName="Ray Band", npcName="Wounded Confederate" },
-                { fateName="Bilge-hold Jin", npcName="Green Confederate" }
+                { fateName="無礼なる牛鬼「ジンリンキ」", npcName="大弱りの海賊" },
+                { fateName="紅甲羅あばれ凧", npcName="負傷した海賊" },
+                { fateName="紅甲羅千両首", npcName="略奪された碧甲羅" },
+                { fateName="兵法修行人「一刀のセンバン」", npcName="海賊衆の少女" }
             },
-            fatesWithContinuations = {},
+            fatesWithContinuations = {
+                "無礼なる牛鬼「ジンリンキ」",
+                "されど修羅ゆく君は"
+            },
+            specialFates = {
+                "夢見る大名「ダイミョウユメミ」" --アチーブメント
+            },
             blacklistedFates= {}
         }
     },
     {
-        zoneName = "Yanxia",
+        zoneName = "ヤンサ",
         zoneId = 614,
         fatesList= {
             collectionsFates= {
-                { fateName="Rice and Shine", npcName="Flabbergasted Farmwife" },
-                { fateName="More to Offer", npcName="Ginko" }
+                { fateName="稲生物怪録", npcName="困り果てた農婦" },
+                { fateName="ベニツノの卵は誰のもの", npcName="ナマイ村の農夫" },
+                { fateName="ギンコの願い", npcName="ギンコ" }
             },
             otherNpcFates= {
-                { fateName="Freedom Flies", npcName="Kinko" },
-                { fateName="A Tisket, a Tasket", npcName="Gyogun of the Most Bountiful Catch" }
+                { fateName="狂える案山子「クエビコ」", npcName="一刀のセンバン" },
+                { fateName="人狼：紅い足跡", npcName="仁徳のガエイ" },
+                { fateName="キンコの願い", npcName="キンコ" },
+                { fateName="その名はミクズメ", npcName="ミクズメ" }
             },
             specialFates = {
-                "Foxy Lady" --foxyyy
+                "逆心の巨兵「キドウ丸」", --アチーブメント
+                "九尾の妖狐「玉藻御前」"
             },
             fatesWithContinuations = {},
             blacklistedFates= {}
         }
     },
     {
-        zoneName = "The Azim Steppe",
+        zoneName = "アジムステップ",
         zoneId = 622,
         fatesList= {
             collectionsFates= {
-                { fateName="The Dataqi Chronicles: Duty", npcName="Altani" }
+                { fateName="ダタクの旅：羊乳搾り", npcName="アルタニ" }
             },
             otherNpcFates= {
-                { fateName="Rock for Food", npcName="Oroniri Youth" },
-                { fateName="Killing Dzo", npcName="Olkund Dzotamer" },
-                { fateName="They Shall Not Want", npcName="Mol Shepherd" },
-                { fateName="A Good Day to Die", npcName="Qestiri Merchant" }
+                { fateName="時には懺悔を", npcName="オロニル族の若者" },
+                { fateName="家路につく牛飼いの少女", npcName="オルクンド族の牛飼い" },
+                { fateName="つかのまの悪夢", npcName="モル族の羊飼い" },
+                { fateName="沈黙の制裁", npcName="ケスティル族の商人" }
             },
-            fatesWithContinuations = {},
+            fatesWithContinuations = {
+                "つかのまの悪夢",
+                "よみがえる悪夢"
+            },
+            specialFates = {
+                "長牙の圧殺者「マヒシャスラ」" --アチーブメント
+            },
             blacklistedFates= {}
         }
     },

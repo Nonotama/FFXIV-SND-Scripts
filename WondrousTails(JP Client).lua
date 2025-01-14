@@ -1,4 +1,6 @@
 --[[
+※※※ 最初にAutoDutyでTrustを開き、フェイスの更新を行うこと！！ ※※※
+
 ********************************************************************************
 *                             Wondrous Tails Doer                              *
 *                                Version 0.2.1                                 *
@@ -38,101 +40,91 @@ Alliance Raids/PVP/Treasure Maps/Palace of the Dead
 
 -- Region: Data ---------------------------------------------------------------------------------
 
-DungeonNameList = {
-    { dutyId=1045, dungeonName="イフリート討伐戦" },
-    { dutyId=362, dungeonName="盟友支援 ブレイフロクスの野営地 (Hard)" },
-    { dutyId=434, dungeonName="廃砦捜索 ダスクヴィジル" },
-    { dutyId=788, dungeonName="草木汚染 聖モシャーヌ植物園 (Hard)" },
-    { dutyId=952, dungeonName="異形楼閣 ゾットの塔" },
-    { dutyId=973, dungeonName="最終幻想 レムナント" },
-    { dutyId=1199, dungeonName="記憶幻想 アレクサンドリア" },
-}
-
 WonderousTailsDuties = {
     { -- type 0:extreme trials
-        { dutyMode="Trial", instanceId=20010, dutyId=297, dutyName="極ガルーダ討滅戦", minLevel=50 },
-        { dutyMode="Trial", instanceId=20009, dutyId=296, dutyName="極タイタン討滅戦", minLevel=50 },
-        { dutyMode="Trial", instanceId=20008, dutyId=295, dutyName="極イフリート討滅戦", minLevel=50 },
-        { dutyMode="Trial", instanceId=20012, dutyId=364, dutyName="極王モグル・モグXII世討滅戦", minLevel=50 },
-        { dutyMode="Trial", instanceId=20018, dutyId=359, dutyName="極リヴァイアサン討滅戦", minLevel=50 },
-        { dutyMode="Trial", instanceId=20023, dutyId=375, dutyName="極ラムウ討滅戦", minLevel=50 },
-        { dutyMode="Trial", instanceId=20025, dutyId=378, dutyName="極シヴァ討滅戦", minLevel=50 },
-        { dutyMode="Trial", instanceId=20013, dutyId=348, dutyName="究極幻想 アルテマウェポン破壊作戦", minLevel=50 },
-        { dutyMode="Trial", instanceId=20034, dutyId=447, dutyName="極ビスマルク討滅戦", minLevel=60 },
-        { dutyMode="Trial", instanceId=20032, dutyId=446, dutyName="極ラーヴァナ討滅戦", minLevel=60 },
-        { dutyMode="Trial", instanceId=20036, dutyId=448, dutyName="蒼天幻想 ナイツ・オブ・ラウンド討滅戦", minLevel=60 },
-        { dutyMode="Trial", instanceId=20038, dutyId=524, dutyName="極魔神セフィロト討滅戦", minLevel=60 },
-        { dutyMode="Trial", instanceId=20040, dutyId=566, dutyName="極ニーズヘッグ征竜戦", minLevel=60 },
-        { dutyMode="Trial", instanceId=20042, dutyId=577, dutyName="極女神ソフィア討滅戦", minLevel=60 },
-        { dutyMode="Trial", instanceId=20044, dutyId=638, dutyName="極鬼神ズルワーン討滅戦", minLevel=60 },
-        { dutyMode="Trial", instanceId=20049, dutyId=720, dutyName="極ラクシュミ討滅戦", minLevel=70 },
---        { dutyMode="Trial", instanceId=20056, dutyId=779, dutyName="極ツクヨミ討滅戦", minLevel=70 },
---        { dutyMode="Trial", instanceId=20058, dutyId=811, dutyName="極朱雀征魂戦", minLevel=70 },
---        { dutyMode="Trial", instanceId=20054, dutyId=762, dutyName="極リオレウス狩猟戦", minLevel=70 },
---        { dutyMode="Trial", instanceId=20061, dutyId=825, dutyName="極極青龍征魂戦", minLevel=70 },
---        { dutyMode="Trial", instanceId=20063, dutyId=858, dutyName="極ティターニア討滅戦", minLevel=80 },
---        { dutyMode="Trial", instanceId=20065, dutyId=848, dutyName="極イノセンス討滅戦", minLevel=80 },
---        { dutyMode="Trial", instanceId=20067, dutyId=885, dutyName="極ハーデス討滅戦", minLevel=80 },
---        { dutyMode="Trial", instanceId=20069, dutyId=912, dutyName="極ルビーウェポン破壊作戦", minLevel=80 },
---        { dutyMode="Trial", instanceId=20070, dutyId=913, dutyName="極シタデル・ボズヤ追憶戦", minLevel=80 },
---        { dutyMode="Trial", instanceId=20072, dutyId=923, dutyName="極ウォーリイア・オブ・ライト討滅戦", minLevel=80 },
---        { dutyMode="Trial", instanceId=20074, dutyId=935, dutyName="極エメラルドウェポン破壊作戦", minLevel=80 },
---        { dutyMode="Trial", instanceId=20076, dutyId=951, dutyName="極ダイヤウェポン破壊作戦", minLevel=80 },
---        { dutyMode="Trial", instanceId=20078, dutyId=996, dutyName="極ハイデリン討滅戦", minLevel=90 },
---        { dutyMode="Trial", instanceId=20081, dutyId=993, dutyName="極ゾディアーク討滅戦", minLevel=90 },
---        { dutyMode="Trial", instanceId=20083, dutyId=998, dutyName="終極の戦い", minLevel=90 },
---        { dutyMode="Trial", instanceId=20085, dutyId=1072, dutyName="極バルバリシア討滅戦", minLevel=90 },
---        { dutyMode="Trial", instanceId=20087, dutyId=1096, dutyName="極ルビカンテ討滅戦", minLevel=90 },
---        { dutyMode="Trial", instanceId=20090, dutyId=1141, dutyName="極ゴルベーザ討滅戦", minLevel=90 },
---        { dutyMode="Trial", instanceId=20092, dutyId=1169, dutyName="極ゼロムス討滅戦", minLevel=90 }
+        { dutyMode="Trial", instanceId=20010, dutyId=297, dutyName="極ガルーダ討滅戦" },
+        { dutyMode="Trial", instanceId=20009, dutyId=296, dutyName="極タイタン討滅戦" },
+        { dutyMode="Trial", instanceId=20008, dutyId=295, dutyName="極イフリート討滅戦" },
+        { dutyMode="Trial", instanceId=20012, dutyId=364, dutyName="極王モグル・モグXII世討滅戦" },
+        { dutyMode="Trial", instanceId=20018, dutyId=359, dutyName="極リヴァイアサン討滅戦" },
+        { dutyMode="Trial", instanceId=20023, dutyId=375, dutyName="極ラムウ討滅戦" },
+        { dutyMode="Trial", instanceId=20025, dutyId=378, dutyName="極シヴァ討滅戦" },
+        { dutyMode="Trial", instanceId=20013, dutyId=348, dutyName="究極幻想 アルテマウェポン破壊作戦" },
+        { dutyMode="Trial", instanceId=20034, dutyId=447, dutyName="極ビスマルク討滅戦" },
+        { dutyMode="Trial", instanceId=20032, dutyId=446, dutyName="極ラーヴァナ討滅戦" },
+        { dutyMode="Trial", instanceId=20036, dutyId=448, dutyName="蒼天幻想 ナイツ・オブ・ラウンド討滅戦" },
+        { dutyMode="Trial", instanceId=20038, dutyId=524, dutyName="極魔神セフィロト討滅戦" },
+        { dutyMode="Trial", instanceId=20040, dutyId=566, dutyName="極ニーズヘッグ征竜戦" },
+        { dutyMode="Trial", instanceId=20042, dutyId=577, dutyName="極女神ソフィア討滅戦" },
+        { dutyMode="Trial", instanceId=20044, dutyId=638, dutyName="極鬼神ズルワーン討滅戦" },
+        { dutyMode="Trial", instanceId=20049, dutyId=720, dutyName="極ラクシュミ討滅戦" },
+--        { dutyMode="Trial", instanceId=20056, dutyId=779, dutyName="極ツクヨミ討滅戦" },
+--        { dutyMode="Trial", instanceId=20058, dutyId=811, dutyName="極朱雀征魂戦" },
+--        { dutyMode="Trial", instanceId=20054, dutyId=762, dutyName="極リオレウス狩猟戦" },
+--        { dutyMode="Trial", instanceId=20061, dutyId=825, dutyName="極極青龍征魂戦" },
+--        { dutyMode="Trial", instanceId=20063, dutyId=858, dutyName="極ティターニア討滅戦" },
+--        { dutyMode="Trial", instanceId=20065, dutyId=848, dutyName="極イノセンス討滅戦" },
+--        { dutyMode="Trial", instanceId=20067, dutyId=885, dutyName="極ハーデス討滅戦" },
+--        { dutyMode="Trial", instanceId=20069, dutyId=912, dutyName="極ルビーウェポン破壊作戦" },
+--        { dutyMode="Trial", instanceId=20070, dutyId=913, dutyName="極シタデル・ボズヤ追憶戦" },
+--        { dutyMode="Trial", instanceId=20072, dutyId=923, dutyName="極ウォーリイア・オブ・ライト討滅戦" },
+--        { dutyMode="Trial", instanceId=20074, dutyId=935, dutyName="極エメラルドウェポン破壊作戦" },
+--        { dutyMode="Trial", instanceId=20076, dutyId=951, dutyName="極ダイヤウェポン破壊作戦" },
+--        { dutyMode="Trial", instanceId=20078, dutyId=996, dutyName="極ハイデリン討滅戦" },
+--        { dutyMode="Trial", instanceId=20081, dutyId=993, dutyName="極ゾディアーク討滅戦" },
+--        { dutyMode="Trial", instanceId=20083, dutyId=998, dutyName="終極の戦い" },
+--        { dutyMode="Trial", instanceId=20085, dutyId=1072, dutyName="極バルバリシア討滅戦" },
+--        { dutyMode="Trial", instanceId=20087, dutyId=1096, dutyName="極ルビカンテ討滅戦" },
+--        { dutyMode="Trial", instanceId=20090, dutyId=1141, dutyName="極ゴルベーザ討滅戦" },
+--        { dutyMode="Trial", instanceId=20092, dutyId=1169, dutyName="極ゼロムス討滅戦" }
     },
     { -- type 1: expansion cap dungeons
-        { dutyMode="Trust", dutyName="Lv100ダンジョン", dutyId=1199, minLevel=100, dungeonName="記憶幻想 アレクサンドリア" }
+        { dutyMode="Trust", dutyName="Lv100ダンジョン", dutyId=1199 }, --記憶幻想 アレクサンドリア
     },
     2,
     3,
     { -- type 4: normal raids
-        { dutyMode="Raid", dutyName="大迷宮バハムート：邂逅編1-4", dutyId=241, minLevel=50 },
-        { dutyMode="Raid", dutyName="大迷宮バハムート：侵攻編1-4", dutyId=355, minLevel=50 },
-        { dutyMode="Raid", dutyName="大迷宮バハムート：真成編1-4", dutyId=193, minLevel=50 },
-        { dutyMode="Raid", dutyName="機工城アレキサンダー：起動編1-4", dutyId=442, minLevel=60 },
-        { dutyMode="Raid", dutyName="機工城アレキサンダー：律動編1-4", dutyId=520, minLevel=60 },
-        { dutyMode="Raid", dutyName="機工城アレキサンダー：天道編1-4", dutyId=580, minLevel=60 },
-        { dutyMode="Raid", dutyName="次元の狭間オメガ：デルタ編1-4", dutyId=693, minLevel=70 },
-        { dutyMode="Raid", dutyName="次元の狭間オメガ：シグマ編1-4", dutyId=748, minLevel=70 },
-        { dutyMode="Raid", dutyName="次元の狭間オメガ：オメガ編1-4", dutyId=798, minLevel=70 },
---        { dutyMode="Raid", dutyName="希望の園エデン：覚醒編1", dutyId=849, minLevel=80 },
---        { dutyMode="Raid", dutyName="希望の園エデン：共鳴編1", dutyId=903, minLevel=80 },
---        { dutyMode="Raid", dutyName="希望の園エデン：再生編1", dutyId=942, minLevel=80 },
+        { dutyMode="Raid", dutyName="大迷宮バハムート：邂逅編1-4", dutyId=241 }, --1層
+        { dutyMode="Raid", dutyName="大迷宮バハムート：侵攻編1-4", dutyId=355 }, --1層
+--        { dutyMode="Raid", dutyName="大迷宮バハムート：真成編1-4", dutyId=193 }, --1層
+        { dutyMode="Raid", dutyName="機工城アレキサンダー：起動編1-4", dutyId=442 },  --1層
+        { dutyMode="Raid", dutyName="機工城アレキサンダー：律動編1-4", dutyId=520 },  --1層
+        { dutyMode="Raid", dutyName="機工城アレキサンダー：天道編1-4", dutyId=580 },  --1層
+        { dutyMode="Raid", dutyName="次元の狭間オメガ：デルタ編1-4", dutyId=693 },  --3層
+        { dutyMode="Raid", dutyName="次元の狭間オメガ：シグマ編1-4", dutyId=748 },  --1層
+        { dutyMode="Raid", dutyName="次元の狭間オメガ：オメガ編1-4", dutyId=798 },  --1層
+--        { dutyMode="Raid", dutyName="希望の園エデン：覚醒編1", dutyId=849 },
+--        { dutyMode="Raid", dutyName="希望の園エデン：共鳴編1", dutyId=903 },
+--        { dutyMode="Raid", dutyName="希望の園エデン：再生編1", dutyId=942 },
     },
     { -- type 5: leveling dungeons
-        { dutyMode="Trial", dutyName="レベリングダンジョン Lv1-49", dutyId=1045, minLevel=20, dungeonName="イフリート討伐戦" },
-        { dutyMode="Regular", dutyName="レベリングダンジョン Lv51-79", dutyId=434, minLevel=51, dungeonName="廃砦捜索 ダスクヴィジル" },
-        { dutyMode="Regular", dutyName="レベリングダンジョン Lv81-99", dutyId=952, minLevel=81, dungeonName="異形楼閣 ゾットの塔" },
+        { dutyMode="Trial", dutyName="レベリングダンジョン Lv1-49", dutyId=1045 }, --イフリート討伐戦
+        { dutyMode="Regular", dutyName="レベリングダンジョン Lv51-79", dutyId=434 }, --廃砦捜索 ダスクヴィジル
+        { dutyMode="Regular", dutyName="レベリングダンジョン Lv81-99", dutyId=952 }, --異形楼閣 ゾットの塔
     },
     { -- type 6: expansion cap dungeons
-        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv50-60", dutyId=362, minLevel=50, dungeonName="盟友支援 ブレイフロクスの野営地 (Hard)" },
-        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv70-80", dutyId=788, minLevel=70, dungeonName="草木汚染 聖モシャーヌ植物園 (Hard)" },
-        { dutyMode="Trust", dutyName="ハイレベリングダンジョン Lv90", dutyId=973, minLevel=90, dungeonName="最終幻想 レムナント" },
+        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv50-60", dutyId=362 }, --盟友支援 ブレイフロクスの野営地 (Hard)
+        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv70-80", dutyId=788 }, --草木汚染 聖モシャーヌ植物園 (Hard)
+        { dutyMode="Trust", dutyName="ハイレベリングダンジョン Lv90", dutyId=973 }, --最終幻想 レムナント
     },
     { -- type 7: ex trials
         {
-            { instanceId=20008, dutyId=295, dutyName="Trials (Lv. 50-60)", minLevel=50 }, -- Bowl of Embers
-            { instanceId=20049, dutyId=720, dutyName="Trials (Lv. 70-100)", minLevel=70 }
+            { instanceId=20008, dutyId=295, dutyName="Trials (Lv. 50-60)" }, -- Bowl of Embers
+            { instanceId=20049, dutyId=720, dutyName="Trials (Lv. 70-100)" }
         }
     },
     { -- type 8: alliance raids
 
     },
     { -- type 9: normal raids
-        { dutyName="Normal Raids (Lv. 50-60)", dutyId=241, minLevel=50 },
-        { dutyName="Normal Raids (Lv. 70-80)", dutyId=693, minLevel=70 },
+        { dutyName="Normal Raids (Lv. 50-60)", dutyId=241 },
+        { dutyName="Normal Raids (Lv. 70-80)", dutyId=693 },
     },
     Blacklisted= {
         { -- 0
-            { instanceId=20052, dutyId=758, dutyName="極白虎征魂戦", minLevel=70 }, -- cannot solo double tankbuster vuln
-            { instanceId=20047, dutyId=677, dutyName="極スサノオ討滅戦", minLevel=70 }, -- アクティブタイムマニューバができないため
-            { instanceId=20056, dutyId=779, dutyName="極ツクヨミ討滅戦", minLevel=70 } -- cannot solo meteors
+            { instanceId=20052, dutyId=758, dutyName="極白虎征魂戦" }, -- cannot solo double tankbuster vuln
+            { instanceId=20047, dutyId=677, dutyName="極スサノオ討滅戦" }, -- アクティブタイムマニューバができないため
+            { instanceId=20056, dutyId=779, dutyName="極ツクヨミ討滅戦" } -- cannot solo meteors
         },
         {}, -- 1
         {}, -- 2

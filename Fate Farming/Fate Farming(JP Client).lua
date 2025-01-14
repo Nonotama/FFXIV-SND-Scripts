@@ -538,7 +538,6 @@ FatesData = {
                 { fateName="血の収穫", npcName="屈強な農夫" },
                 { fateName="死ぬのは奴らだ", npcName="アラガーナの住人" },
                 { fateName="チャプリの勇敢", npcName="負傷した闘士" },
-                { fateName="グリフィンの物語", npcName="流れの酒保商人" },
                 { fateName="ジャ族の戦士", npcName="陽炎のジャ・ナジャク" },
                 { fateName="待ってたんだ！", npcName="コールドハースの住人" }
             },

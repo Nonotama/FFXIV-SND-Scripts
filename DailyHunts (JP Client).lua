@@ -1,24 +1,31 @@
 ﻿--[[
 ********************************************************************************
 *                              Daily Hunts Doer                                *
-*                                Version 1.0.0                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 
-Description: Picks up daily hunts from each expac and attempts to do them. It
-will NOT do the weekly Elite hunts.
+説明: デイリーモブハントを自動で実行します。
+      ただし、ウィークリーのモブハントは実行しません。
 
-THIS CANNOT BE AFK'D FOR THE FOLLOWING REASONS:
-1. The mark area is very large. There is no guarantee you will land within
-   targetable range of a mark.
-2. The center of the mark area may not be landable. The script may send you to
-   the bottom of the Sea of Clouds. If this happens, stop the script, complete
-   the mark manually, then restart the script.
+以下の理由のため、完全に放置することはできません。
+1. 対象の生息分布が広いため、ターゲット可能な範囲に着地できる保証がありません。
+2. 対象が洞窟内の場合、洞窟の上に到着し対象を見つけることが出来ません。
+3. 対象のマーク範囲の中央に着地できる保証がありません。
+   その場合はスクリプトを停止させ、手動でマークを設定し、スクリプトを再起動
+   して下さい。
+4. ウィークリー対象の場合、手動でマークを設定し、スクリプトを再起動して下さい。
+   
+********************************************************************************
+*                                 Version 1.0.2                                *
+********************************************************************************
+    1.0.2   Fixed 3-star hunt pickups
+            Fixed n+1 hunt requirement
 
 ********************************************************************************
 *                               Required Plugins                               *
 ********************************************************************************
+
 1. Hunt Buddy
 2. Rotation Solver Reborn
 3. BossModReborn (BMR)
@@ -51,6 +58,7 @@ HuntBoards =
         bills = { 2002113, 2002114, 2002115 },
         x=-32, y=0, z=-44
     },
+    --[[
     {
         city = "クリスタリウム",
         zoneId = 819,
@@ -87,6 +95,7 @@ HuntBoards =
         bills = { 2003510, 2003511, 2003512 },
         x=25, y=-15, z=135
     }
+    ]]
 }
 
 -- #region Movement
@@ -170,7 +179,7 @@ function Dismount()
             local z = GetPlayerRawZPos()
 
             if GetCharacterCondition(CharacterCondition.flying) and GetDistanceToPoint(LastStuckCheckPosition.x, LastStuckCheckPosition.y, LastStuckCheckPosition.z) < 2 then
-                LogInfo("[DailyHunts] Unable to dismount here. Moving to another spot.")
+                LogInfo("DailyHunts] Unable to dismount here. Moving to another spot.")
                 local random_x, random_y, random_z = RandomAdjustCoordinates(x, y, z, 10)
                 local nearestPointX = QueryMeshNearestPointX(random_x, random_y, random_z, 100, 100)
                 local nearestPointY = QueryMeshNearestPointY(random_x, random_y, random_z, 100, 100)
@@ -259,12 +268,15 @@ function PickUpHunts()
         yield("/callback SelectYesno true 1")
         HuntNumber = HuntNumber + 1
     elseif IsAddonVisible("SelectString") then
-        yield("/callback SelectString true "..HuntNumber)
-        HuntNumber = HuntNumber + 1
+        local callback = "/callback SelectString true "..HuntNumber
+        LogInfo("[DailyHunts] Executing ".."/callback SelectString true "..HuntNumber)
+        yield(callback)
     elseif IsAddonVisible("Mobhunt"..BoardNumber) then
-        yield("/callback Mobhunt"..BoardNumber.." true 0")
+        local callback = "/callback Mobhunt"..BoardNumber.." true 0"
+        LogInfo("[DailyHunts] Executing "..callback)
+        yield(callback)
+        HuntNumber = HuntNumber + 1
     elseif not HasTarget() or GetTargetName() ~= Board.boardName then
---        yield("/echo attempting to target "..Board.boardName)
         yield("/target "..Board.boardName)
     else
         yield("/interact")
@@ -272,22 +284,19 @@ function PickUpHunts()
 end
 
 function ParseHuntChat() -- Pattern to match the quantity and item name
-    local chat = GetNodeText("ChatLogPanel_3", 7, 2)
+    local chat = GetNodeText("ChatLogPanel_2", 7, 2)
     LogInfo("[DailyHunts] "..chat)
     -- Pattern to match the quantity, item name, and location
-    local huntingPattern = "Hunting (%d+)x ([%w%s%-'–]+) in ([%w%s%-'–]+)"
+    local huntingPattern = "Hunting (%d+)x (.-) in (.-)"
     
     -- Find all matches and store them in a table
     local hunt = nil
-LogInfo("[DailyHunts] 001-"..chat)
     for line in chat:gmatch("[^\r\n]+") do
-LogInfo("[DailyHunts] 002-"..chat)
         LogInfo("[DailyHunts] Parsing Chat: "..line)
         for quantity, markName, location in line:gmatch(huntingPattern) do
-LogInfo("[DailyHunts] 003-"..chat)
-            LogInfo("[DailyHunts] Found hunt: "..markName)
             quantity = tonumber(quantity)
-            markName = markName:lower()
+            markName = markName
+            LogInfo("[DailyHunts] Found hunt: "..markName)
 
             hunt = {quantity = tonumber(quantity), name = markName, location = location}
         end
@@ -297,11 +306,9 @@ LogInfo("[DailyHunts] 003-"..chat)
 end
 
 function SelectNextHunt()
+    LogInfo("[DailyHunts] Selecting Next Hunt")
     Hunt = nil
-    -- 英語では週制限のモブが"Elite ◯◯"と統一されているが、
-    -- 日本語では記述が異なるため文字列の最後の文字を取得する
-    while Hunt == nil or string.sub(Hunt.name, -6) == "（毎週更新）" do
-LogInfo("[DailyHunts] "..string.sub(Hunt.name, -6))
+    while Hunt == nil do
         yield("/phb next")
         yield("/wait 1")
         Hunt = ParseHuntChat()
@@ -350,7 +357,7 @@ function GoToMarker()
             State = CharacterState.mounting
             LogInfo("[DailyHunts] State Change: Mounting")
         elseif not PathIsRunning() and not PathfindInProgress() then
-            PathMoveTo(x, y, z, true)
+            -- PathfindAndMoveTo(x, y, z, true)
             yield("/wait 0.5")
             yield("/vnav flyflag")
         end
@@ -371,24 +378,21 @@ CombatModsOn = false
 LastTargetName = nil
 function DoHunt()
     if not IsInZone(GetFlagZone()) or GetDistanceToPoint(GetFlagXCoord(), GetPlayerRawYPos(), GetFlagYCoord()) > 200 then
-        State = CharacterState.goToMarker
-        LogInfo("[DailyHunts] State Change: SelectNextHunt")
-        return
-    elseif not HasTarget() then
-        if DidHunt then
-            SelectNextHunt()
-            DidHunt = false
-
-            if GetDistanceToPoint(GetFlagXCoord(), GetPlayerRawYPos(), GetFlagYCoord()) > 50 then
+        if GetCharacterCondition(CharacterCondition.inCombat) then
+            if not HasTarget() then
+                yield("/battletarget")
+            end
+        else
                 State = CharacterState.goToMarker
                 LogInfo("[DailyHunts] State Change: GoToMarker")
             end
-        else
+        return
+    elseif not HasTarget() or GetTargetHP() <= 0 then
+        SelectNextHunt()
             local targetingCommand = "/target "..Hunt.name
             LogInfo("[DailyHunts] Executing "..targetingCommand)
             yield(targetingCommand)
             yield("/wait 0.5")
-        end
         return
     end
 
@@ -448,6 +452,7 @@ CharacterCondition = {
 LastStuckCheckTime = os.clock()
 LastStuckCheckPosition = {x=GetPlayerRawXPos(), y=GetPlayerRawYPos(), z=GetPlayerRawZPos()}
 State = CharacterState.goToHuntBoard
+-- SelectNextHunt()
 while true do
     if not (IsPlayerCasting() or
         GetCharacterCondition(CharacterCondition.betweenAreas) or

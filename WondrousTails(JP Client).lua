@@ -277,5 +277,5 @@ for i = 0, 12 do
     end
 end
 
-yield("/rotation settings aoetype 1")
+yield("/rotation settings aoetype 2")
 yield("/echo 実行可能な空想帳のマスをすべて完了しました。 <se.3>")

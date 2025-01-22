@@ -263,7 +263,7 @@ for i = 0, 12 do
                     end
                     yield("/wait 1")
                 end
-                yield("/wait 7")
+                yield("/wait 3")
             else
                 if duty.dutyName ~= nil then
                     yield("/echo 本スクリプトでは対応していないID、またはレイドです。 （"..(i+1).."マス目）："..duty.dutyName)

@@ -235,6 +235,10 @@ for i = 0, 12 do
         local duty = SearchWonderousTailsTable(type, data, text)
 
         if duty ~= nil then
+            if duty.dutyId == 952 then
+                yield("/gs change ƒiƒCƒg")
+                yield("/wait 1")
+            end
             if duty.dutyMode == "Trust" then
                 yield("/autoduty cfg Unsynced false")
             else

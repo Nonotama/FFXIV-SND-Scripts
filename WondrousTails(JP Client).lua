@@ -243,7 +243,7 @@ for i = 0, 12 do
 
             if duty.dutyId ~= nil then
                 yield("/autoduty run "..duty.dutyMode.." "..duty.dutyId.." 1 true")
-                yield("/echo [WonderousTails] 実行中（"..(i+1).."個目）："..duty.dutyName)
+                yield("/echo [WonderousTails] 実行中（"..(i+1).."マス目）："..duty.dutyName)
                 yield("/bmrai on")
                 yield("/rotation auto")
                 yield("/rotation settings aoetype 2")
@@ -262,11 +262,11 @@ for i = 0, 12 do
                 yield("/wait 7")
             else
                 if duty.dutyName ~= nil then
-                    yield("/echo 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."個目）："..duty.dutyName)
-                    LogInfo("[WonderousTails] 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."個目）："..duty.dutyName)
+                    yield("/echo 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."マス目）："..duty.dutyName)
+                    LogInfo("[WonderousTails] 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."マス目）："..duty.dutyName)
                 else
-                    yield("/echo 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."個目）：")
-                    LogInfo("[WonderousTails] 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."個目）：")
+                    yield("/echo 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."マス目）：")
+                    LogInfo("[WonderousTails] 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."マス目）：")
                 end
             end
         end

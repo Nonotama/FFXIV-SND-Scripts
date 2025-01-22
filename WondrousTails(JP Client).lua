@@ -266,11 +266,11 @@ for i = 0, 12 do
                 yield("/wait 7")
             else
                 if duty.dutyName ~= nil then
-                    yield("/echo 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."マス目）："..duty.dutyName)
-                    LogInfo("[WonderousTails] 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."マス目）："..duty.dutyName)
+                    yield("/echo 本スクリプトでは対応していないID、またはレイドです。 （"..(i+1).."マス目）："..duty.dutyName)
+                    LogInfo("[WonderousTails] 本スクリプトでは対応していないID、またはレイドです。 （"..(i+1).."マス目）："..duty.dutyName)
                 else
-                    yield("/echo 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."マス目）：")
-                    LogInfo("[WonderousTails] 本スクリプトでは未対応のため実行できませんでした。 （"..(i+1).."マス目）：")
+                    yield("/echo 本スクリプトでは対応していないID、またはレイドです。 （"..(i+1).."マス目）：")
+                    LogInfo("[WonderousTails] 本スクリプトでは対応していないID、またはレイドです。 （"..(i+1).."マス目）：")
                 end
             end
         end
@@ -278,4 +278,4 @@ for i = 0, 12 do
 end
 
 yield("/rotation settings aoetype 1")
-yield("/echo エントリー可能な空想帳をすべて完了しました。 <se.3>")
+yield("/echo 実行可能な空想帳のマスをすべて完了しました。 <se.3>")

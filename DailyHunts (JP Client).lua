@@ -179,7 +179,7 @@ function Dismount()
             local z = GetPlayerRawZPos()
 
             if GetCharacterCondition(CharacterCondition.flying) and GetDistanceToPoint(LastStuckCheckPosition.x, LastStuckCheckPosition.y, LastStuckCheckPosition.z) < 2 then
-                LogInfo("DailyHunts] Unable to dismount here. Moving to another spot.")
+                LogInfo("[DailyHunts] マウントを降りれないため、他の場所へ移動して下さい。")
                 local random_x, random_y, random_z = RandomAdjustCoordinates(x, y, z, 10)
                 local nearestPointX = QueryMeshNearestPointX(random_x, random_y, random_z, 100, 100)
                 local nearestPointY = QueryMeshNearestPointY(random_x, random_y, random_z, 100, 100)

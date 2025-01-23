@@ -28,20 +28,6 @@ FateMacro = "Fate Farming (JP Client)"      -- Name of whatever you nicknamed th
 -- ジョブを設定していないゾーンは実行されない
 ZonesToFarmTable =
 {
-    -- ShB
-    { zoneName="レイクランド",         zoneId=813,  jobName="" },
-    { zoneName="コルシア島",           zoneId=814,  jobName="" },
-    { zoneName="アム・アレーン",       zoneId=815,  jobName="" },
-    { zoneName="イル・メグ",           zoneId=816,  jobName="ヴァイパー" },
-    { zoneName="ラケティカ大森林",     zoneId=817,  jobName="" },
-    { zoneName="テンペスト",           zoneId=818,  jobName="ヴァイパー" },
-    -- EW
-    { zoneName="ラヴィリンソス",       zoneId=956,  jobName="" },
-    { zoneName="サベネア島",           zoneId=957,  jobName="" },
-    { zoneName="ガレマルド",           zoneId=958,  jobName="" },
-    { zoneName="嘆きの海",             zoneId=959,  jobName="" },
-    { zoneName="ウルティマ・トゥーレ", zoneId=960,  jobName="ヴァイパー" },
-    { zoneName="エルピス",             zoneId=961,  jobName="ヴァイパー" },
     -- DT
     { zoneName="オルコ・パチャ",       zoneId=1187, jobName="" },
     { zoneName="コザマル・カ",         zoneId=1188, jobName="" },
@@ -49,6 +35,20 @@ ZonesToFarmTable =
     { zoneName="シャーローニ荒野",     zoneId=1190, jobName="ヴァイパー" },
     { zoneName="ヘリテージファウンド", zoneId=1191, jobName="ヴァイパー" },
     { zoneName="リビング・メモリー",   zoneId=1192, jobName="ヴァイパー" },
+    -- EW
+    { zoneName="ラヴィリンソス",       zoneId=956,  jobName="" },
+    { zoneName="サベネア島",           zoneId=957,  jobName="" },
+    { zoneName="ガレマルド",           zoneId=958,  jobName="" },
+    { zoneName="嘆きの海",             zoneId=959,  jobName="" },
+    { zoneName="ウルティマ・トゥーレ", zoneId=960,  jobName="ヴァイパー" },
+    { zoneName="エルピス",             zoneId=961,  jobName="ヴァイパー" },
+    -- ShB
+    { zoneName="レイクランド",         zoneId=813,  jobName="" },
+    { zoneName="コルシア島",           zoneId=814,  jobName="" },
+    { zoneName="アム・アレーン",       zoneId=815,  jobName="" },
+    { zoneName="イル・メグ",           zoneId=816,  jobName="ヴァイパー" },
+    { zoneName="ラケティカ大森林",     zoneId=817,  jobName="" },
+    { zoneName="テンペスト",           zoneId=818,  jobName="ヴァイパー" },
 }
 
 --#endregion Settings

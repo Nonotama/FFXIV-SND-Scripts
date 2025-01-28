@@ -50,33 +50,11 @@ WonderousTailsDuties = {
         { dutyMode="Trial", instanceId=20023, dutyId=375, dutyName="極ラムウ討滅戦" },
         { dutyMode="Trial", instanceId=20025, dutyId=378, dutyName="極シヴァ討滅戦" },
         { dutyMode="Trial", instanceId=20013, dutyId=348, dutyName="究極幻想 アルテマウェポン破壊作戦" },
-        { dutyMode="Trial", instanceId=20034, dutyId=447, dutyName="極ビスマルク討滅戦" },
         { dutyMode="Trial", instanceId=20032, dutyId=446, dutyName="極ラーヴァナ討滅戦" },
         { dutyMode="Trial", instanceId=20036, dutyId=448, dutyName="蒼天幻想 ナイツ・オブ・ラウンド討滅戦" },
         { dutyMode="Trial", instanceId=20038, dutyId=524, dutyName="極魔神セフィロト討滅戦" },
         { dutyMode="Trial", instanceId=20040, dutyId=566, dutyName="極ニーズヘッグ征竜戦" },
         { dutyMode="Trial", instanceId=20042, dutyId=577, dutyName="極女神ソフィア討滅戦" },
-        { dutyMode="Trial", instanceId=20044, dutyId=638, dutyName="極鬼神ズルワーン討滅戦" },
-        { dutyMode="Trial", instanceId=20049, dutyId=720, dutyName="極ラクシュミ討滅戦" },
---        { dutyMode="Trial", instanceId=20056, dutyId=779, dutyName="極ツクヨミ討滅戦" },
---        { dutyMode="Trial", instanceId=20058, dutyId=811, dutyName="極朱雀征魂戦" },
---        { dutyMode="Trial", instanceId=20054, dutyId=762, dutyName="極リオレウス狩猟戦" },
---        { dutyMode="Trial", instanceId=20061, dutyId=825, dutyName="極極青龍征魂戦" },
---        { dutyMode="Trial", instanceId=20063, dutyId=858, dutyName="極ティターニア討滅戦" },
---        { dutyMode="Trial", instanceId=20065, dutyId=848, dutyName="極イノセンス討滅戦" },
---        { dutyMode="Trial", instanceId=20067, dutyId=885, dutyName="極ハーデス討滅戦" },
---        { dutyMode="Trial", instanceId=20069, dutyId=912, dutyName="極ルビーウェポン破壊作戦" },
---        { dutyMode="Trial", instanceId=20070, dutyId=913, dutyName="極シタデル・ボズヤ追憶戦" },
---        { dutyMode="Trial", instanceId=20072, dutyId=923, dutyName="極ウォーリイア・オブ・ライト討滅戦" },
---        { dutyMode="Trial", instanceId=20074, dutyId=935, dutyName="極エメラルドウェポン破壊作戦" },
---        { dutyMode="Trial", instanceId=20076, dutyId=951, dutyName="極ダイヤウェポン破壊作戦" },
---        { dutyMode="Trial", instanceId=20078, dutyId=996, dutyName="極ハイデリン討滅戦" },
---        { dutyMode="Trial", instanceId=20081, dutyId=993, dutyName="極ゾディアーク討滅戦" },
---        { dutyMode="Trial", instanceId=20083, dutyId=998, dutyName="終極の戦い" },
---        { dutyMode="Trial", instanceId=20085, dutyId=1072, dutyName="極バルバリシア討滅戦" },
---        { dutyMode="Trial", instanceId=20087, dutyId=1096, dutyName="極ルビカンテ討滅戦" },
---        { dutyMode="Trial", instanceId=20090, dutyId=1141, dutyName="極ゴルベーザ討滅戦" },
---        { dutyMode="Trial", instanceId=20092, dutyId=1169, dutyName="極ゼロムス討滅戦" }
     },
     { -- type 1: expansion cap dungeons
         { dutyMode="Trust", dutyName="Lv100ダンジョン", dutyId=1199 }, --記憶幻想 アレクサンドリア
@@ -122,9 +100,34 @@ WonderousTailsDuties = {
     },
     Blacklisted= {
         { -- 0
-            { instanceId=20052, dutyId=758, dutyName="極白虎征魂戦" }, -- cannot solo double tankbuster vuln
-            { instanceId=20047, dutyId=677, dutyName="極スサノオ討滅戦" }, -- アクティブタイムマニューバができないため
-            { instanceId=20056, dutyId=779, dutyName="極ツクヨミ討滅戦" } -- cannot solo meteors
+            -- 蒼天
+            { dutyMode="Trial", instanceId=20034, dutyId=447, dutyName="極ビスマルク討滅戦" }, 
+            { dutyMode="Trial", instanceId=20044, dutyId=638, dutyName="極鬼神ズルワーン討滅戦" },
+            -- 紅蓮
+            { dutyMode="Trial", instanceId=20047, dutyId=677, dutyName="極スサノオ討滅戦" },
+            { dutyMode="Trial", instanceId=20049, dutyId=720, dutyName="極ラクシュミ討滅戦" },
+            { dutyMode="Trial", instanceId=20052, dutyId=758, dutyName="極白虎征魂戦" },
+            { dutyMode="Trial", instanceId=20054, dutyId=762, dutyName="極リオレウス狩猟戦" },
+            { dutyMode="Trial", instanceId=20056, dutyId=779, dutyName="極ツクヨミ討滅戦" },
+            { dutyMode="Trial", instanceId=20058, dutyId=811, dutyName="極朱雀征魂戦" },
+            { dutyMode="Trial", instanceId=20061, dutyId=825, dutyName="極極青龍征魂戦" },
+            -- 漆黒
+            { dutyMode="Trial", instanceId=20063, dutyId=858, dutyName="極ティターニア討滅戦" },
+            { dutyMode="Trial", instanceId=20065, dutyId=848, dutyName="極イノセンス討滅戦" },
+            { dutyMode="Trial", instanceId=20067, dutyId=885, dutyName="極ハーデス討滅戦" },
+            { dutyMode="Trial", instanceId=20069, dutyId=912, dutyName="極ルビーウェポン破壊作戦" },
+            { dutyMode="Trial", instanceId=20070, dutyId=913, dutyName="極シタデル・ボズヤ追憶戦" },
+            { dutyMode="Trial", instanceId=20072, dutyId=923, dutyName="極ウォーリイア・オブ・ライト討滅戦" },
+            { dutyMode="Trial", instanceId=20074, dutyId=935, dutyName="極エメラルドウェポン破壊作戦" },
+            { dutyMode="Trial", instanceId=20076, dutyId=951, dutyName="極ダイヤウェポン破壊作戦" },
+            -- 暁月
+            { dutyMode="Trial", instanceId=20078, dutyId=996, dutyName="極ハイデリン討滅戦" },
+            { dutyMode="Trial", instanceId=20081, dutyId=993, dutyName="極ゾディアーク討滅戦" },
+            { dutyMode="Trial", instanceId=20083, dutyId=998, dutyName="終極の戦い" },
+            { dutyMode="Trial", instanceId=20085, dutyId=1072, dutyName="極バルバリシア討滅戦" },
+            { dutyMode="Trial", instanceId=20087, dutyId=1096, dutyName="極ルビカンテ討滅戦" },
+            { dutyMode="Trial", instanceId=20090, dutyId=1141, dutyName="極ゴルベーザ討滅戦" },
+            { dutyMode="Trial", instanceId=20092, dutyId=1169, dutyName="極ゼロムス討滅戦" },
         },
         {}, -- 1
         {}, -- 2
@@ -141,7 +144,7 @@ WonderousTailsDuties = {
             { dutyName="万魔殿パンデモニウム：煉獄編1-4", dutyId=1081 },
             { dutyName="万魔殿パンデモニウム：天獄編1-4", dutyId=1147 },
             { dutyName="至天の座アルカディア：ライトヘビー級1-2", dutyId=1125 },
-            { dutyName="至天の座アルカディア：ライトヘビー級3-4", dutyId=1231 }
+            { dutyName="至天の座アルカディア：ライトヘビー級3-4", dutyId=1231 },
         }
     }
 }
@@ -263,6 +266,7 @@ for i = 0, 12 do
                     end
                     yield("/wait 1")
                 end
+                yield("/echo [WonderousTails] 終了（"..(i+1).."個目）："..duty.dutyName)
                 yield("/wait 3")
             else
                 if duty.dutyName ~= nil then

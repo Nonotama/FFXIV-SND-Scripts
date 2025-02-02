@@ -2,13 +2,14 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.21.4                                 *
+*                               Version 2.21.5                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.21.4   Fix for change instances companion script
+    -> 2.21.5   Removed jumps
+                Fix for change instances companion script
                 Adjusted landing logic so hopefully it shouldn't get stuck too
                     high up anymore
                 Added ability to only do bonus fates
@@ -86,7 +87,7 @@ CompletionToJoinBossFate            = 0             --If the boss fate has less 
     ClassForBossFates               = ""            --If you want to use a different class for boss fates, set this to the 3 letter abbreviation
                                                         --for the class. Ex: "PLD"
 JoinCollectionsFates                = false         --Set to false if you never want to do collections fates
-BonusFatesOnly                      = true         --If true, will only do bonus fates and ignore everything else
+BonusFatesOnly                      = false         --If true, will only do bonus fates and ignore everything else
 
 MeleeDist                           = 2.5           --Distance for melee. Melee attacks (auto attacks) max distance is 2.59y, 2.60 is "target out of range"
 RangedDist                          = 20            --Distance for ranged. Ranged attacks and spells max distance to be usable is 25.49y, 25.5 is "target out of range"=
@@ -1413,8 +1414,8 @@ function ChangeInstance()
     if SuccessiveInstanceChanges >= NumberOfInstances then
         if CompanionScriptMode then
             if not WaitingForFateRewards and not shouldWaitForBonusBuff then
-            local shouldWaitForBonusBuff = WaitIfBonusBuff and (HasStatusId(1288) or HasStatusId(1289))
-            if WaitingForFateRewards == 0 and not shouldWaitForBonusBuff then
+--            local shouldWaitForBonusBuff = WaitIfBonusBuff and (HasStatusId(1288) or HasStatusId(1289))
+--            if WaitingForFateRewards == 0 and not shouldWaitForBonusBuff then
                 StopScript = true
             else
                 LogInfo("[Fate Farming] Waiting for buff or fate rewards")
@@ -1574,16 +1575,9 @@ function FlyBackToAetheryte()
 end
 
 function Mount()
-    if GetCharacterCondition(CharacterCondition.flying) then
+    if GetCharacterCondition(CharacterCondition.mounted) then
         State = CharacterState.moveToFate
         LogInfo("[FATE] State Change: MoveToFate")
-    elseif GetCharacterCondition(CharacterCondition.mounted) then
-        if not SelectedZone.flying then
-            State = CharacterState.moveToFate
-            LogInfo("[FATE] State Change: MoveToFate")
-    else
-            yield("/gaction ジャンプ")
-        end
     else
         if MountToUse == "" then
             yield("/gaction マウント・ルーレット")
@@ -2166,14 +2160,11 @@ function HandleUnexpectedCombat()
         return
     end
 
-    if GetCharacterCondition(CharacterCondition.flying) then
+    if GetCharacterCondition(CharacterCondition.mounted) then
         if not (PathfindInProgress() or PathIsRunning()) then
             PathfindAndMoveTo(GetPlayerRawXPos(), GetPlayerRawYPos() + 10, GetPlayerRawZPos(), true)
         end
         yield("/wait 10")
-        return
-    elseif GetCharacterCondition(CharacterCondition.mounted) then
-        yield("/gaction ジャンプ")
         return
     end
 

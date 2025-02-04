@@ -180,17 +180,6 @@ function SearchWonderousTailsTable(type, data, text)
     end
 end
 
-function ChangeJob(dutyId)
-    local jobName
-    if duty.dutyId == 952 then
-        jobName = "ナイト"
-    else
-        jobName = "ヴァイパー"
-    end
-    yield("/gs change "..jobName)
-    yield("/wait 1")
-end
-
 -- Region: Main ---------------------------------------------------------------------------------
 
 CurrentLevel = GetLevel()
@@ -249,13 +238,15 @@ for i = 0, 12 do
         local duty = SearchWonderousTailsTable(type, data, text)
 
         if duty ~= nil then
-            ChangeJob(duty.dutyId)
-
             if duty.dutyMode == "Trust" then
                 yield("/autoduty cfg Unsynced false")
+                jobName = "ナイト"
             else
                 yield("/autoduty cfg Unsynced true")
+                jobName = "ヴァイパー"
             end
+            yield("/gs change "..jobName)
+            yield("/wait 1")
 
             if duty.dutyId ~= nil then
                 yield("/autoduty run "..duty.dutyMode.." "..duty.dutyId.." 1 true")

@@ -145,6 +145,8 @@ WonderousTailsDuties = {
             { dutyName="万魔殿パンデモニウム：天獄編1-4", dutyId=1147 },
             { dutyName="至天の座アルカディア：ライトヘビー級1-2", dutyId=1125 },
             { dutyName="至天の座アルカディア：ライトヘビー級3-4", dutyId=1231 },
+            { dutyName="至天の座アルカディア：クルーザー級1-2", dutyId=1231 },
+            { dutyName="至天の座アルカディア：クルーザー級3-4", dutyId=1231 },
         }
     }
 }

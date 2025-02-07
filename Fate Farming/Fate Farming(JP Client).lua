@@ -696,7 +696,8 @@ FatesData = {
                 { fateName="ピクシーテイル：魔物包囲網", npcName="花蜜探しのピクシー" }
             },
             fatesWithContinuations = {},
-            blacklistedFates= {}
+            blacklistedFates= {
+                "がんばれ、ローズベアーズ"}
         }
     },
     {
@@ -2014,7 +2015,8 @@ function TurnOnAoes()
     if not AoesOn then
         if RotationPlugin == "RSR" then
             yield("/rotation off")
-            yield("/rotation auto on")
+--            yield("/rotation auto on")
+            yield("/rotation manual")
             LogInfo("[FATE] TurnOnAoes /rotation auto on")
         
             if RSRAoeType == "Off" then
@@ -2259,8 +2261,8 @@ function DoFate()
         ClearTarget()
         yield("/wait 1")
     end
-
-    TurnOnCombatMods("auto")
+    
+    TurnOnCombatMods("manual")
 
     GemAnnouncementLock = false
 

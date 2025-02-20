@@ -33,7 +33,7 @@ Loosely based on Ahernika's NonStopFisher
 ********************************************************************************
 ]]
 
-ScripColorToFarm                    = "Orange"  --Options: Orange/Purple
+ScripColorToFarm                    = "ûÚâ›"  --Options: ûÚâ›/éáâ›
 ItemToExchange                      = "ãRèbÇÃåä∑éËå`"
 MoveSpotsAfter                      = 30        --Number of minutes to fish at this spot before changing spots.
 ResetHardAmissAfter                 = 120       --Number of minutes to farm in current instance before teleporting away and back
@@ -101,7 +101,7 @@ FishTable =
             },
             pointToFace = { x=134.07, y=6.07, z=10000 }
         },
-        scripColor = "Orange",
+        scripColor = "ûÚâ›",
         scripId = 39,
         collectiblesTurnInListIndex = 6
     },
@@ -122,7 +122,7 @@ FishTable =
             },
             pointToFace = { x=37.71, y=22.36, z=1000 }
         },
-        scripColor = "Purple",
+        scripColor = "éáâ›",
         scripId = 38,
         collectiblesTurnInListIndex = 28
     }
@@ -993,7 +993,7 @@ end
 LastStuckCheckTime = os.clock()
 LastStuckCheckPosition = {x=GetPlayerRawXPos(), y=GetPlayerRawYPos(), z=GetPlayerRawZPos()}
 
-if ScripColorToFarm == "Orange" then
+if ScripColorToFarm == "ûÚâ›" then
     GathererScripId = OrangeGathererScripId
 else
     GathererScripId = PurpleGathererScripId

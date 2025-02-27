@@ -1585,8 +1585,8 @@ function Mount()
         else
             yield('/mount "' .. MountToUse)
         end
+        yield("/wait 1.3")
     end
-    yield("/wait 1.3")
     yield("/gaction ジャンプ")
 end
 

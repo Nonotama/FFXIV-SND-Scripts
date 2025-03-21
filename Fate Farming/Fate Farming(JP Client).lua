@@ -2,12 +2,31 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.21.8                                 *
+*                               Version 2.21.9                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
+    -> 2.21.9   By Allison
+                Added priority for checking distance to FATE accounting for a
+                    possible lower distance if you teleported.
+                Added FatePriority Setting. Default works the same as before 
+                    but with new check from above. 
+                    Progress -> Bonus -> Time Left -> Distance
+                Added setting for if you should wait at the Aetheryte when no 
+                    FATE is found. If you disable, you wait where the FATE 
+                    finished.
+                Added MinWait setting because sometimes 3 seconds felt to long.
+                Changed name of WaitUpTo to match MinWait.
+                Added check to disable targeting with VBM if you are using RSR
+                    for the rotation plugin.
+                Small adjustment to wait time after choosing nextFate, results
+                    in landing further from center of fates upon approach.
+                New extra checks in movement to prevent cast cancelling.
+                May have messed something up when pushed out of the fate.
+                Fixed typo with "should it to Turn" -> "should it do Turn"
+        
     -> 2.21.8   Added logic to change back to original class upon natural ending
                     of script for companion mode
                 Fixed typo with "PorcentageToHoldBuff"
@@ -45,7 +64,7 @@ Plugins that are needed for it to work:
     -> Some form of AI dodging. Options are: 
         -> BossMod Reborn: https://raw.githubusercontent.com/FFXIV-CombatReborn/CombatRebornRepo/main/pluginmaster.json
         -> Veyn's BossMod: https://puni.sh/api/repository/veyn
-    -> TextAdvance: (for interacting with Fate NPCs)
+    -> TextAdvance: (for interacting with Fate NPCs) https://github.com/NightmareXIV/MyDalamudPlugins/raw/main/pluginmaster.json
     -> Teleporter :  (for Teleporting to aetherytes [teleport][Exchange][Retainers])
     -> Lifestream :  (for changing Instances [ChangeInstance][Exchange]) https://raw.githubusercontent.com/NightmareXIV/MyDalamudPlugins/main/pluginmaster.json
 
@@ -95,8 +114,8 @@ RangedDist                          = 20            --Distance for ranged. Range
 RotationPlugin                      = "RSR"         --Options: RSR/BMR/VBM/Wrath/None
     RSRAoeType                      = "Cleave"      --Options: Cleave/Full/Off
 
-    -- For BMR/VBM only
-    RotationSingleTargetPreset      = ""            --Preset name with single target strategies (for forlorns).
+    -- For BMR/VBM/Wrath
+    RotationSingleTargetPreset      = ""            --Preset name with single target strategies (for forlorns). TURN OFF AUTOMATIC TARGETING FOR THIS PRESET
     RotationAoePreset               = ""            --Preset with AOE + Buff strategies.
     RotationHoldBuffPreset          = ""            --Preset to hold 2min burst when progress gets to seleted %
     PercentageToHoldBuff            = 65            --Ideally you'll want to make full use of your buffs, higher than 70% will still waste a few seconds if progress is too fast.
@@ -106,8 +125,10 @@ IgnoreForlorns                      = false
     IgnoreBigForlornOnly            = false
 
 --Post Fate Settings
-WaitUpTo                            = 0             --Max number of seconds it should wait until mounting up for next fate.
-                                                        --Actual wait time will be a randomly generated number between 3s and this value
+MinWait                             = 1             --Min number of seconds it should wait until mounting up for next fate.
+MaxWait                             = 3            --Max number of seconds it should wait until mounting up for next fate.
+                                                        --Actual wait time will be a randomly generated number between MinWait and MaxWait.
+DownTimeWaitAtNearestAetheryte      = false         --When waiting for fates to pop, should you fly to the nearest Aetheryte and wait there?
 EnableChangeInstance                = true          --should it Change Instance when there is no Fate (only works on DT fates)
     WaitIfBonusBuff                 = true          --Don't change instances if you have the Twist of Fate bonus buff
     NumberOfInstances               = 2
@@ -422,6 +443,10 @@ FatesData = {
             collectionsFates= {},
             otherNpcFates= {},
             fatesWithContinuations = {},
+            specialFates = {
+                "伝説の魔獣「ベヒーモス」", --ベヒーモス
+                "手負いの魔獣「ベヒーモス」" --ベヒーモス
+            },
             blacklistedFates= {}
         }
     },
@@ -1126,9 +1151,11 @@ function SelectNextZone()
 end
 
 --[[
-    Given two fates, picks the better one based on priority progress -> is bonus -> time left -> distance
+    Selects the better fate based on the priority order defined in FatePriority.
+    Default Priority order is "Progress" -> "DistanceTeleport" -> "Bonus" -> "TimeLeft" -> "Distance"
 ]]
 function SelectNextFateHelper(tempFate, nextFate)
+    --Check if WaitForBonusIfBonusBuff is true, and have eithe buff, then set BonusFatesOnlyTemp to true
     if BonusFatesOnly then
         if not tempFate.isBonusFate and nextFate ~= nil and nextFate.isBonusFate then
             return nextFate
@@ -1141,59 +1168,48 @@ function SelectNextFateHelper(tempFate, nextFate)
     end
 
     if tempFate.timeLeft < MinTimeLeftToIgnoreFate or tempFate.progress > CompletionToIgnoreFate then
+        LogInfo("[FATE] Ignoring fate #"..tempFate.fateId.." due to insufficient time or high completion.")
         return nextFate
-    else
-        if nextFate == nil then
+    elseif nextFate == nil then
                 LogInfo("[FATE] Selecting #"..tempFate.fateId.." because no other options so far.")
                 return tempFate
-        -- elseif nextFate.startTime == 0 and tempFate.startTime > 0 then -- nextFate is an unopened npc fate
-        --     LogInfo("[FATE] Selecting #"..tempFate.fateId.." because other fate #"..nextFate.fateId.." is an unopened npc fate.")
-        --     return tempFate
-        -- elseif tempFate.startTime == 0 and nextFate.startTime > 0 then -- tempFate is an unopened npc fate
-        --     return nextFate
         elseif nextFate.timeLeft < MinTimeLeftToIgnoreFate or nextFate.progress > CompletionToIgnoreFate then
+        LogInfo("[FATE] Ignoring fate #"..nextFate.fateId.." due to insufficient time or high completion.")
             return tempFate
-        else -- select based on progress
-            if nextFate.isBonusFate then
-                return nextFate
-            elseif tempFate.isBonusFate then
-                return tempFate
-            elseif tempFate.progress > nextFate.progress and FatePriority == "" then
-                LogInfo("[FATE] Selecting #"..tempFate.fateId.." because other fate #"..nextFate.fateId.." has less progress.")
-                return tempFate
-            elseif tempFate.progress < nextFate.progress and FatePriority == "" then
-                LogInfo("[FATE] Selecting #"..nextFate.fateId.." because other fate #"..tempFate.fateId.." has less progress.")
-                return nextFate
-            else
-                if (nextFate.isBonusFate and tempFate.isBonusFate) or (not nextFate.isBonusFate and not tempFate.isBonusFate) then
-                    if tempFate.timeLeft < nextFate.timeLeft and FatePriority == "" then -- select based on time left
-                        LogInfo("[FATE] Selecting #"..tempFate.fateId.." because other fate #"..nextFate.fateId.." has more time left.")
-                        return tempFate
-                    elseif tempFate.timeLeft > nextFate.timeLeft and FatePriority == "" then
-                        LogInfo("[FATE] Selecting #"..tempFate.fateId.." because other fate #"..nextFate.fateId.." has more time left.")
-                        return nextFate
-                    else
-                        tempFatePlayerDistance = GetDistanceToPoint(tempFate.x, tempFate.y, tempFate.z)
-                        nextFatePlayerDistance = GetDistanceToPoint(nextFate.x, nextFate.y, nextFate.z)
-                        if tempFatePlayerDistance < nextFatePlayerDistance then
-                            LogInfo("[FATE] Selecting #"..tempFate.fateId.." because other fate #"..nextFate.fateId.." is farther.")
-                            return tempFate
-                        elseif tempFatePlayerDistance > nextFatePlayerDistance then
-                            LogInfo("[FATE] Selecting #"..nextFate.fateId.." because other fate #"..nextFate.fateId.." is farther.")
-                            return nextFate
-                        else
-                            if tempFate.fateId < nextFate.fateId then
-                                return tempFate
-                            else
-                                return nextFate
-                            end
-                        end
-                    end
-                end
             end
+
+    -- Evaluate based on priority (Loop through list return first non-equal priority)
+    for _, criteria in ipairs(FatePriority) do
+        if criteria == "Progress" then
+            LogInfo("[FATE] Comparing progress: "..tempFate.progress.." vs "..nextFate.progress)
+            if tempFate.progress > nextFate.progress then return tempFate end
+            if tempFate.progress < nextFate.progress then return nextFate end
+        elseif criteria == "Bonus" then
+            LogInfo("[FATE] Checking bonus status: "..tostring(tempFate.isBonusFate).." vs "..tostring(nextFate.isBonusFate))
+            if tempFate.isBonusFate and not nextFate.isBonusFate then return tempFate end
+            if nextFate.isBonusFate and not tempFate.isBonusFate then return nextFate end
+        elseif criteria == "TimeLeft" then
+            LogInfo("[FATE] Comparing time left: "..tempFate.timeLeft.." vs "..nextFate.timeLeft)
+            if tempFate.timeLeft > nextFate.timeLeft then return tempFate end
+            if tempFate.timeLeft < nextFate.timeLeft then return nextFate end
+        elseif criteria == "Distance" then
+            local tempDist = GetDistanceToPoint(tempFate.x, tempFate.y, tempFate.z)
+            local nextDist = GetDistanceToPoint(nextFate.x, nextFate.y, nextFate.z)
+            LogInfo("[FATE] Comparing distance: "..tempDist.." vs "..nextDist)
+            if tempDist < nextDist then return tempFate end
+            if tempDist > nextDist then return nextFate end
+        elseif criteria == "DistanceTeleport" then
+            local tempDist = GetDistanceToPointWithAetheryteTravel(tempFate.x, tempFate.y, tempFate.z)
+            local nextDist = GetDistanceToPointWithAetheryteTravel(nextFate.x, nextFate.y, nextFate.z)
+            LogInfo("[FATE] Comparing distance: "..tempDist.." vs "..nextDist)
+            if tempDist < nextDist then return tempFate end
+            if tempDist > nextDist then return nextFate end
         end
     end
-    return nextFate
+
+    -- Fallback: Select fate with the lower ID
+    LogInfo("[FATE] Selecting lower ID fate: "..tempFate.fateId.." vs "..nextFate.fateId)
+    return (tempFate.fateId < nextFate.fateId) and tempFate or nextFate
 end
 
 function BuildFateTable(fateId)
@@ -1286,7 +1302,7 @@ function SelectNextFate()
     else
         LogInfo("[FATE] Final selected fate #"..nextFate.fateId.." "..nextFate.fateName)
     end
-    yield("/wait 1")
+    yield("/wait 0.211")
 
     return nextFate
 end
@@ -1306,6 +1322,41 @@ end
 --#endregion Fate Functions
 
 --#region Movement Functions
+
+function DistanceFromClosestAetheryteToPoint(x, y, z, teleportTimePenalty)
+    local closestAetheryte = nil
+    local closestTravelDistance = math.maxinteger
+    for _, aetheryte in ipairs(SelectedZone.aetheryteList) do
+        local distanceAetheryteToFate = DistanceBetween(aetheryte.x, y, aetheryte.z, x, y, z)
+        local comparisonDistance = distanceAetheryteToFate + teleportTimePenalty
+        LogInfo("[FATE] Distance via "..aetheryte.aetheryteName.." adjusted for tp penalty is "..tostring(comparisonDistance))
+
+        if comparisonDistance < closestTravelDistance then
+            LogInfo("[FATE] Updating closest aetheryte to "..aetheryte.aetheryteName)
+            closestTravelDistance = comparisonDistance
+            closestAetheryte = aetheryte
+        end
+    end
+
+    return closestTravelDistance
+end
+
+function GetDistanceToPointWithAetheryteTravel(x, y, z)
+    -- Get the direct flight distance (no aetheryte)
+    local directFlightDistance = GetDistanceToPoint(x, y, z)
+    LogInfo("[FATE] Direct flight distance is: " .. directFlightDistance)
+    
+    -- Get the distance to the closest aetheryte, including teleportation penalty
+    local distanceToAetheryte = DistanceFromClosestAetheryteToPoint(x, y, z, 200)
+    LogInfo("[FATE] Distance via closest Aetheryte is: " .. (distanceToAetheryte or "nil"))
+
+    -- Return the minimum distance, either via direct flight or via the closest aetheryte travel
+    if distanceToAetheryte == nil then
+        return directFlightDistance
+    else
+        return math.min(directFlightDistance, distanceToAetheryte)
+    end
+end
 
 function GetClosestAetheryte(x, y, z, teleportTimePenalty)
     local closestAetheryte = nil
@@ -1393,7 +1444,7 @@ function TeleportTo(aetheryteName)
 
     while EorzeaTimeToUnixTime(GetCurrentEorzeaTimestamp()) - LastTeleportTimeStamp < 5 do
         LogInfo("[FATE] Too soon since last teleport. Waiting...")
-        yield("/wait 5")
+        yield("/wait 5.001")
     end
 
     yield("/tp "..aetheryteName)
@@ -1414,9 +1465,8 @@ end
 function ChangeInstance()
     if SuccessiveInstanceChanges >= NumberOfInstances then
         if CompanionScriptMode then
-            if not WaitingForFateRewards and not shouldWaitForBonusBuff then
---            local shouldWaitForBonusBuff = WaitIfBonusBuff and (HasStatusId(1288) or HasStatusId(1289))
---            if WaitingForFateRewards == 0 and not shouldWaitForBonusBuff then
+            local shouldWaitForBonusBuff = WaitIfBonusBuff and (HasStatusId(1288) or HasStatusId(1289))
+            if WaitingForFateRewards == 0 and not shouldWaitForBonusBuff then
                 StopScript = true
             else
                 LogInfo("[Fate Farming] Waiting for buff or fate rewards")
@@ -1620,7 +1670,6 @@ function Dismount()
     end
 end
 
-
 function MiddleOfFateDismount()
     if not IsFateActive(CurrentFate.fateId) then
         State = CharacterState.ready
@@ -1789,7 +1838,7 @@ function MoveToFate()
 
     local nearestLandX, nearestLandY, nearestLandZ = CurrentFate.x, CurrentFate.y, CurrentFate.z
     if not (CurrentFate.isCollectionsFate or CurrentFate.isOtherNpcFate) then
-        nearestLandX, nearestLandY, nearestLandZ = RandomAdjustCoordinates(CurrentFate.x, CurrentFate.y, CurrentFate.z, 5)
+        nearestLandX, nearestLandY, nearestLandZ = RandomAdjustCoordinates(CurrentFate.x, CurrentFate.y, CurrentFate.z, 10)
     end
 
     if GetDistanceToPoint(nearestLandX, nearestLandY, nearestLandZ) > 5 then
@@ -2106,6 +2155,9 @@ function TurnOnCombatMods(rotationMode)
                 yield("/vbmai followcombat on")
                 -- yield("/bmrai followoutofcombat on")
                 yield("/vbmai maxdistancetarget " .. MaxDistance)
+                if RotationPlugin ~= "VBM" then
+                    yield("/vbmai ForbidActions on") --This Disables VBM AI Auto-Target
+                end
             end
             AiDodgingOn = true
         end
@@ -2138,6 +2190,9 @@ function TurnOffCombatMods()
                 yield("/vbmai followtarget off")
                 yield("/vbmai followcombat off")
                 yield("/vbmai followoutofcombat off")
+                if RotationPlugin ~= "VBM" then
+                    yield("/vbmai ForbidActions off") --This Enables VBM AI Auto-Target
+                end
             end
             AiDodgingOn = false
         end
@@ -2158,7 +2213,7 @@ function HandleUnexpectedCombat()
         TurnOffCombatMods()
         State = CharacterState.ready
         LogInfo("[FATE] State Change: Ready")
-        local randomWait = (math.floor(math.random()*WaitUpTo * 1000)/1000) + 3 -- truncated to 3 decimal places
+        local randomWait = (math.floor(math.random()*MaxWait * 1000)/1000) + MinWait -- truncated to 3 decimal places
         yield("/wait "..randomWait)
         return
     end
@@ -2221,6 +2276,7 @@ function DoFate()
     then -- got pushed out of fate. go back
         yield("/vnav stop")
         yield("/wait 1")
+        LogInfo("[FATE] pushed out of fate going back!")
         PathfindAndMoveTo(CurrentFate.x, CurrentFate.y, CurrentFate.z, GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
         return
     elseif not IsFateActive(CurrentFate.fateId) or GetFateProgress(CurrentFate.fateId) == 100 then
@@ -2234,7 +2290,7 @@ function DoFate()
         else
             DidFate = true
             LogInfo("[FATE] No continuation for "..CurrentFate.fateName)
-            local randomWait = (math.floor(math.random() * (math.max(0, WaitUpTo - 3)) * 1000)/1000) + 1 -- truncated to 3 decimal places
+            local randomWait = (math.floor(math.random() * (math.max(0, MaxWait - 3)) * 1000)/1000) + MinWait -- truncated to 3 decimal places
             yield("/wait "..randomWait)
             TurnOffCombatMods()
             State = CharacterState.ready
@@ -2317,14 +2373,14 @@ function DoFate()
             if GetDistanceToTarget() <= (MaxDistance + GetTargetHitboxRadius() + 1) then
                 if PathfindInProgress() or PathIsRunning() then
                     yield("/vnav stop")
-                    yield("/wait 5") -- wait 5s before inching any closer
-                elseif GetDistanceToTarget() > (1 + GetTargetHitboxRadius()) then -- never move into hitbox
+                    yield("/wait 5.002") -- wait 5s before inching any closer
+                elseif (GetDistanceToTarget() > (1 + GetTargetHitboxRadius())) and not GetCharacterCondition(CharacterCondition.casting) then -- never move into hitbox
                     PathfindAndMoveTo(x, y, z)
                     yield("/wait 1") -- inch closer by 1s
                 end
             elseif not (PathfindInProgress() or PathIsRunning()) then
-                yield("/wait 5") -- give 5s for casts to go off before attempting to move closer
-                if x ~= 0 and z~=0 and not GetCharacterCondition(CharacterCondition.inCombat) then
+                yield("/wait 5.003") -- give 5s for enemy AoE casts to go off before attempting to move closer
+                if (x ~= 0 and z~=0 and not GetCharacterCondition(CharacterCondition.inCombat)) and not GetCharacterCondition(CharacterCondition.casting) then
                     PathfindAndMoveTo(x, y, z)
                 end
             end
@@ -2332,7 +2388,7 @@ function DoFate()
         else
             TargetClosestFateEnemy()
             yield("/wait 1") -- wait in case target doesn't stick
-            if not HasTarget() then
+            if (not HasTarget()) and not GetCharacterCondition(CharacterCondition.casting) then
                 PathfindAndMoveTo(CurrentFate.x, CurrentFate.y, CurrentFate.z)
             end
         end
@@ -2343,9 +2399,9 @@ function DoFate()
             end
         elseif not CurrentFate.isBossFate then
             if not (PathfindInProgress() or PathIsRunning()) then
-                yield("/wait 5")
+                yield("/wait 5.004")
                 local x,y,z = GetTargetRawXPos(), GetTargetRawYPos(), GetTargetRawZPos()
-                if x ~= 0 and z~=0 then
+                if (x ~= 0 and z~=0)  and not GetCharacterCondition(CharacterCondition.casting) then
                     PathfindAndMoveTo(x,y,z, GetCharacterCondition(CharacterCondition.flying) and SelectedZone.flying)
                 end
             end
@@ -2385,7 +2441,7 @@ function Ready()
     ForlornMarked = false
     MovingAnnouncementLock = false
 
-    local shouldWaitForBonusBuff = WaitIfBonusBuff and HasStatusId(1289)
+    local shouldWaitForBonusBuff = WaitIfBonusBuff and (HasStatusId(1288) or HasStatusId(1289))
 
     NextFate = SelectNextFate()
     if CurrentFate ~= nil and not IsFateActive(CurrentFate.fateId) then
@@ -2413,7 +2469,7 @@ function Ready()
     elseif not LogInfo("[FATE] Ready -> ExtractMateria") and ShouldExtractMateria and CanExtractMateria(100) and GetInventoryFreeSlotCount() > 1 then
         State = CharacterState.extractMateria
         LogInfo("[FATE] State Change: ExtractMateria")
-    elseif not LogInfo("[FATE] Ready -> WaitBonusBuff") and NextFate == nil and shouldWaitForBonusBuff then
+    elseif (not LogInfo("[FATE] Ready -> WaitBonusBuff") and NextFate == nil and shouldWaitForBonusBuff) and DownTimeWaitAtNearestAetheryte then
         if not HasTarget() or GetTargetName() ~= "エーテライト" or GetDistanceToTarget() > 20 then
             State = CharacterState.flyBackToAetheryte
             LogInfo("[FATE] State Change: FlyBackToAetheryte")
@@ -2454,7 +2510,7 @@ function Ready()
             else
                 LogInfo("[FATE] Waiting for fate rewards")
             end
-        elseif not HasTarget() or GetTargetName() ~= "aetheryte" or GetDistanceToTarget() > 20 then
+        elseif (not HasTarget() or GetTargetName() ~= "エーテライト" or GetDistanceToTarget() > 20) and DownTimeWaitAtNearestAetheryte then
             State = CharacterState.flyBackToAetheryte
             LogInfo("[FATE] State Change: FlyBackToAetheryte")
         else
@@ -2902,7 +2958,13 @@ if ShouldSummonChocobo and GetBuddyTimeRemaining() > 0 then
 end
 
 while not StopScript do
-    if NavIsReady() then
+    if not NavIsReady() then
+        yield("/echo [FATE] Waiting for vnavmesh to build...")
+        LogInfo("[FATE] Waiting for vnavmesh to build...")
+        repeat
+            yield("/wait 1")
+        until NavIsReady()
+    end
         if State ~= CharacterState.dead and GetCharacterCondition(CharacterCondition.dead) then
             State = CharacterState.dead
             LogInfo("[FATE] State Change: Dead")
@@ -2933,7 +2995,6 @@ while not StopScript do
             end
             State()
         end
-    end
     yield("/wait 0.1")
 end
 yield("/vnav stop")
@@ -2941,5 +3002,4 @@ yield("/vnav stop")
 if GetClassJobId() ~= MainClass.classId then
     yield("/gs change "..MainClass.className)
 end
-
 --#endregion Main

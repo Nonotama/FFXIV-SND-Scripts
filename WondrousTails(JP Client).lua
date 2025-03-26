@@ -78,7 +78,7 @@ WonderousTailsDuties = {
     { -- type 5: leveling dungeons
         { dutyMode="Trial", dutyName="レベリングダンジョン Lv1-49", dutyId=1045 }, --イフリート討伐戦
         { dutyMode="Regular", dutyName="レベリングダンジョン Lv51-79", dutyId=434 }, --廃砦捜索 ダスクヴィジル
-        { dutyMode="Regular", dutyName="レベリングダンジョン Lv81-99", dutyId=952 }, --異形楼閣 ゾットの塔
+        { dutyMode="Regular", dutyName="レベリングダンジョン Lv81-89/91-99", dutyId=952 }, --異形楼閣 ゾットの塔
     },
     { -- type 6: expansion cap dungeons
         { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv50-60", dutyId=362 }, --盟友支援 ブレイフロクスの野営地 (Hard)
@@ -86,17 +86,13 @@ WonderousTailsDuties = {
         { dutyMode="Trust", dutyName="ハイレベリングダンジョン Lv90", dutyId=973 }, --最終幻想 レムナント
     },
     { -- type 7: ex trials
-        {
-            { instanceId=20008, dutyId=295, dutyName="Trials (Lv. 50-60)" }, -- Bowl of Embers
-            { instanceId=20049, dutyId=720, dutyName="Trials (Lv. 70-100)" }
-        }
+
     },
     { -- type 8: alliance raids
 
     },
     { -- type 9: normal raids
-        { dutyName="Normal Raids (Lv. 50-60)", dutyId=241 },
-        { dutyName="Normal Raids (Lv. 70-80)", dutyId=693 },
+
     },
     Blacklisted= {
         { -- 0

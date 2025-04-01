@@ -57,7 +57,7 @@ WonderousTailsDuties = {
         { dutyMode="Trial", instanceId=20042, dutyId=577, dutyName="極女神ソフィア討滅戦" },
     },
     { -- type 1: expansion cap dungeons
-        { dutyMode="Trust", dutyName="Lv100ダンジョン", dutyId=1199 }, --記憶幻想 アレクサンドリア
+        { dutyMode="Trust", dutyName="Lv100ダンジョン", dutyId=1266 }, --王城旧跡 アンダーキープ
     },
     2,
     3,
@@ -77,12 +77,12 @@ WonderousTailsDuties = {
     },
     { -- type 5: leveling dungeons
         { dutyMode="Trial", dutyName="レベリングダンジョン Lv1-49", dutyId=1045 }, --イフリート討伐戦
-        { dutyMode="Regular", dutyName="レベリングダンジョン Lv51-79", dutyId=434 }, --廃砦捜索 ダスクヴィジル
+        { dutyMode="Regular", dutyName="レベリングダンジョン Lv51-59/61-69/71-79", dutyId=434 }, --廃砦捜索 ダスクヴィジル
         { dutyMode="Regular", dutyName="レベリングダンジョン Lv81-89/91-99", dutyId=952 }, --異形楼閣 ゾットの塔
     },
     { -- type 6: expansion cap dungeons
         { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv50-60", dutyId=362 }, --盟友支援 ブレイフロクスの野営地 (Hard)
-        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv70-80", dutyId=788 }, --草木汚染 聖モシャーヌ植物園 (Hard)
+        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv70・80", dutyId=788 }, --草木汚染 聖モシャーヌ植物園 (Hard)
         { dutyMode="Trust", dutyName="ハイレベリングダンジョン Lv90", dutyId=973 }, --最終幻想 レムナント
     },
     { -- type 7: ex trials
@@ -238,7 +238,7 @@ for i = 0, 12 do
         if duty ~= nil then
             if duty.dutyMode == "Trust" then
                 yield("/autoduty cfg Unsynced false")
-                jobName = "ナイト"
+                jobName = "ヴァイパー"
             else
                 yield("/autoduty cfg Unsynced true")
                 jobName = "ヴァイパー"

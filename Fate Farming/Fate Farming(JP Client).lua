@@ -2,12 +2,21 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.21.9                                 *
+*                               Version 2.21.11                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
+Contributors: Prawellp, Mavi, Allison
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
+    -> 2.21.11  Added 1s wait after mount so you're firmly on the mount. Seems
+                    like some languages like Chinese execute log and echo
+                    messages faster than English, causing the next Pathfind step
+                    to happen too fast, before you are properly mounted, while
+                    you are in the middle of the jump. This forces vnav to give
+                    you a walking path, instead of a flying path, so you
+                    sometimes get stuck.
+    -> 2.21.10  Fix call to vbmai preset
     -> 2.21.9   By Allison
                 Added priority for checking distance to FATE accounting for a
                     possible lower distance if you teleported.
@@ -27,27 +36,6 @@ State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/Fa
                 May have messed something up when pushed out of the fate.
                 Fixed typo with "should it to Turn" -> "should it do Turn"
         
-    -> 2.21.8   Added logic to change back to original class upon natural ending
-                    of script for companion mode
-                Fixed typo with "PorcentageToHoldBuff"
-                Fixed the part where you walk back to center after FATE is done
-                Removed jumps
-                Fix for change instances companion script
-                Adjusted landing logic so hopefully it shouldn't get stuck too
-                    high up anymore
-                Added ability to only do bonus fates
-                Adjusted coordinates for Old Sharlayan bicolor gemstone vendor
-                Support for multi-zone farming
-                Added some thanalan npc fates
-                Cleanup for Yak'tel fates and landing condition when flying back
-                    to aetheryte
-                Added height limit check for flying  back to aetheryte
-                Rework bicolor exchange
-                Added checks and debugs for bicolor gemstone shopkeeper
-                Fixed flying ban in Outer La Noscea and Southern Thanalan
-                Added feature to walk towards center of fate if you are too far
-                    away to target the collections fate npc
-
 ********************************************************************************
 *                               Required Plugins                               *
 ********************************************************************************
@@ -97,6 +85,7 @@ ShouldSummonChocobo                 = true          --Summon chocobo?
     ChocoboStance                   = "ヒーラースタンス"             --Options: 追従/フリーファイト/ディフェンダースタンス/ヒーラースタンス/アタッカースタンス
     ShouldAutoBuyGysahlGreens       = false          --Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if you're out
 MountToUse                          = "ウィング・オブ・ディザスター"   --The mount you'd like to use when flying between fates (ルーレット使用の場合は"")
+FatePriority                        = {"DistanceTeleport", "Progress", "DistanceTeleport", "Bonus", "TimeLeft", "Distance"}
 
 --Fate Combat Settings
 CompletionToIgnoreFate              = 80            --If the fate has more than this much progress already, skip it
@@ -139,14 +128,14 @@ SelfRepair                          = true          --if false, will go to Limsa
     ShouldAutoBuyDarkMatter         = false         --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
 ShouldExtractMateria                = true          --should it Extract Materia
 Retainers                           = true          --should it do Retainers
-ShouldGrandCompanyTurnIn            = false         --should it to Turn ins at the GC (requires Deliveroo)
+ShouldGrandCompanyTurnIn            = false         --should it do Turn ins at the GC (requires Deliveroo)
     InventorySlotsLeft              = 5             --how much inventory space before turning in
 
 Echo                                = "None"        --Options: All/Gems/None
 
 CompanionScriptMode                 = true          --Set to true if you are using the fate script with a companion script (such as the Atma Farmer)
 
-FatePriority                        = "Distance"    --Distance (default pot0to "")
+FatePriority                        = "Bonus"    --Distance (default pot0to "")
 TradeGemCount                       = 1501
 
 --#endregion Settings
@@ -1627,6 +1616,7 @@ end
 
 function Mount()
     if GetCharacterCondition(CharacterCondition.mounted) then
+        yield("/wait 1") -- wait a second to make sure you're firmly on the mount
         State = CharacterState.moveToFate
         LogInfo("[FATE] State Change: MoveToFate")
     else
@@ -1635,8 +1625,8 @@ function Mount()
         else
             yield('/mount "' .. MountToUse)
         end
-        yield("/wait 1.3")
     end
+    yield("/wait 1")
     yield("/gaction ジャンプ")
 end
 
@@ -2079,7 +2069,7 @@ function TurnOnAoes()
         elseif RotationPlugin == "BMR" then
             yield("/bmrai setpresetname "..RotationAoePreset)
         elseif RotationPlugin == "VBM" then
-            yield("/vbmai setpresetname "..RotationAoePreset)
+            yield("/vbm ar toggle "..RotationAoePreset)
         end
         AoesOn = true
     end
@@ -2094,7 +2084,7 @@ function TurnOffAoes()
         elseif RotationPlugin == "BMR" then
             yield("/bmrai setpresetname "..RotationSingleTargetPreset)
         elseif RotationPlugin == "VBM" then
-            yield("/vbmai setpresetname "..RotationSingleTargetPreset)
+            yield("/vbm ar toggle "..RotationSingleTargetPreset)
         end
         AoesOn = false
     end
@@ -2105,7 +2095,7 @@ function TurnOffRaidBuffs()
         if RotationPlugin == "BMR" then
             yield("/bmrai setpresetname "..RotationHoldBuffPreset)
         elseif RotationPlugin == "VBM" then
-            yield("/vbmai setpresetname "..RotationHoldBuffPreset)
+            yield("/vbm ar toggle "..RotationHoldBuffPreset)
         end
     end
 end
@@ -2132,8 +2122,10 @@ function TurnOnCombatMods(rotationMode)
                 yield("/rotation auto on")
                 LogInfo("[FATE] TurnOnCombatMods /rotation auto on")
             end
-        elseif RotationPlugin == "BMR" or RotationPlugin == "VBM" then
+        elseif RotationPlugin == "BMR" then
             yield("/bmrai setpresetname "..RotationAoePreset)
+        elseif RotationPlugin == "VBM" then
+            yield("/vbm ar toggle "..RotationAoePreset)
         elseif RotationPlugin == "Wrath" then
             yield("/wrath auto on")
         end
@@ -2186,6 +2178,7 @@ function TurnOffCombatMods()
 --                yield("/bmrai followcombat off")
 --                yield("/bmrai followoutofcombat off")
             elseif DodgingPlugin == "VBM" then
+                yield("/vbm ar disable")
                 yield("/vbmai off")
                 yield("/vbmai followtarget off")
                 yield("/vbmai followcombat off")

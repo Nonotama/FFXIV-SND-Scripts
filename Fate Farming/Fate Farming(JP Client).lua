@@ -85,7 +85,7 @@ ShouldSummonChocobo                 = true          --Summon chocobo?
     ChocoboStance                   = "ヒーラースタンス"             --Options: 追従/フリーファイト/ディフェンダースタンス/ヒーラースタンス/アタッカースタンス
     ShouldAutoBuyGysahlGreens       = false          --Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if you're out
 MountToUse                          = "ウィング・オブ・ディザスター"   --The mount you'd like to use when flying between fates (ルーレット使用の場合は"")
-FatePriority                        = {"DistanceTeleport", "Progress", "DistanceTeleport", "Bonus", "TimeLeft", "Distance"}
+FatePriority                        = {"Bonus", "Distance", "DistanceTeleport", "Progress", "DistanceTeleport", "TimeLeft"}
 
 --Fate Combat Settings
 CompletionToIgnoreFate              = 80            --If the fate has more than this much progress already, skip it
@@ -135,8 +135,7 @@ Echo                                = "None"        --Options: All/Gems/None
 
 CompanionScriptMode                 = true          --Set to true if you are using the fate script with a companion script (such as the Atma Farmer)
 
-FatePriority                        = "Bonus"    --Distance (default pot0to "")
-TradeGemCount                       = 1501
+TradeGemCount                       = 1500
 
 --#endregion Settings
 
@@ -1675,7 +1674,6 @@ function Mount()
         end
     end
     yield("/wait 1")
-    yield("/gaction ジャンプ")
 end
 
 function Dismount()

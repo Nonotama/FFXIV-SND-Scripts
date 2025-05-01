@@ -22,7 +22,7 @@ Created by: pot0to (https://ko-fi.com/pot0to)
 ********************************************************************************
 ]]
 
-FateMacro = "Fate Farming (JP Client)"      -- Name of whatever you nicknamed the base fate farming SND script
+FateMacro = "Farming"      -- Name of whatever you nicknamed the base fate farming SND script
 
 -- Ctrl+F through Fate Farming.lua to find the zoneIds, or find them in Godbert
 -- ジョブを設定していないゾーンは実行されない

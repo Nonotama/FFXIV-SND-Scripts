@@ -2101,8 +2101,8 @@ function TurnOnAoes()
     if not AoesOn then
         if RotationPlugin == "RSR" then
             yield("/rotation off")
---            yield("/rotation auto on")
-            yield("/rotation manual")
+            yield("/rotation auto on")
+--            yield("/rotation manual")
             LogInfo("[FATE] TurnOnAoes /rotation auto on")
         
             if RSRAoeType == "Off" then
@@ -2358,7 +2358,7 @@ function DoFate()
         yield("/wait 1")
     end
     
-    TurnOnCombatMods("manual")
+    TurnOnCombatMods("auto")
 
     GemAnnouncementLock = false
 

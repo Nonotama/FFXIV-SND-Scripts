@@ -2,14 +2,15 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.21.11                                 *
+*                               Version 2.21.12                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 Contributors: Prawellp, Mavi, Allison
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.21.11  Added 1s wait after mount so you're firmly on the mount. Seems
+    -> 2.21.12  Added more logging for FlyBackToAetheryte
+                Added 1s wait after mount so you're firmly on the mount. Seems
                     like some languages like Chinese execute log and echo
                     messages faster than English, causing the next Pathfind step
                     to happen too fast, before you are properly mounted, while
@@ -84,12 +85,12 @@ ShouldSummonChocobo                 = true          --Summon chocobo?
     ResummonChocoboTimeLeft         = 3 * 60        --Resummons chocobo if there's less than this many seconds left on the timer, so it doesn't disappear on you in the middle of a fate.
     ChocoboStance                   = "ヒーラースタンス"             --Options: 追従/フリーファイト/ディフェンダースタンス/ヒーラースタンス/アタッカースタンス
     ShouldAutoBuyGysahlGreens       = false          --Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if you're out
-MountToUse                          = "ウィング・オブ・ディザスター"   --The mount you'd like to use when flying between fates (ルーレット使用の場合は"")
+MountToUse                          = "ウィング・オブ・リゾルヴ"   --The mount you'd like to use when flying between fates (ルーレット使用の場合は"")
 FatePriority                        = {"Bonus", "Distance", "DistanceTeleport", "Progress", "DistanceTeleport", "TimeLeft"}
 
 --Fate Combat Settings
 CompletionToIgnoreFate              = 80            --If the fate has more than this much progress already, skip it
-MinTimeLeftToIgnoreFate             = 3*60          --If the fate has less than this many seconds left on the timer, skip it
+MinTimeLeftToIgnoreFate             = 2*60          --If the fate has less than this many seconds left on the timer, skip it
 CompletionToJoinBossFate            = 0             --If the boss fate has less than this much progress, skip it (used to avoid soloing bosses)
     CompletionToJoinSpecialBossFates = 20           --For the Special Fates like the Serpentlord Seethes or Mascot Murder
     ClassForBossFates               = ""            --If you want to use a different class for boss fates, set this to the 3 letter abbreviation
@@ -127,7 +128,7 @@ SelfRepair                          = true          --if false, will go to Limsa
     RepairAmount                    = 20            --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
     ShouldAutoBuyDarkMatter         = false         --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
 ShouldExtractMateria                = true          --should it Extract Materia
-Retainers                           = true          --should it do Retainers
+Retainers                           = false          --should it do Retainers
 ShouldGrandCompanyTurnIn            = false         --should it do Turn ins at the GC (requires Deliveroo)
     InventorySlotsLeft              = 5             --how much inventory space before turning in
 
@@ -1363,6 +1364,7 @@ function DistanceFromClosestAetheryteToPoint(x, y, z, teleportTimePenalty)
     local closestAetheryte = nil
     local closestTravelDistance = math.maxinteger
     for _, aetheryte in ipairs(SelectedZone.aetheryteList) do
+        LogInfo("[FATE] Considering aetheryte "..aetheryte.aetheryteName)
         local distanceAetheryteToFate = DistanceBetween(aetheryte.x, y, aetheryte.z, x, y, z)
         local comparisonDistance = distanceAetheryteToFate + teleportTimePenalty
         LogInfo("[FATE] Distance via "..aetheryte.aetheryteName.." adjusted for tp penalty is "..tostring(comparisonDistance))
@@ -1407,6 +1409,11 @@ function GetClosestAetheryte(x, y, z, teleportTimePenalty)
             closestTravelDistance = comparisonDistance
             closestAetheryte = aetheryte
         end
+    end
+    if closestAetheryte ~= nil then
+        LogInfo("[FATE] Final selected aetheryte is: "..closestAetheryte.aether)
+    else
+        LogInfo("[FATE] Closest aetheryte is nil")
     end
 
     return closestAetheryte
@@ -1770,7 +1777,7 @@ function MoveToFate()
     if not IsPlayerAvailable() then
         return
     end
-
+    
     if CurrentFate~=nil and not IsFateActive(CurrentFate.fateId) then
         LogInfo("[FATE] Next Fate is dead, selecting new Fate.")
         yield("/vnav stop")
@@ -2219,7 +2226,7 @@ function TurnOffCombatMods()
         -- turn off BMR so you don't start following other mobs
         if AiDodgingOn then
             if DodgingPlugin == "BMR" then
---                yield("/bmrai off")
+                yield("/bmrai off")
 --                yield("/bmrai followtarget off")
 --                yield("/bmrai followcombat off")
 --                yield("/bmrai followoutofcombat off")
@@ -2383,6 +2390,7 @@ function DoFate()
                 ForlornMarked = true
             end
         else
+            IgnoreForlorns = true    -- フォーロンと他の敵を交互にターゲットしてしまうため
             ClearTarget()
             TurnOnAoes()
         end
@@ -2517,18 +2525,15 @@ function Ready()
         end
         return
     elseif not LogInfo("[FATE] Ready -> ExchangingVouchers") and WaitingForFateRewards == 0 and
-        ShouldExchangeBicolorGemstones and (BicolorGemCount >= TradeGemCount) and not shouldWaitForBonusBuff
-    then
+        ShouldExchangeBicolorGemstones and (BicolorGemCount >= TradeGemCount) and not shouldWaitForBonusBuff then
         State = CharacterState.exchangingVouchers
         LogInfo("[FATE] State Change: ExchangingVouchers")
     elseif not LogInfo("[FATE] Ready -> ProcessRetainers") and WaitingForFateRewards == 0 and
-        Retainers and ARRetainersWaitingToBeProcessed() and GetInventoryFreeSlotCount() > 1  and not shouldWaitForBonusBuff
-    then
+        Retainers and ARRetainersWaitingToBeProcessed() and GetInventoryFreeSlotCount() > 1  and not shouldWaitForBonusBuff then
         State = CharacterState.processRetainers
         LogInfo("[FATE] State Change: ProcessingRetainers")
     elseif not LogInfo("[FATE] Ready -> GC TurnIn") and ShouldGrandCompanyTurnIn and
-        GetInventoryFreeSlotCount() < InventorySlotsLeft and not shouldWaitForBonusBuff
-    then
+        GetInventoryFreeSlotCount() < InventorySlotsLeft and not shouldWaitForBonusBuff then
         State = CharacterState.gcTurnIn
         LogInfo("[FATE] State Change: GCTurnIn")
     elseif not LogInfo("[FATE] Ready -> TeleportBackToFarmingZone") and not IsInZone(SelectedZone.zoneId) then

@@ -3,7 +3,7 @@
 
 ********************************************************************************
 *                             Wondrous Tails Doer                              *
-*                                Version 0.2.1                                 *
+*                                Version 0.2.2                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
@@ -27,6 +27,7 @@ Alliance Raids/PVP/Treasure Maps/Palace of the Dead
 - Skips them all
 
 
+    -> 0.2.1    Duty names updated after patch 7.2
     -> 0.2.0    Fixes for ex trials
                 Update for patch 7.1
 
@@ -219,6 +220,8 @@ if not HasWeeklyBingoJournal() or IsWeeklyBingoExpired() or WeeklyBingoNumPlaced
     yield("/wait 1")
 end
 
+yield("/bmrai on")
+
 -- skip 13: Shadowbringers raids (not doable solo unsynced)
 -- skip 14: Endwalker raids (not doable solo unsynced)
 -- skip 15: PVP
@@ -249,7 +252,6 @@ for i = 0, 12 do
             if duty.dutyId ~= nil then
                 yield("/autoduty run "..duty.dutyMode.." "..duty.dutyId.." 1 true")
                 yield("/echo [WonderousTails] 実行中（"..(i+1).."マス目）："..duty.dutyName)
-                yield("/bmrai on")
                 yield("/rotation auto")
                 yield("/rotation settings aoetype 2")
                 yield("/wait 10")

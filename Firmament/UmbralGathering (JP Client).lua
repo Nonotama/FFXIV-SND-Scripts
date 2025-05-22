@@ -65,7 +65,7 @@ Retainers = true
 
 -- How long to wait before mounting up for the next node. Actual value will be a
 -- random number in between MaxWait and MinWait
-MaxWait = 0.2
+MaxWait = 0.1
 MinWait = 0
 
 SelectedRoute = "RedRoute"
@@ -82,8 +82,8 @@ SelectedRoute = "RedRoute"
 -- This will let you tell the script WHICH item you want to gather. (So if I was gathering the 4th item from the top, I would input 4)
 -- This will NOT work with Pandora's Gathering, as a fair warning in itself.
 -- Options : 1 | 2 | 3 | 4 | 7 | 8 (1st slot... 2nd slot... ect)
-RegularGatheringSlot = 0.1
-UmbralGatheringSlot = 0.01
+RegularGatheringSlot = 4
+UmbralGatheringSlot = 1
 
 TargetType = 1
 -- This will let you tell the script which target to use Aethercannon.
@@ -871,7 +871,7 @@ function SkillCheck()
         Gift2 = "肥沃なる賜物II"
         Gift1 = "肥沃なる賜物I"
         Tidings2 = "ノフィカの福音"
-        Bountiful2 = "バウンティフルイールドII"
+        Bountiful2 = "バウンティフルハーベストII"
     else
         yield("/echo Cannot find gathering skills for class #"..class)
         yield("/snd stop")
@@ -986,8 +986,10 @@ function Gather()
         return
     end
 
+    local CloudedtName
     if IsAddonVisible("Gathering") and IsAddonReady("Gathering") then
-        if GetTargetName():sub(1, 7) == "Clouded" then
+        CloudedtName = GetTargetName()
+        if CloudedtName == "幻の採掘場" or CloudedtName == "幻の岩場" or CloudedtName == "幻の草刈場" or CloudedtName == "幻の良木" then
             local callback = "/callback Gathering true "..(UmbralGatheringSlot-1)
             LogInfo("[UmbralGathering] "..callback)
             yield(callback)

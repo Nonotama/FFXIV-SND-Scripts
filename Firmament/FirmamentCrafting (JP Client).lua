@@ -52,20 +52,20 @@ MinInventoryFreeSlots = 5
 
 SkybuildersCraftedItems =
 {
-    { className="Carpenter", classId=8, itemId=31953, recipeId=34473 },
-    { className="Blacksmith", classId=9, itemId=31954, recipeId=34474 },
-    { className="Armorer", classId=10, itemId=31955, recipeId=34475 },
-    { className="Goldsmith", classId=11, itemId=31956, recipeId=34476 },
-    { className="Leatherworker", classId=12, itemId=31957, recipeId=34477 },
-    { className="Weaver", classId=13, itemId=31958, recipeId=34478 },
-    { className="Alchemist", classId=14, itemId=31959, recipeId=34479 },
-    { className="Culinarian", classId=15, itemId=31960, recipeId=34480 }
+    { className="木工師", classId=8, itemId=31953, recipeId=34473 },
+    { className="鍛冶師", classId=9, itemId=31954, recipeId=34474 },
+    { className="甲冑師", classId=10, itemId=31955, recipeId=34475 },
+    { className="彫金師", classId=11, itemId=31956, recipeId=34476 },
+    { className="革細工師", classId=12, itemId=31957, recipeId=34477 },
+    { className="裁縫師", classId=13, itemId=31958, recipeId=34478 },
+    { className="錬金術師", classId=14, itemId=31959, recipeId=34479 },
+    { className="調理師", classId=15, itemId=31960, recipeId=34480 }
 }
 
 local Npcs =
 {
-    turnInNpc = "Potkin",
-    kupoVouchersNpc = "Lizbeth",
+    turnInNpc = "ポットキン",
+    kupoVouchersNpc = "リズベス",
     x = 52.750366, y = -16, z = 168.9325
 }
 
@@ -94,14 +94,14 @@ end
 function Crafting()
     local slots = GetInventoryFreeSlotCount()
     if slots <= MinInventoryFreeSlots then
-        yield("/echo Out of inventory slots")
+        yield("/echo インベントリの空きが設定値以下です。設定値： "..MinInventoryFreeSlots)
         ArtisanSetEnduranceStatus(false)
         if IsAddonVisible("RecipeNote") and GetCharacterCondition(CharacterCondition.preparingToCraft) then
             yield("/wait 1")
             yield("/echo Closing crafting log 1")
             yield("/callback RecipeNote true -1")
         elseif GetCharacterCondition(CharacterCondition.normal) then
-            yield("/echo Turning in")
+            yield("/echo 作成を開始します。")
             State = CharacterState.turnIn
             LogInfo("State Change: TurnIn")
         else
@@ -111,10 +111,10 @@ function Crafting()
         -- let artisan keep crafting
     elseif IsAddonVisible("RecipeNote") and OutOfMaterials() then
         if GetItemCount(ItemId) == 0 then
-            yield("/echo Out of materials. Stopping SND.")
+            yield("/echo SNDを停止しました。理由：材料が不足しているため")
             StopFlag = true
         else
-            yield("/echo Out of materials, doing final turnin")
+            yield("/echo 最終作成としました。理由：材料が不足しているため")
             yield("/callback RecipeNote true -1")
             yield("/wait 1")
             State = CharacterState.turnIn
@@ -136,14 +136,14 @@ function TurnIn()
         if IsAddonVisible("HWDSupply") then
             yield("/callback HWDSupply true -1")
         elseif GetInventoryFreeSlotCount() <= MinInventoryFreeSlots then
-            yield("/echo Out of inventory space. Stopping SND")
+            yield("/echo SNDを停止しました。理由：インベントリの空きが設定以下になったため")
             StopFlag = true
         else
             State = CharacterState.crafting
             LogInfo("State Change: Crafting")
         end
     elseif GetItemCount(28063) >= 9900 then
-        yield("/echo Almost capped on Skybuilders' Scrips! Stopping SND.")
+        yield("/echo SNDを停止しました。理由：振興券が上限に達するため")
         StopFlag = true
     elseif GetDistanceToPoint(Npcs.x, Npcs.y, Npcs.z) > 5 then
         if not PathfindInProgress() and not PathIsRunning() then
@@ -196,7 +196,7 @@ function KupoVoucherLottery()
             PathfindAndMoveTo(Npcs.x, Npcs.y, Npcs.z)
         end
     else
-        yield("/target Lizbeth")
+        yield("/target "..Npcs.kupoVouchersNpc)
         yield("/wait 0.5")
         yield("/interact")
         yield("/wait 1")

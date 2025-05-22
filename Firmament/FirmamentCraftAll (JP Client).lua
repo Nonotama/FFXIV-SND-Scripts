@@ -16,7 +16,7 @@ FirmamentCrafting.lua in order for this to work.
 ********************************************************************************
 ]]
 
-MacroName = "Craft Skybuilders' Items"      -- this is what you named the FirmamentCrafting.lua script in SND
+MacroName = "Crafting"      -- this is what you named the FirmamentCrafting.lua script in SND
 
 --[[
 ********************************************************************************
@@ -25,14 +25,14 @@ MacroName = "Craft Skybuilders' Items"      -- this is what you named the Firmam
 ]]
 
 Classes = {
-    "Carpenter",
-    "Blacksmith",
-    "Armorer",
-    "Goldsmith",
-    "Leatherworker",
-    "Weaver",
-    "Alchemist",
-    "Culinarian"
+    "木工師",
+    "鍛冶師",
+    "甲冑師",
+    "彫金師",
+    "革細工師",
+    "裁縫師",
+    "錬金術師",
+    "調理師"
 }
 
 CharacterCondition = {
@@ -46,8 +46,8 @@ CharacterCondition = {
 
 local Npcs =
 {
-    turnInNpc = "Potkin",
-    kupoVouchersNpc = "Lizbeth",
+    turnInNpc = "ポットキン",
+    kupoVouchersNpc = "リズベス",
     x = 52.750366, y = -16, z = 168.9325
 }
 
@@ -57,24 +57,24 @@ function TeleportTo(aetheryteName)
     yield("/tp "..aetheryteName)
     yield("/wait 1") -- wait for casting to begin
     while GetCharacterCondition(CharacterCondition.casting) do
-        LogInfo("[FATE] Casting teleport...")
+        LogInfo("[Firmament Craft All] Casting teleport...")
         yield("/wait 1")
     end
     yield("/wait 1") -- wait for that microsecond in between the cast finishing and the transition beginning
     while GetCharacterCondition(CharacterCondition.betweenAreas) do
-        LogInfo("[FATE] Teleporting...")
+        LogInfo("[Firmament Craft All] Teleporting...")
         yield("/wait 1")
     end
     yield("/wait 1")
 end
 
 if not (IsInZone(FoundationZoneId) or IsInZone(FirmamentZoneId)) then
-    TeleportTo("Foundation")
+    TeleportTo("イシュガルド：下層")
 end
 if IsInZone(FoundationZoneId) then
-    yield("/target aetheryte")
+    yield("/target エーテライト")
     yield("/wait 1")
-    if GetTargetName() == "aetheryte" then
+    if GetTargetName() == "エーテライト" then
         yield("/interact")
     end
     repeat

@@ -40,7 +40,7 @@ Plugins that are needed for it to work:
 ********************************************************************************
 ]]
 
-MinInventoryFreeSlots = 5
+MinInventoryFreeSlots = 2
 
 --#endregion Settings
 
@@ -101,7 +101,7 @@ function Crafting()
             yield("/echo Closing crafting log 1")
             yield("/callback RecipeNote true -1")
         elseif GetCharacterCondition(CharacterCondition.normal) then
-            yield("/echo 作成を開始します。")
+            yield("/echo スクリプトを開始します。")
             State = CharacterState.turnIn
             LogInfo("State Change: TurnIn")
         else
@@ -196,6 +196,7 @@ function KupoVoucherLottery()
             PathfindAndMoveTo(Npcs.x, Npcs.y, Npcs.z)
         end
     else
+        yield("/wait 3")
         yield("/target "..Npcs.kupoVouchersNpc)
         yield("/wait 0.5")
         yield("/interact")

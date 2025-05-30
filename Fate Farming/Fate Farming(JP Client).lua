@@ -2,14 +2,16 @@
 
 ********************************************************************************
 *                                Fate Farming                                  *
-*                               Version 2.21.13                                *
+*                               Version 2.22.1                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
 Contributors: Prawellp, Mavi, Allison
 State Machine Diagram: https://github.com/pot0to/pot0to-SND-Scripts/blob/main/FateFarmingStateMachine.drawio.png
 
-    -> 2.21.13  Added more logging for FlyBackToAetheryte
+    -> 2.22.0   Updated vnav to use flag navigation, since it works better in
+                    occult. Updated to prevent textadvance spam
+                Added more logging for FlyBackToAetheryte
                 Added 1s wait after mount so you're firmly on the mount. Seems
                     like some languages like Chinese execute log and echo
                     messages faster than English, causing the next Pathfind step
@@ -119,7 +121,7 @@ MinWait                             = 1             --Min number of seconds it s
 MaxWait                             = 3            --Max number of seconds it should wait until mounting up for next fate.
                                                         --Actual wait time will be a randomly generated number between MinWait and MaxWait.
 DownTimeWaitAtNearestAetheryte      = false         --When waiting for fates to pop, should you fly to the nearest Aetheryte and wait there?
-EnableChangeInstance                = true          --should it Change Instance when there is no Fate (only works on DT fates)
+EnableChangeInstance                = false          --should it Change Instance when there is no Fate (only works on DT fates)
     WaitIfBonusBuff                 = true          --Don't change instances if you have the Twist of Fate bonus buff
     NumberOfInstances               = 2
 ShouldExchangeBicolorGemstones      = true         --Should it exchange Bicolor Gemstone Vouchers?
@@ -189,7 +191,9 @@ elseif RotationPlugin == "VBM" and DodgingPlugin ~= "VBM"  then
     DodgingPlugin = "VBM"
 end
 
-yield("/at y")
+if not CompanionScriptMode then
+    yield("/at y")
+end
 
 --snd property
 function setSNDProperty(propertyName, value)
@@ -1870,6 +1874,7 @@ function MoveToFate()
     end
 
     if TeleportToClosestAetheryteToFate(CurrentFate) then
+        LogInfo("Executed teleport to closer aetheryte")
         return
     end
 
@@ -1885,7 +1890,9 @@ function MoveToFate()
     end
 
     if GetDistanceToPoint(nearestLandX, nearestLandY, nearestLandZ) > 5 then
-        PathfindAndMoveTo(nearestLandX, nearestLandY, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying)
+        yield("/vnav moveflag")
+        -- LogInfo("[FATE] Moving to: "..nearestLandX..", "..nearestLandY.." "..nearestLandZ..", "..tostring(HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying))
+        -- PathfindAndMoveTo(nearestLandX, nearestLandY, nearestLandZ, HasFlightUnlocked(SelectedZone.zoneId) and SelectedZone.flying)
     else
         State = CharacterState.middleOfFateDismount
     end
@@ -2031,7 +2038,7 @@ function SummonChocobo()
         if GetItemCount(4868) > 0 then
             yield("/item ギサールの野菜")
             yield("/wait 3")
-            if GetZoneID() == 1190 or GetZoneID() == 1191 or GetZoneID() == 1192 then
+            if GetZoneID() == 1187 or GetZoneID() == 1188 or GetZoneID() == 89 GetZoneID() == 1190 or GetZoneID() == 1191 or GetZoneID() == 1192 then
                 yield("/cac "..ChocoboStance)
             else
                 yield("/cac アタッカースタンス")

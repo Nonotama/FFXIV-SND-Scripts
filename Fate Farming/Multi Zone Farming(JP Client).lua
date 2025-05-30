@@ -86,6 +86,7 @@ for i=1, #ZonesToFarmTable do
         LogInfo("[MultiZone] AddFarmTable:" .. ZonesToFarmTable[i].zoneName)
     end
 end
+yield("/at y")
 FarmingZoneIndex = 1
 for i=1, #ZonesToFarm do
     if GetZoneID() == ZonesToFarm[i].zoneId then

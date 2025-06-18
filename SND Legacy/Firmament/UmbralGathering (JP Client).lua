@@ -125,6 +125,7 @@ debug = false
 --#region Gathering Nodes
 
 UmbralWeatherNodes = {
+    --[[
     flare = {
         weatherName = "焔霊風",
         weatherId = 133,
@@ -136,7 +137,7 @@ UmbralWeatherNodes = {
             class = "採掘師"
         },
         fishingNode = {
-            itemName = "Grade 4 Artisanal Skybuilders' Crimson Namitaro",
+            itemName = "第四次復興用の特注レッドナミタロ",
             baitName = "ディアデム・ガガンボ",
             baitId = 30280,
             x = 370.88373, y = 255.67848, z = 525.73334,
@@ -155,7 +156,7 @@ UmbralWeatherNodes = {
             class = "園芸師"
         },
         fishingNode = {
-            itemName = "Grade 4 Artisanal Skybuilders' Marrella",
+            itemName = "第四次復興用の特注マーレラ",
             baitName = "ディアデム・ホバーワーム",
             baitId = 30281,
             x = 589.21, y=188.84, z=-571.89,
@@ -163,6 +164,7 @@ UmbralWeatherNodes = {
             autohookPreset = "AH4_H4sIAAAAAAAACu1YS2/bOBD+K4YuezEBPahXbq6TuAGcbFCn2MNiDxRF2YRl0aWott4i/71DSYwlW46DwNjL5mR6OPPNQ6OPQ/2yJpUSU1Kqcpotratf1k1BkpxN8ty6UrJiY0tvznnB9pup2bqDlRvFY+tRciG52llXDkjLm580r1KW7sVa/7nBuheCrjRYvXD1qsYJorE12z6tJCtXIgeJY9s95Neha4w47FnYZ4OZrqqNiQA7Nj4TgrESec6o6hg6XTX3vFshU05yAxA4uAeAW7VbXq5udqzsOPIPIvT9XoSBKTJZs8WKZ+oT4XWcWlAawUIRugZUAGtLf4zbRY1b1EeiOCso68QTHNoF/Yq5xlTyf9mUqObRG6+H1u5Bvb3W+mlFck7W5S35LqQG6AlMOt64L//CqPjOQN/RRTI+cc+DKdgnvpyRTZ3ZpFjmTJYG1W1MvdDGR+H2oKJnwLr5qSRpXyVd6iex+EG2d4WquOKimBFemAIgeObzSrJ7VpZkCa4ta2w91EFYDwJeuHGDsNuCRFdiAG8uSvVuvEdIhA1HaCHrxH7jsd7fx7PYwusgST6tpGSFulCWB6gXy3Uw2qOMB73XWrdCUla/R6BmuLAWplpad4vtRhBi00oLJbb6VebFcqEYWDjdLNt2m8jLJNeFq6P9WvBvFdO4VmY7mccoRRkmIcKuFyNCPYa8wAYGyryQEGoB3pyX6s9M+4D+/7tpZJ2ACbDN7lSM15ykbDP6rF++H0JuNOQD/JL8sxBrDWKI5C9G6v9aDhm8HC8ZyUuoafO/3ewWuxU1FcBOqAnKYC6UFMXyAqi210GdsyUrUiJ3+2PwjQjXogLlg0wbDTeIXxSOwj5W6cUwoPUk+faUp9B3vReVU756Sq94a/V0X08yxeSUVMsVDAkbfdZAYww1fD1GQMPUh5ledFh7YKzwQj8+Po1fOVj1CGA4yrTZF/at4pKl4EpV+rzTM8aJ3ntbL53vjY8WeFcLvPeZd9gtiTwH27aP/Ih4CMcZRkkW2ChlYeb5mDghyaznfwy9tXPoEL3BTItP09tMAr2N8Gix3iUVz1Ng2z9GsxWcD6NbwiTv87OeGT/I74P8Lt75H2z3v2Y7xtIAx4GLgphECDtBihKPhigMPVh7buDbdoftGn4DsusTXWy/gehgluQlKUjep7x7AoNxnpMjujtZprsUBmlOYaaG2uggGoXJRlRFR21gHMB+fHj58vo330g7rmRG4NTO9UTWXlH92D9zyfTBcuCjxNC3jv/8G8X+mvDuy4E21pKpLnJd3+51ob0k6GUj3qsNNXWnAZ0wSZyIUcT8MEA4dWIU0yREASEOzmInyGhaN2CD24b4dZPAnWp0XcEXJwV3ghEavb3NOt7d0AkpjWzo9yiDw94JUIRZgtwwpTiMUzegkfX8G7s7jfLfEgAA"
         }
     },
+    ]]
     levin = {
         weatherName = "雷霊風",
         weatherId = 135,
@@ -174,7 +176,7 @@ UmbralWeatherNodes = {
             class = "採掘師"
         },
         fishingNode = {
-            itemName = "Grade 4 Artisanal Skybuilders' Meganeura",
+            itemName = "第四次復興用の特注メガネウラ",
             baitName = "ディアデム・レッドバルーン", -- mooched from Grade 4 Skybuilders' Ghost Faerie
             baitId = 30279,
             x = 365.84, y = -193.35, z = -222.72,
@@ -182,6 +184,7 @@ UmbralWeatherNodes = {
             autohookPreset = "AH4_H4sIAAAAAAAACu1YS3OjRhD+KyouuYgqHsPLN1lrK66SHZflrRxSOQzQSFNCjHYYnFW2/N+3BxgLJGTFu04u8Y3q6f76QfN1D9+MSSX5lJaynGZL4+KbcVXQOIdJnhsXUlQwNtThnBWwP0z10Q0+OWE0Nu4F44LJnXFho7S8+prkVQrpXqz0nxusW86TlQKrHxz1VOP44diYbR9XAsoVz1FiW1YP+XXoGiMKehbW2WCmq2qjIyC2Rc6EoK14nkMiO4Z2V80575aLlNFcA/g26QGQVu2alaurHZQdR95BhJ7Xi9DXRaZrWKxYJi8pq+NUglILFpIma0RFsLb0x7hd1KhFvaeSQZFAJx7/0M7vV8zRpoL9DVMqm1evvR5aOwf1dlvrxxXNGV2X1/SJCwXQE+h03HFf/gAJfwLUt1WRtE/S86ALdsmWM7qpM5sUyxxEqVGdxtQNLHIUbg8qfEasq69S0PZTUqV+5Iu/6PamkBWTjBczygpdABPf+bwScAtlSZfo2jDGxl0dhHHH8YMbNwi7LUpUJQbw5ryUP4x3j4nAcISGaZw4bzzW5/t4Flv8HATNp5UQUMh3yvIA9d1yHYz2KONB77XWNRcJ1N8RqmkurIWpktbdYjkB8mLTSgvJt+pTZsVyIQEt7G6WbbtNxPsk14Wro/1csC8VKFwjirOMxEFohmlMTBJBZoaxH5uh7YVpFIV2HKYG4s1ZKX/LlA/s/z+aRlYJ6ADb7E7F+InRFDajB0hHlzTPOS8U6B0XG5r/yvlawWgq+R3oej9Z1Clm0q1rK2qSJXaguEgbL6TgRf2ptVov8ymjeYnG/xTVcjuoc1hCkVKxe0tcNcInXqGyTqmn4fjRi8JR2McqvRgGtB4F257yFHiO+6JyyldP6RVvrZ5q4UkmQUxptVzhPrBRYwX7dKi3640Be6OeW+qhQ9ANlXrR8aR9ZWiq8a75RzfQA3ypmIAUsWWlZpnaHw676k3Nc74ZPt75f/rOO8yVZikyVeKauCpRZK4ISYvEnplR1/JJ4AKNwXj+U1NXu2MOURfuq+Q0dc0EUteIjBbrXVyxPEUm/WU0WyH3j64pCNbnXvssrf0kL32w3QfbfbDd/2PCdfc0n4Zu6HkmBIBsZ/uBSePYNz0nBjcIsixzgg7bNfyGZPevEt3JAt2kuB6zBDdlrIpy3yhMNrwqemrIaF50eIdy+xfYUHmqREZxQOeKF9ubphd5Z+6KHloO/FsY+mXxk78ahiDf9Odhv/z/8MqvjJVkqopc17d7CWhXf/XYiPdqQ+3cHbReYmdJSM0kAdsk1A7MOM4sMwv82A8pdiD169ZrcNsQP29ivCmN5vDEipE50s2FlxBW0gJPem12C0taQCVo/3aSAlgUosC0Xd/FGU+IGWZObJLM9QhJApdYifH8HeK2JzeyEgAA"
         }
     },
+    --[[
     tempest = {
         weatherName = "嵐霊風",
         weatherId = 136,
@@ -193,7 +196,7 @@ UmbralWeatherNodes = {
             class = "園芸師"
         },
         fishingNode = {
-            itemName = "Grade 4 Artisanal Skybuilders' Griffin",
+            itemName = "第四次復興用の特注グリフィン",
             baitName = "ディアデム・ホバーワーム", -- mooched from Grade 4 Skybuilders' Ghost Faerie
             baitId = 30281,
             x = -417.17, y = -206.7, z = 165.31,
@@ -201,6 +204,7 @@ UmbralWeatherNodes = {
             autohookPreset = "AH4_H4sIAAAAAAAACu1YS2/bOBD+K4YuezEBvR+5uW7iBnCzQe1iD4seKGloE5ZFl5Laeov89w4lMZZsOW7a7F42J8vDmW8eGn4c6rsxqUoxpUVZTNnKuPpuXOc0zmCSZcZVKSsYG2pxznM4LKZ66Raf7DAaG/eSC8nLvXFlobS4/pZkVQrpQaz0Hxqs90IkawVWP9jqqcbxw7Ex2y3XEoq1yFBimWYP+WnoGiMKehbmxWCm62qrI3At070QgrYSWQZJ2TG0umr2ZbdCppxmGsC33B6A26rd8GJ9vYei48g7itDzehH6ush0A4s1Z+Ubyus4laDQgkVJkw2iIlhb+lPcLmrUot7TkkOeQCce/9jO71fM1qaS/wNTWjavXns9traP6u201ss1zTjdFDf0i5AKoCfQ6TjjvvwDJOILoL6liqR9uj0PumBv+GpGt3Vmk3yVgSw0qt2YOoHpnoTbgwofEOv6Wylpu5VUqZdi8ZXubvOy4iUX+YzyXBeA4DufVxLeQ1HQFbo2jLFxVwdh3AnccOMGYb9DiarEAN5cFOUv491jIjAcoUGMM+uNx3r9EM9ih9tB0mxaSQl5+UJZHqG+WK6D0Z5kPOi91roRMoF6H6Ga5sJamCpp3S2mHWKITSstSrFTW5nnq0UJaGF1s2zbbSJfJrkuXB3tx5x/rkDhGhGkoRVbjDDP84nrxAmJIjMi4Ns2Tf0gpbFnIN6cF+WfTPnA/v+7aWSVgA6wze5cjG85TWE7eqc231chtwryDn9p9k6IjQLRRPIX0M3hXFGrmEe3qq2oSdW1AsVE2nhRSpHXG63VejydGM0KNP5ZVNPpoM5hBXlK5f45cdUIb0WFyjqlnobtR48KJ2GfqvRiGNBaSr475ynwbOdR5ZyvntIT3lo91cATVoKc0mq1xmlgqw4V7IChzq7nBeyM+tRSDx16bojUi07P2SeOTHW4a/bRDfQBPldcQorYZaVOMjU9HHfVs5rncjO8vvP/9J13eIt6LvMixyY0djzixk5AQtMOiBs5cZqkvhmllvHwSRNXO2EOERdOq+554ppJJK6RO1ps9nHFsxR59I/RbI3MP7qhIHmfea2LtPabvPTKdq9s98p2/48TrjulubFtJn5MGAPkOAaMhD7+BbzGWNRMUy9KOmzX8BuS3b9KdGcLdJvicMwTnJOxKsp9ozDZiirvqSGjedHxDcrpX19D5amSjOIBnSlebO+ZXuRduCl6aDnwZWHog8VvfmgYgnzWd4fD6P/LA78yVpKpKnJd3+4VoB381WMjPqgNtXOn9RjQILDCmFjMDYlr+gGhLGEkdlzLsRi1Q9+sW6/BbUP8uI3xnjRawnYH2EFkpNsLLyG8oDmu9RtNcsbwztVzHXjoHMKQYOMCcS1s/YiykOBAxrwYrDhkkfHwAyNEPC6wEgAA"
         }
     }
+    ]]
 }
 
 MinerRoutes = {
@@ -266,7 +270,7 @@ GatheringRoute =
         {x = -526.76, y = 332.83, z = 506.12, nodeName = "岩場"},
         {x = -577.23, y = 331.88, z = 519.38, nodeName = "採掘場"},
         {x = -558.09, y = 334.52, z = 448.38, nodeName = "採掘場"}, -- End of Island #7
-        {x = -729.13, y = 272.73, z = -62.52, nodeName = "採掘場"}
+        {x = -729.13, y = 272.73, z = -62.52, nodeName = "採掘場"},
     },
 
     BotanistIslands =
@@ -310,27 +314,29 @@ GatheringRoute =
         {x = 529, y = -10, z = 279, nodeName = "草刈場"},
         {x = 474, y = -24, z = 197, nodeName = "草刈場"},
     },
+
     RedRoute =
     {
-        {x = -161.2715, y = -3.5233, z = -378.8041, nodeName = "岩場", antistutter = 0}, -- Start of the route
-        {x = -169.3415, y = -7.1092, z = -518.7053, nodeName = "採掘場", antistutter = 0}, -- Around the tree (Rock + Bones?)
-        {x = -78.5548, y = -18.1347, z = -594.6666, nodeName = "採掘場", antistutter = 0}, -- Log + Rock (Problematic)
-        {x = -54.6772, y = -45.7177, z = -521.7173, nodeName = "採掘場", antistutter = 0}, -- Down the hill
-        {x = -22.5868, y = -26.5050, z = -534.9953, nodeName = "岩場", antistutter = 0}, -- up the hill (rock + tree)
-        {x = 59.4516, y = -41.6749, z = -520.2413, nodeName = "岩場", antistutter = 0}, -- Spaces out nodes on rock (hate this one)
-        {x = 102.3, y = -47.3, z = -500.1, nodeName = "採掘場", antistutter = 0}, -- Over the gap
-        {x = -209.1468, y = -3.9325, z = -357.9749, nodeName = "採掘場", antistutter = 1},
+        {x = -161.2, y = -3.5, z = -378.8, nodeName = "岩場"}, -- Start of the route
+        {x = -169.3, y = -7.1, z = -518.7, nodeName = "採掘場"}, -- Around the tree (Rock + Bones?)
+        {x = -78.5, y = -18.1, z = -594.6, nodeName = "採掘場"}, -- Log + Rock (Problematic)
+        {x = -54.6, y = -45.7, z = -521.7, nodeName = "採掘場"}, -- Down the hill
+        {x = -22.5, y = -26.5, z = -534.9, nodeName = "岩場"}, -- up the hill (rock + tree)
+        {x = 59.4, y = -41.6, z = -520.24, nodeName = "岩場"}, -- Spaces out nodes on rock (hate this one)
+        {x = 102.3, y = -47.3, z = -500.1, nodeName = "採掘場"}, -- Over the gap
+        {x = -209.1, y = -3.9, z = -357.9, nodeName = "採掘場"},
     },
+
     PinkRoute =
     {
-        {x = -248.6381, y = -1.5664, z = -468.8910, nodeName = "草刈場", antistutter = 0},
-        {x = -338.3759, y = -0.4761, z = -415.3227, nodeName = "草刈場", antistutter = 0},
-        {x = -366.2651, y = -1.8514, z = -350.1429, nodeName = "草刈場", antistutter = 0},
-        {x = -431.2000, y = 27.5000, z = -256.7000, nodeName = "良木", antistutter = 0}, --tree node
-        {x = -473.4957, y = 31.5405, z = -244.1215, nodeName = "良木", antistutter = 0},
-        {x = -536.5187, y = 33.2307, z = -253.3514, nodeName = "草刈場", antistutter = 0},
-        {x = -571.2896, y = 35.2772, z = -236.6808, nodeName = "草刈場", antistutter = 0},
-        {x = -215.1211, y = -1.3262, z = -494.8219, nodeName = "草刈場", antistutter = 1}
+        {x = -248.63, y = -1.56, z = -468.89, nodeName = "草刈場"}, --カイマン／小麦
+        {x = -338.37, y = -0.47, z = -415.32, nodeName = "草刈場"}, --マユ／陸亀
+        {x = -366.26, y = -1.85, z = -350.14, nodeName = "草刈場"}, --研草／綿花
+        {x = -431.20, y = 27.50, z = -256.70, nodeName = "良木"}, --原木／古代樹脂
+        {x = -473.49, y = 31.54, z = -244.12, nodeName = "良木"}, --ラズベリー／ホワイトシーダー原木
+        {x = -536.51, y = 33.23, z = -253.35, nodeName = "草刈場"}, --マユ／陸亀
+        {x = -571.28, y = 35.27, z = -236.68, nodeName = "草刈場"}, -- 研草／綿花
+        {x = -215.12, y = -1.32, z = -494.82, nodeName = "草刈場"}, --マユ／陸亀
     },
 
     MinerSilex = {
@@ -390,7 +396,9 @@ MobTable =
 
 spawnisland_table =
 {
-    {x = -605.7039, y = 312.0701, z = -159.7864, antistutter = 0},
+    {
+        x = -605.7039, y = 312.0701, z = -159.7864
+    },
 }
 
 local Mender = {

@@ -12,7 +12,7 @@ plugin_dependencies: visland, vnavmesh, RotationSolver, SimpleTweaksPlugin
 
 --User Config
 local VISLAND_ROUTE = "Panthers"
-local WAR_GEARSET_NAME =  "Warrior"
+local WAR_GEARSET_NAME =  "戦士"
 local ST_PHANTOMJOB_COMMAND =  "phantomjob"
 local spendGold = true -- Set to false if you want to disable spending currency automatically
 local ciphersWanted = 3 -- Number of ciphers to keep in inventory
@@ -29,7 +29,7 @@ import("System.Numerics")
 -- Constants
 local OCCULT_CRESCENT = 1252
 local PHANTOM_VILLAGE = 1278
-local INSTANCE_ENTRY_NPC = "Jeffroy"
+local INSTANCE_ENTRY_NPC = "ジェッフロイ"
 local ENTRY_NPC_POS = Vector3(-77.958374, 5, 15.396423)
 local REENTER_DELAY = 10
 local GOLD_DUMP_LIMIT = 9500
@@ -37,14 +37,14 @@ local gold = Inventory.GetItemCount(45044)
 local ciphers = Inventory.GetItemCount(47739)
 
 -- Shop Config
-local VENDOR_NAME = "Expedition Antiquarian"
+local VENDOR_NAME = "探査隊の古銭鑑定士"
 local VENDOR_POS = Vector3(833.83, 72.73, -719.51)
 local BaseAetheryte = Vector3(830.75, 72.98, -695.98)
 local ShopItems = {
-    { itemName = "Aetherial Fixative", menuIndex = 3, itemIndex = 5, price = 1600 },
+    { itemName = "フィキサチーフ", menuIndex = 3, itemIndex = 5, price = 1600 },
 }
 local CipherStore = {
-    { itemName = "Sanguine Cipher", menuIndex = 6, menuIndex2 = 1, itemIndex = 0, price = 960 },
+    { itemName = "魔紋起動証:力の塔", menuIndex = 6, menuIndex2 = 1, itemIndex = 0, price = 960 },
 }
 
 -- Character Conditions
@@ -76,7 +76,7 @@ local CharacterState = {}
 
 -- Helper Functions
 local function Sleep(seconds)
-    yield('/wait ' .. tostring(seconds))
+    yield("/wait " .. tostring(seconds))
 end
 
 local function WaitForAddon(addonName, timeout)
@@ -92,7 +92,7 @@ local function TurnOnRoute()
     if not goldFarming then
         goldFarming = true
         Sleep(5) --Safety sleep to ensure instance is fully loaded before changing anything
-        yield("/" .. ST_PHANTOMJOB_COMMAND .. " cannoneer")
+        yield("/" .. ST_PHANTOMJOB_COMMAND .. " 砲撃士")
         Sleep(0.5)
         yield("/gearset change " .. WAR_GEARSET_NAME)
         Sleep(0.5)
@@ -118,7 +118,7 @@ local function TurnOffRoute()
 end
 
 local function ReturnToBase()
-    yield("/gaction Return")
+    yield("/gaction デジョン")
     repeat
         Sleep(1)
     until not Svc.Condition[CharacterCondition.casting]
@@ -188,13 +188,13 @@ end
 
 function CharacterState.reenterInstance()
     local instanceEntryAddon = Addons.GetAddon("ContentsFinderConfirm")
-    yield("/echo [OCM] Detected exit from duty. Waiting " .. REENTER_DELAY .. " seconds before re-entry...")
+    yield("/echo [OCM] インスタンスの退出を確認しました。 再入場まで" .. REENTER_DELAY .. "秒お待ち下さい。")
     goldFarming = false
     Sleep(REENTER_DELAY)
 
     local npc = Entity.GetEntityByName(INSTANCE_ENTRY_NPC)
     if not npc then
-        yield("/echo [OCM] Could not find " .. INSTANCE_ENTRY_NPC .. ". Retrying in 10 seconds...")
+        yield("/echo [OCM] " .. INSTANCE_ENTRY_NPC .. " が見つかりません。再試行まで10秒お待ち下さい。")
         Sleep(10)
         return
     end
@@ -217,7 +217,7 @@ function CharacterState.reenterInstance()
 
         if instanceEntryAddon and instanceEntryAddon.Ready then
             yield("/callback ContentsFinderConfirm true 8")
-            yield("/echo [OCM] Re-entry confirmed.")
+            yield("/echo [OCM] 再入場を確認しました。")
         end
 
         while not Svc.Condition[CharacterCondition.boundByDuty34] do
@@ -228,11 +228,11 @@ function CharacterState.reenterInstance()
             Sleep(0.1)
         end
 
-        yield("/echo [OCM] Instance loaded.")
+        yield("/echo [OCM] インスタンスをロードしています。")
         
         State = CharacterState.ready
     else
-        yield("/echo [OCM] Dialog options did not appear.")
+        yield("/echo [OCM] ダイアログのオプションが表示されませんでした。")
         Sleep(5)
     end
 end
@@ -243,7 +243,7 @@ function CharacterState.dumpGold()
     local ciphers = Inventory.GetItemCount(47739)
 
     if gold < GOLD_DUMP_LIMIT then
-        yield("/echo [OCM] Gold below threshold, returning to ready state.")
+        yield("/echo [OCM] 金貨所持数が設定値以下となりました。待機状態となります。")
         State = CharacterState.ready
         return
     end
@@ -321,7 +321,7 @@ function CharacterState.dumpGold()
         end
 
         while shopAddon and shopAddon.Ready do
-            yield("/echo [OCM] Buying complete.")
+            yield("/echo [OCM] 金貨アイテムの購入完了")
             yield("/callback ShopExchangeCurrency true -1")
             State = CharacterState.ready
             return
@@ -351,12 +351,12 @@ function CharacterState.dumpGold()
 end
 
 if Svc.Condition[34] and Svc.ClientState.TerritoryType == OCCULT_CRESCENT then
-    yield("/echo [OCM] Script started inside the instance. Waiting for full load...")
+    yield("/echo [OCM] インスタンスをロードしています。ロード完了までお待ち下さい。")
     Sleep(2)
     while IPC.vnavmesh.PathfindInProgress() or IPC.vnavmesh.IsRunning() do
         Sleep(1)
     end
-    yield("/echo [OCM] Instance loaded. Enabling route...")
+    yield("/echo [OCM] インスタンスのロードが完了しました。開始できます。")
     TurnOnRoute()
 end
 

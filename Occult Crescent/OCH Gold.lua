@@ -15,7 +15,6 @@ local VISLAND_ROUTE = "Panthers"
 local WAR_GEARSET_NAME =  "戦士"
 local ST_PHANTOMJOB_COMMAND =  "phantomjob"
 local spendGold = true -- Set to false if you want to disable spending currency automatically
-local ciphersWanted = 3 -- Number of ciphers to keep in inventory
 
 --[[
     DO NOT TOUCH ANYTHING BELOW THIS UNLESS YOU KNOW WHAT YOU'RE DOING.
@@ -34,7 +33,6 @@ local ENTRY_NPC_POS = Vector3(-77.958374, 5, 15.396423)
 local REENTER_DELAY = 10
 local GOLD_DUMP_LIMIT = 9500
 local gold = Inventory.GetItemCount(45044)
-local ciphers = Inventory.GetItemCount(47739)
 
 -- Shop Config
 local VENDOR_NAME = "探査隊の古銭鑑定士"
@@ -42,9 +40,6 @@ local VENDOR_POS = Vector3(833.83, 72.73, -719.51)
 local BaseAetheryte = Vector3(830.75, 72.98, -695.98)
 local ShopItems = {
     { itemName = "フィキサチーフ", menuIndex = 3, itemIndex = 5, price = 1600 },
-}
-local CipherStore = {
-    { itemName = "魔紋起動証:力の塔", menuIndex = 6, menuIndex2 = 1, itemIndex = 0, price = 960 },
 }
 
 -- Character Conditions
@@ -73,6 +68,7 @@ CharacterCondition = {
 -- State Machine
 local State = nil
 local CharacterState = {}
+local goldFarming = false
 
 -- Helper Functions
 local function Sleep(seconds)
@@ -128,10 +124,9 @@ local function ReturnToBase()
 end
 
 -- State Implementations
-local goldFarming = false
 function CharacterState.ready()
-    if Svc.Condition[CharacterCondition.betweenAreas] then
-        Sleep(5)
+    while Svc.Condition[CharacterCondition.betweenAreas] do
+        Sleep(0.1)
     end
 
     local inInstance = Svc.Condition[CharacterCondition.boundByDuty34] and Svc.ClientState.TerritoryType == OCCULT_CRESCENT
@@ -184,6 +179,7 @@ function CharacterState.zoneIn()
             TurnOnRoute()
         end
     end
+    State = CharacterState.ready
 end
 
 function CharacterState.reenterInstance()
@@ -224,12 +220,9 @@ function CharacterState.reenterInstance()
             Sleep(1)
         end
 
-        while Svc.Condition[CharacterCondition.betweenAreas] do
-            Sleep(0.1)
-        end
-
         yield("/echo [OCM] インスタンスをロードしています。")
         
+        Sleep(2.5) --safety sleep on re-entry
         State = CharacterState.ready
     else
         yield("/echo [OCM] ダイアログのオプションが表示されませんでした。")
@@ -240,7 +233,6 @@ end
 function CharacterState.dumpGold()
     -- Refresh silver and ciphers count
     local gold = Inventory.GetItemCount(45044)
-    local ciphers = Inventory.GetItemCount(47739)
 
     if gold < GOLD_DUMP_LIMIT then
         yield("/echo [OCM] 金貨所持数が設定値以下となりました。待機状態となります。")
@@ -270,53 +262,6 @@ function CharacterState.dumpGold()
             IPC.vnavmesh.PathfindAndMoveTo(VENDOR_POS, false)
         end
     end
-
---[[    Commented this part out for now until I can work on it some more.
-
-        if ciphers < ciphersWanted then
-        if yesnoAddon and yesnoAddon.Ready then
-            yield("/callback SelectYesno true 0")
-            
-            --Wait for the shopAddon to be ready
-            while not shopAddon and shopAddon.Ready do
-                Sleep(1)
-            end
-
-            while shopAddon and shopAddon.Ready do
-                yield("/echo [OCM] Buying complete.")
-                yield("/callback ShopExchangeCurrency true -1")
-                State = CharacterState.ready
-                return
-            end
-            State = CharacterState.ready
-        elseif shopAddon and shopAddon.Ready then
-            local ciphersNeeded = ciphersWanted - ciphers
-            local ciphersToBuy = math.ceil(ciphersNeeded / CipherStore[1].price)
-            if ciphersToBuy <= 0 then
-                yield("/echo [OCM] Already have desired number of ciphers.")
-                State = CharacterState.ready
-                return
-            end
-            yield("/echo [OCM] Purchasing " .. ciphersToBuy .. " " .. CipherStore[1].itemName)
-            yield("/callback ShopExchangeCurrency true 0 " .. CipherStore[1].itemIndex .. " " .. ciphersToBuy .. " 0")
-            Sleep(1)
-            yield("/echo [OCM] Buying ciphers complete.")
-            yield("/callback ShopExchangeCurrency true -1")
-            State = CharacterState.ready
-        elseif iconStringAddon and iconStringAddon.Ready then
-            yield("/callback SelectIconString true " .. CipherStore[1].menuIndex)
-            State = CharacterState.ready 
-        elseif selectStringAddon and selectStringAddon.Ready then
-            yield("/callback SelectString true " .. CipherStore[1].menuIndex2)
-        end
-
-        yield("/interact")
-        Sleep(1)
-
-        State = CharacterState.ready
-
-    end
-    ]]
 
     --Buy Aetherial Fixative
     if yesnoAddon and yesnoAddon.Ready then

@@ -123,10 +123,35 @@ local function ReturnToBase()
     until not Svc.Condition[CharacterCondition.betweenAreas]
 end
 
+function OnStop()
+    Dalamud.LogDebug("[OCM] Stopping OCH Gold script...")
+    Dalamud.LogDebug("[OCM] Turning off Visland.")
+    yield("/visland stop")
+    yield("/wait 0.1")
+
+    Dalamud.LogDebug("[OCM] Stopping pathfinding...")
+    yield("/vnav stop")
+    yield("/wait 0.1")
+    
+    Dalamud.LogDebug("[OCM] Stopping Lifestream...")
+    yield("/li stop")
+    yield("/wait 0.1")
+    
+    Dalamud.LogDebug("[OCM] Turning off RSR.")
+    yield("/rsr off")
+    yield("/echo [OCM] スクリプトを停止しました。")
+end
+
 -- State Implementations
 function CharacterState.ready()
     while Svc.Condition[CharacterCondition.betweenAreas] do
         Sleep(0.1)
+    end
+
+    local shopAddon = Addons.GetAddon("ShopExchangeCurrency")
+    --If for some reason the shop addon is visible, close it
+    if gold < GOLD_DUMP_LIMIT and shopAddon and shopAddon.Ready then
+        yield("/callback ShopExchangeCurrency true -1")
     end
 
     local inInstance = Svc.Condition[CharacterCondition.boundByDuty34] and Svc.ClientState.TerritoryType == OCCULT_CRESCENT

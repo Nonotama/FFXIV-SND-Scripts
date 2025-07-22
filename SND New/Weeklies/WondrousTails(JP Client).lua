@@ -3,10 +3,11 @@
 
 ********************************************************************************
 *                             Wondrous Tails Doer                              *
-*                                Version 0.2.2                                 *
+*                                Version 0.3.0                                 *
 ********************************************************************************
 
 Created by: pot0to (https://ko-fi.com/pot0to)
+Updated by: Censored
 
 Description: Picks up a Wondrous Tails journal from Khloe, then attempts each duty
 
@@ -26,7 +27,7 @@ each one once anyways
 Alliance Raids/PVP/Treasure Maps/Palace of the Dead
 - Skips them all
 
-
+    -> 0.3.0    Updated for newest SND Version
     -> 0.2.1    Duty names updated after patch 7.2
     -> 0.2.0    Fixes for ex trials
                 Update for patch 7.1
@@ -37,11 +38,15 @@ Alliance Raids/PVP/Treasure Maps/Palace of the Dead
 1. Autoduty
 2. Rotation Solver Reborn
 3. BossModReborn (BMR) or Veyn's BossMod (VBM)
+
+********************************************************************************
+*           Code: Don't touch this unless you know what you're doing           *
+********************************************************************************
 ]]
 
--- Region: Data ---------------------------------------------------------------------------------
+import("System.Numerics")
 
-WonderousTailsDuties = {
+local wonderousTailsDuties = {
     { -- type 0:extreme trials
         { dutyMode="Trial", instanceId=20010, dutyId=297, dutyName="極ガルーダ討滅戦" },
         { dutyMode="Trial", instanceId=20009, dutyId=296, dutyName="極タイタン討滅戦" },
@@ -95,6 +100,7 @@ WonderousTailsDuties = {
     { -- type 9: normal raids
 
     },
+    -- BMRで実行すると落下などで死亡する、またはソロでの勝利が難しいもの
     Blacklisted= {
         { -- 0
             -- 蒼天
@@ -148,7 +154,8 @@ WonderousTailsDuties = {
     }
 }
 
-Khloe = {
+local currentLevel = Player.Job.Level
+local khloe = {
     x = -19.346453,
     y = 210.99998,
     z = 0.086749226,
@@ -185,7 +192,7 @@ end
 -- Pick up a journal if you need one
 if Player.Bingo.IsWeeklyBingoExpired or Player.Bingo.WeeklyBingoNumPlacedStickers == 9 or not Player.Bingo.HasWeeklyBingoJournal then
     if not (Svc.ClientState.TerritoryType == 478) then
-        yield("/li tp Idyllshire")
+        yield("/li tp イディルシャイア")
         yield("/wait 1")
     end
 
@@ -247,26 +254,10 @@ for i = 0, 12 do
         end
 
         if duty ~= nil then
-            if currentLevel < duty.minLevel then
-                yield("/echo [WonderousTails] Cannot queue for " .. duty.dutyName .. " as level is too low.")
-
-                duty.dutyId = nil
-            elseif type == 0 then -- trials
-                IPC.AutoDuty.SetConfig("Unsynced", "true")
-
-                dutyMode = "Trial"
-            elseif type == 4 then -- raids
-                IPC.AutoDuty.SetConfig("Unsynced", "true")
-
-                dutyMode = "Raid"
-            elseif currentLevel - duty.minLevel < 20 then
+            if duty.dutyMode == "Trust" then
                 IPC.AutoDuty.SetConfig("Unsynced", "false")
-
-                dutyMode = "Support"
             else
                 IPC.AutoDuty.SetConfig("Unsynced", "true")
-
-                dutyMode = "Regular"
             end
 
             if duty.dutyId ~= nil then

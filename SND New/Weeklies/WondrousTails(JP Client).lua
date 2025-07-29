@@ -68,7 +68,7 @@ local wonderousTailsDuties = {
     2,
     3,
     { -- type 4: normal raids
-        { dutyMode="Raid", dutyName="大迷宮バハムート：邂逅編1-4", dutyId=241 }, --1層
+        { dutyMode="Raid", dutyName="大迷宮バハムート：邂逅編1-5", dutyId=241 }, --1層
         { dutyMode="Raid", dutyName="大迷宮バハムート：侵攻編1-4", dutyId=355 }, --1層
 --        { dutyMode="Raid", dutyName="大迷宮バハムート：真成編1-4", dutyId=193 }, --1層
         { dutyMode="Raid", dutyName="機工城アレキサンダー：起動編1-4", dutyId=442 },  --1層

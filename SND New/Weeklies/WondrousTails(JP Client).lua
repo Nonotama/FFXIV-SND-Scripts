@@ -263,8 +263,8 @@ for i = 0, 12 do
             if duty.dutyId ~= nil then
                 -- IPC.AutoDuty.Run(duty.dutyId, 1, false)
 
-                yield("/echo Queuing duty TerritoryId#" .. duty.dutyId .. " for Wonderous Tails #" .. (i + 1))
-                yield("/autoduty run " .. dutyMode .. " " .. duty.dutyId .. " 1 true")
+                yield("/echo Queuing  Mode:".. duty.dutyMode .. ", DutyID:" .. duty.dutyId .. ", Name:" .. duty.dutyName)
+                yield("/autoduty run " .. duty.dutyMode .. " " .. duty.dutyId .. " 1 true")
                 yield("/wait 10")
 
                 repeat

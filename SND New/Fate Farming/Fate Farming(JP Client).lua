@@ -102,7 +102,7 @@ configs:
   Exchange bicolor gemstones for:
     default: バイカラージェム納品証【黄金】
     type: string
-    description: Leave blank if you don't want to spend your bicolors
+    description: バイカラージェムを使用しない場合は空白のままにすること
   Self repair?:
     default: true
     description: チェックあり：自身で修理　チェックなし：リムサの修理屋で修理

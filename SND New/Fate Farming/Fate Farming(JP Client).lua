@@ -29,11 +29,11 @@ plugin_dependencies:
 configs:
   Food:
     default: 
-    description: Leave blank if you don't want to use any food. If its HQ include <hq> next to the name "Baked Eggplant <hq>"
+    description: 何も記載しなければ使用しません。もしHQの食事を使用する場合は名前の後に<hq>と付けて下さい "ゆでたまご <hq>"
     type: string
   Potion:
     default:
-    description: Leave blank if you don't want to use any potions. If its HQ include <hq> next to the name "Superior Spiritbond Potion <hq>"
+    description: 何も記載しなければ使用しません。もしHQの薬を使用する場合は名前の後に<hq>と付けて下さい "Superior Spiritbond Potion <hq>"
     type: string
   Chocobo Companion Stance:
     default: "ヒーラースタンス"
@@ -41,7 +41,7 @@ configs:
     type: string
   Buy Gysahl Greens?:
     default: true
-    description: Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if none in inventory
+    description: インベントリにギザールの野菜がなければ、リムサのNPCから自動で99個購入します。
     type: boolean
   Ignore FATE if progress is over (%):
     default: 80
@@ -105,7 +105,7 @@ configs:
     description: Leave blank if you don't want to spend your bicolors
   Self repair?:
     default: true
-    description: If checked, will attempt to repair your gear. If not checked, will go to Limsa mender.
+    description: チェックあり：自身で修理　チェックなし：リムサの修理屋で修理
     type: boolean
   Pause for retainers?:
     default: false
@@ -113,11 +113,11 @@ configs:
   Dump extra gear at GC?:
     default: false
     type: boolean
-    description: Used with retainers, in case they come back with too much stuff and clog your inventory.
+    description: AutoRetainer使用時、帰還時、且つインベントリが満杯の場合、GCへ納品を行う
   Return on death?:
     default: true
     type: boolean
-    description: Auto accept the box to return to home aetheryte when you die.
+    description: 死亡した場合、自動でエーテライトへ戻る
   Echo logs:
     default: Gems
     type: string

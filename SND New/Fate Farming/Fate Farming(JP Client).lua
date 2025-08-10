@@ -2583,10 +2583,10 @@ function TurnOffCombatMods()
         if AiDodgingOn then
             if DodgingPlugin == "BMR" then
                 Engines.Run("/bmrai off")
-                Engines.Run("/bmrai followtarget off")
-                Engines.Run("/bmrai followcombat off")
-                Engines.Run("/bmrai followoutofcombat off")
-                Engines.Run("/bmrai followoutofcombat off")
+--                Engines.Run("/bmrai followtarget off")
+--                Engines.Run("/bmrai followcombat off")
+--                Engines.Run("/bmrai followoutofcombat off")
+--                Engines.Run("/bmrai followoutofcombat off")
             elseif DodgingPlugin == "VBM" then
                 Engines.Run("/vbm ar disable")
                 Engines.Run("/vbmai off")

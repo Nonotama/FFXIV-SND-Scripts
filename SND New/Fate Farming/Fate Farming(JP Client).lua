@@ -27,6 +27,13 @@ plugin_dependencies:
 - vnavmesh
 - TextAdvance
 configs:
+  ChangeJemCount:
+    default: 1400
+    description: 交換を行うために必要なジェム数
+    type: int
+    min: 0
+    max: 1501
+    required: true
   Food:
     default: 
     description: 何も記載しなければ使用しません。もしHQの食事を使用する場合は名前の後に<hq>と付けて下さい "ゆでたまご <hq>"
@@ -2681,7 +2688,7 @@ function Ready()
         end
         return
     elseif not Dalamud.Log("[FATE] Ready -> ExchangingVouchers") and
-        ShouldExchangeBicolorGemstones and (BicolorGemCount >= 1501) and not shouldWaitForBonusBuff
+        ShouldExchangeBicolorGemstones and (BicolorGemCount >= ChangeJemCount) and not shouldWaitForBonusBuff
     then
         if WaitingForFateRewards == nil then
             State = CharacterState.exchangingVouchers
@@ -2743,10 +2750,10 @@ function Ready()
 
     if not GemAnnouncementLock and (Echo == "All" or Echo == "Gems") then
         GemAnnouncementLock = true
-        if BicolorGemCount >= 1501 then
-            yield("/echo [FATE] You're almost capped with "..tostring(BicolorGemCount).."/1501 gems!")
+        if BicolorGemCount >= ChangeJemCount then
+            yield("/echo [FATE] You're almost capped with "..tostring(BicolorGemCount).."/"..ChangeJemCount.." gems!")
         else
-            yield("/echo [FATE] Gems: "..tostring(BicolorGemCount).."/1501")
+            yield("/echo [FATE] Gems: "..tostring(BicolorGemCount).."/"..ChangeJemCount)
         end
     end
 end
@@ -2795,7 +2802,7 @@ end
 function ExecuteBicolorExchange()
     CurrentFate = nil
 
-    if BicolorGemCount >= 1501 then
+    if BicolorGemCount >= ChangeJemCount then
         if Addons.GetAddon("SelectYesno").Ready then
             yield("/callback SelectYesno true 0")
             return
@@ -3161,6 +3168,7 @@ CharacterState = {
 --#region Main
 
 Dalamud.Log("[FATE] Starting fate farming script.")
+ChangeJemCount = Config.Get("ChangeJemCount")
 
 Food = Config.Get("Food")
 Potion = Config.Get("Potion")

@@ -4,24 +4,15 @@ author: pot0to || updated by baanderson40
 version: 3.0.10n
 description: >-
   Fate farming script with the following features:
-
   - Can purchase Bicolor Gemstone Vouchers (both old and new) when your gemstones are almost capped
-
   - Priority system for Fate selection: distance w/ teleport > most progress > is bonus fate > least time left > distance
-
   - Will prioritize Forlorns when they show up during Fate
-
   - Can do all fates, including NPC collection fates
-
   - Revives upon death and gets back to fate farming
-
   - Attempts to change instances when there are no fates left in the zone
-
   - Can process your retainers and Grand Company turn ins, then get back to fate farming
-
   - Autobuys gysahl greens and grade 8 dark matter when you run out
-
-  - Has companion scripts dedicated to atma farming, or you can write your own! (See section for companion scripts)
+  - Has companion scripts dedicated to atma farming, or you can write your own! (See section for companion scripts) Probably doesn't work.
 plugin_dependencies:
 - Lifestream
 - vnavmesh
@@ -31,14 +22,6 @@ configs:
     default: false
     type: boolean
     description: "--- General Settings Section ---"
-  
-  ChangeJemCount:
-    default: 1400
-    description: 交換を行うために必要なジェム数
-    type: int
-    min: 0
-    max: 1501
-    required: true
 
   Echo logs:
     default: Gems
@@ -160,7 +143,7 @@ configs:
     required: true
 
   Do collection FATEs?:
-    default: false
+    default: true
     type: boolean
 
   Do only bonus FATEs?:
@@ -198,12 +181,12 @@ configs:
     description: Leave blank if you dont want to spend your bicolors. See the bottom options for supported items.
 
   Mount & Chocobo:
-    default: false
+    default: true
     type: boolean
     description: "--- Mount & Chocobo Section ---"
 
   Chocobo Companion Stance:
-    default: "Healer"
+    default: "ヒーラスタンス"
     description: Options - Follow/Free/Defender/Healer/Attacker/None. Will not summon chocobo if set to "None"
     type: string
 
@@ -1857,7 +1840,7 @@ function ChangeInstance()
         return
     end
 
-    Engines.Run("/target エーテライト") -- search for nearby aetheryte
+    yield("/target エーテライト") -- search for nearby aetheryte
     if Svc.Targets.Target == nil or GetTargetName() ~= "エーテライト" then -- if no aetheryte within targeting range, teleport to it
         Dalamud.Log("[FATE] Aetheryte not within targetable range")
         local closestAetheryte = nil
@@ -2235,7 +2218,7 @@ function MoveToFate()
         Dalamud.Log("[FATE] Moving to fate #"..CurrentFate.fateId.." "..CurrentFate.fateName)
         MovingAnnouncementLock = true
         if Echo == "all" then
-            Engines.Run("/echo [FATE] Moving to fate #"..CurrentFate.fateId.." "..CurrentFate.fateName)
+            Engines.Run("/echo  [FATE] Moving to fate #"..CurrentFate.fateId.." "..CurrentFate.fateName)
         end
     end
 
@@ -2391,13 +2374,17 @@ function SummonChocobo()
         Dismount()
         return
     end
+Dalamud.Log("[FATE] zzzz")
 
     if ShouldSummonChocobo and GetBuddyTimeRemaining() <= ResummonChocoboTimeLeft then
+Dalamud.Log("[FATE] aaaaa")
         if Inventory.GetItemCount(4868) > 0 then
+Dalamud.Log("[FATE] aaaab")
             Engines.Run("/item ギサールの野菜")
             yield("/wait 3")
             Engines.Run("/cac "..ChocoboStance)
         elseif ShouldAutoBuyGysahlGreens then
+Dalamud.Log("[FATE] aaaac")
             State = CharacterState.autoBuyGysahlGreens
             Dalamud.Log("[FATE] State Change: AutoBuyGysahlGreens")
             return
@@ -2773,7 +2760,7 @@ function DoFate()
             if not ForlornMarked then
                 Engines.Run("/enemysign attack1")
                 if Echo == "all" then
-                    Engines.Run("/echo Found Forlorn! <se.3>")
+                    Engines.Run("/echo  Found Forlorn! <se.3>")
                 end
                 TurnOffAoes()
                 ForlornMarked = true
@@ -2874,16 +2861,16 @@ function Ready()
 
     if not GemAnnouncementLock and (Echo == "all" or Echo == "gems") then
         GemAnnouncementLock = true
-        if BicolorGemCount >= ChangeJemCount then
+        if BicolorGemCount >= 1400 then
             Engines.Run("/echo  [FATE] You're almost capped with "..tostring(BicolorGemCount).."/1500 gems! <se.3>")
             if ShouldExchangeBicolorGemstones and not shouldWaitForBonusBuff and Player.IsLevelSynced ~= true then
                 State = CharacterState.exchangingVouchers
                 Dalamud.Log("[FATE] State Change: ExchangingVouchers")
                 return
-    end
-    else
+            end
+        else
             Engines.Run("/echo  [FATE] Gems: "..tostring(BicolorGemCount).."/1500")
-    end
+        end
     end
 
     if RemainingDurabilityToRepair > 0 and needsRepair.Count > 0 and (not shouldWaitForBonusBuff or (SelfRepair and Inventory.GetItemCount(33916) > 0)) then
@@ -2896,7 +2883,7 @@ function Ready()
         State = CharacterState.extractMateria
         Dalamud.Log("[FATE] State Change: ExtractMateria")
         return
-        end
+    end
 
     if WaitingForFateRewards == nil and Retainers and ARRetainersWaitingToBeProcessed() and Inventory.GetFreeInventorySlots() > 1 and not shouldWaitForBonusBuff then
         State = CharacterState.processRetainers
@@ -2989,12 +2976,12 @@ function Ready()
         return
     end
 
-        CurrentFate = NextFate
+    CurrentFate = NextFate
     HasFlownUpYet = false
-        SetMapFlag(SelectedZone.zoneId, CurrentFate.position)
-        State = CharacterState.moveToFate
-        Dalamud.Log("[FATE] State Change: MovingtoFate "..CurrentFate.fateName)
-    end
+    SetMapFlag(SelectedZone.zoneId, CurrentFate.position)
+    State = CharacterState.moveToFate
+    Dalamud.Log("[FATE] State Change: MovingtoFate "..CurrentFate.fateName)
+end
 
 function HandleDeath()
     CurrentFate = nil
@@ -3012,7 +2999,7 @@ function HandleDeath()
             if Echo and not DeathAnnouncementLock then
                 DeathAnnouncementLock = true
                 if Echo == "all" then
-                    Engines.Run("/echo [FATE] You have died. Returning to home aetheryte.")
+                    Engines.Run("/echo  [FATE] You have died. Returning to home aetheryte.")
                 end
             end
 
@@ -3024,7 +3011,7 @@ function HandleDeath()
             if Echo and not DeathAnnouncementLock then
                 DeathAnnouncementLock = true
                 if Echo == "all" then
-                    Engines.Run("/echo [FATE] You have died. Waiting until script detects you're alive again...")
+                    Engines.Run("/echo  [FATE] You have died. Waiting until script detects you're alive again...")
                 end
             end
             yield("/wait 1")
@@ -3040,7 +3027,7 @@ end
 function ExecuteBicolorExchange()
     CurrentFate = nil
 
-    if BicolorGemCount >= ChangeJemCount then
+    if BicolorGemCount >= 1400 then
         if Addons.GetAddon("SelectYesno").Ready then
             Engines.Run("/callback SelectYesno true 0")
             return
@@ -3135,7 +3122,7 @@ function ProcessRetainers()
             if Addons.GetAddon("RetainerList").Ready then
                 Engines.Run("/ays e")
                 if Echo == "all" then
-                    Engines.Run("/echo [FATE] Processing retainers")
+                    Engines.Run("/echo  [FATE] Processing retainers")
                 end
                 yield("/wait 1")
             end
@@ -3159,7 +3146,7 @@ function GrandCompanyTurnIn()
             Engines.Run("/echo  [FATE] Lifestream IPC not available! Cannot teleport to GC.")
             return
         end
-            yield("/wait 1")
+        yield("/wait 1")
         while (IPC.Lifestream.IsBusy and IPC.Lifestream.IsBusy())
            or (Svc.Condition[CharacterCondition.betweenAreas]) do
             yield("/wait 0.5")
@@ -3231,7 +3218,7 @@ function Repair()
         elseif ShouldAutoBuyDarkMatter then
             if Svc.ClientState.TerritoryType ~=  129 then
                 if Echo == "all" then
-                    Engines.Run("/echo Out of Dark Matter! Purchasing more from Limsa Lominsa.")
+                    Engines.Run("/echo  Out of Dark Matter! Purchasing more from Limsa Lominsa.")
                 end
                 TeleportTo("リムサ・ロミンサ：下甲板層")
                 return
@@ -3260,7 +3247,7 @@ function Repair()
             end
         else
             if Echo == "all" then
-                Engines.Run("/echo Out of Dark Matter and ShouldAutoBuyDarkMatter is false. Switching to Limsa mender.")
+                Engines.Run("/echo  Out of Dark Matter and ShouldAutoBuyDarkMatter is false. Switching to Limsa mender.")
             end
             SelfRepair = false
         end
@@ -3473,7 +3460,7 @@ end
     RotationHoldBuffPreset          = Config.Get("Hold Buff Rotation")     --Preset to hold 2min burst when progress gets to seleted %
     PercentageToHoldBuff            = Config.Get("Percentage to Hold Buff")--Ideally youll want to make full use of your buffs, higher than 70% will still waste a few seconds if progress is too fast.
 
-    IgnoreForlorns = false
+IgnoreForlorns = false
 IgnoreBigForlornOnly = false
 Forlorns = string.lower(Config.Get("Forlorns"))
 if Forlorns == "none" then
@@ -3499,7 +3486,7 @@ end
 SelfRepair = Config.Get("Self repair?")
 RemainingDurabilityToRepair     = 90            --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
 ShouldAutoBuyDarkMatter         = false         --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
-ShouldExtractMateria            = true          --should it Extract Materia
+ShouldExtractMateria                = true          --should it Extract Materia
 Retainers = Config.Get("Pause for retainers?")
 ShouldGrandCompanyTurnIn = Config.Get("Dump extra gear at GC?")         --should it do Turn ins at the GC (requires Deliveroo)
     InventorySlotsLeft              = 5             --how much inventory space before turning in
@@ -3539,17 +3526,17 @@ end
 
 -- Final warning if no dodging plugin is active
 if DodgingPlugin == "None" then
-    Engines.Run("/echo [FATE] Warning: you do not have an AI dodging plugin configured, so your character will stand in AOEs. Please install either Veyn's BossMod or BossMod Reborn")
+    Engines.Run("/echo  [FATE] Warning: you do not have an AI dodging plugin configured, so your character will stand in AOEs. Please install either Veyn's BossMod or BossMod Reborn")
 end
 
 if Retainers and not HasPlugin("AutoRetainer") then
     Retainers = false
-    Engines.Run("/echo [FATE] Warning: you have enabled the feature to process retainers, but you do not have AutoRetainer installed.")
+    Engines.Run("/echo  [FATE] Warning: you have enabled the feature to process retainers, but you do not have AutoRetainer installed.")
 end
 
 if ShouldGrandCompanyTurnIn and not HasPlugin("AutoRetainer") then
     ShouldGrandCompanyTurnIn = false
-    Engines.Run("/echo [FATE] Warning: you have enabled the feature to process GC turn ins, but you do not have Deliveroo installed.")
+    Engines.Run("/echo  [FATE] Warning: you have enabled the feature to process GC turn ins, but you do not have Deliveroo installed.")
 end
 
 if not CompanionScriptMode then
@@ -3581,7 +3568,7 @@ SetMaxDistance()
 
 SelectedZone = SelectNextZone()
 if SelectedZone.zoneName ~= "" and Echo == "all" then
-    Engines.Run("/echo [FATE] Farming "..SelectedZone.zoneName)
+    Engines.Run("/echo  [FATE] Farming "..SelectedZone.zoneName)
 end
 Dalamud.Log("[FATE] Farming Start for "..SelectedZone.zoneName)
 
@@ -3602,7 +3589,7 @@ if ShouldExchangeBicolorGemstones ~= false then
         end
     end
     if SelectedBicolorExchangeData == nil then
-        Engines.Run("/echo [FATE] Cannot recognize bicolor shop item "..ItemToPurchase.."! Please make sure it's in the BicolorExchangeData table!")
+        Engines.Run("/echo  [FATE] Cannot recognize bicolor shop item "..ItemToPurchase.."! Please make sure it's in the BicolorExchangeData table!")
         StopScript = true
     end
 end
@@ -3614,7 +3601,7 @@ if InActiveFate() then
 end
 
 if ShouldSummonChocobo and GetBuddyTimeRemaining() > 0 then
-    Engines.Run('/cac "'..ChocoboStance..' stance"')
+    Engines.Run("/cac "..ChocoboStance)
 end
 
 Dalamud.Log("[FATE] Starting fate farming script.")
@@ -3622,7 +3609,7 @@ Dalamud.Log("[FATE] Starting fate farming script.")
 while not StopScript do
     local nearestFate = Fates.GetNearestFate()
     if not IPC.vnavmesh.IsReady() then
-        Engines.Run("/echo [FATE] Waiting for vnavmesh to build...")
+        Engines.Run("/echo  [FATE] Waiting for vnavmesh to build...")
         Dalamud.Log("[FATE] Waiting for vnavmesh to build...")
         repeat
             yield("/wait 1")
@@ -3654,7 +3641,7 @@ while not StopScript do
             or state == nil
             or state == FateState.Ended
             or state == FateState.Failed
-    then
+        then
             local msg = "[FATE] WaitingForFateRewards.fateObject is nil or fate state ("..tostring(state)..") indicates fate is finished for fateId: "..tostring(WaitingForFateRewards.fateId)..". Clearing it."
             Dalamud.Log(msg)
             if Echo == "all" then
@@ -3673,7 +3660,7 @@ while not StopScript do
         or Svc.Condition[CharacterCondition.occupiedMateriaExtractionAndRepair] 
         or IPC.Lifestream.IsBusy())
         then
-        State()
+            State()
     end
     yield("/wait 0.25")
 end

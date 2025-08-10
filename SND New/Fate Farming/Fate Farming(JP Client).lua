@@ -186,7 +186,7 @@ configs:
     description: "--- Mount & Chocobo Section ---"
 
   Chocobo Companion Stance:
-    default: "ヒーラスタンス"
+    default: "ヒーラースタンス"
     description: Options - Follow/Free/Defender/Healer/Attacker/None. Will not summon chocobo if set to "None"
     type: string
 

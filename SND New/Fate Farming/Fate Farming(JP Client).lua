@@ -181,7 +181,7 @@ configs:
     description: Leave blank if you dont want to spend your bicolors. See the bottom options for supported items.
 
   Mount & Chocobo:
-    default: true
+    default: false
     type: boolean
     description: "--- Mount & Chocobo Section ---"
 
@@ -2374,17 +2374,13 @@ function SummonChocobo()
         Dismount()
         return
     end
-Dalamud.Log("[FATE] zzzz")
 
     if ShouldSummonChocobo and GetBuddyTimeRemaining() <= ResummonChocoboTimeLeft then
-Dalamud.Log("[FATE] aaaaa")
         if Inventory.GetItemCount(4868) > 0 then
-Dalamud.Log("[FATE] aaaab")
             Engines.Run("/item ギサールの野菜")
             yield("/wait 3")
             Engines.Run("/cac "..ChocoboStance)
         elseif ShouldAutoBuyGysahlGreens then
-Dalamud.Log("[FATE] aaaac")
             State = CharacterState.autoBuyGysahlGreens
             Dalamud.Log("[FATE] State Change: AutoBuyGysahlGreens")
             return

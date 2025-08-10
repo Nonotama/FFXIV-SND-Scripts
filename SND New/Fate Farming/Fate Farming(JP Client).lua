@@ -2978,7 +2978,7 @@ function Repair()
             if needsRepair.Count > 0 then
                 if not Addons.GetAddon("Repair").Ready then
                     Dalamud.Log("[FATE] Opening repair menu...")
-                    yield("/generalaction repair")
+                    yield("/gaction 修理")
                 end
             else
                 State = CharacterState.ready

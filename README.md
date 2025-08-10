@@ -1,4 +1,6 @@
-本家ページ：https://github.com/pot0to/pot0to-SND-Scripts
+本家ページ：
+　https://github.com/pot0to/pot0to-SND-Scripts
+　https://github.com/baanderson40/SND_Scripts
 
 Fate Farmingスクリプトを自環境用に調整して使いやすくしたもの
 

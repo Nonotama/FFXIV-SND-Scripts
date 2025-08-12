@@ -63,7 +63,7 @@ local wonderousTailsDuties = {
         { dutyMode="Trial", instanceId=20042, dutyId=577, dutyName="極女神ソフィア討滅戦" },
     },
     { -- type 1: expansion cap dungeons
-        { dutyMode="Trust", dutyName="Lv100ダンジョン", dutyId=1266 }, --王城旧跡 アンダーキープ
+        { dutyMode="Trust", dutyName="Lv100ダンジョン", dutyId=1292 }, --永久幽閉 メインターミナル
     },
     2,
     3,

@@ -230,8 +230,8 @@ configs:
     description: |
       Item name to select.  
       Supported values:
-        - 暁月 **************************
-        - バイカラージェム納品証【黄金】
+        暁月 **************************
+        - バイカラージェム納品証
         - アルマスティの毛
         - アームラ
         - エッグ・オブ・エルピス
@@ -250,7 +250,7 @@ configs:
         - ムースの肉
         - ヤーコウの肩肉
         - ルナテンダーの花
-        - 黄金 **************************
+        黄金 **************************
         - バイカラージェム納品証【黄金】
         - アックスビークの翼膜
         - アルパカのフィレ肉
@@ -2572,10 +2572,12 @@ function TurnOffCombatMods()
         if AiDodgingOn then
             if DodgingPlugin == "BMR" then
                 Engines.Run("/bmrai off")
---                Engines.Run("/bmrai followtarget off")
---                Engines.Run("/bmrai followcombat off")
---                Engines.Run("/bmrai followoutofcombat off")
---                Engines.Run("/bmrai followoutofcombat off")
+--[[
+                Engines.Run("/bmrai followtarget off")
+                Engines.Run("/bmrai followcombat off")
+                Engines.Run("/bmrai followoutofcombat off")
+                Engines.Run("/bmrai followoutofcombat off")
+]]
             elseif DodgingPlugin == "VBM" then
                 Engines.Run("/vbm ar disable")
                 Engines.Run("/vbmai off")

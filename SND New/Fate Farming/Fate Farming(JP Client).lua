@@ -230,42 +230,45 @@ configs:
     description: |
       Item name to select.  
       Supported values:
-        - Alexandrian Axe Beak Wing
-        - Alpaca Fillet
-        - Almasty Fur
-        - Amra
-        - Berkanan Sap
-        - Bicolor Gemstone Voucher
-        - Bird of Elpis Breast
-        - Branchbearer Fruit
-        - Br'aax Hide
-        - Dynamis Crystal
-        - Dynamite Ash
-        - Egg of Elpis
-        - Gaja Hide
-        - Gargantua Hide
-        - Gomphotherium Skin
-        - Hammerhead Crocodile Skin
-        - Hamsa Tenderloin
-        - Kumbhira Skin
-        - Lesser Apollyon Shell
-        - Lunatender Blossom
-        - Luncheon Toad Skin
-        - Megamaguey Pineapple
-        - Mousse Flesh
-        - Nopalitender Tuna
-        - Ovibos Milk
-        - Ophiotauros Hide
-        - Petalouda Scales
-        - Poison Frog Secretions
-        - Rroneek Chuck
-        - Rroneek Fleece
-        - Saiga Hide
-        - Silver Lobo Hide
-        - Swampmonk Thigh
-        - Tumbleclaw Weeds
-        - Turali Bicolor Gemstone Voucher
-        - Ty'aitya Wingblade
+        - 暁月 **************************
+        - バイカラージェム納品証【黄金】
+        - アルマスティの毛
+        - アームラ
+        - エッグ・オブ・エルピス
+        - オウヴィボスの乳
+        - オピオタウロスの粗皮
+        - ガジャの粗皮
+        - クンビーラの粗皮
+        - サイガの粗皮
+        - ダイナマイトの灰
+        - デュラミスシャード
+        - ハンサの笹身
+        - ブレスト・オブ・エルピス
+        - ペタルダの鱗粉
+        - ベルカナの樹液
+        - マウンテンチキンの粗皮
+        - ムースの肉
+        - ヤーコウの肩肉
+        - ルナテンダーの花
+        - 黄金 **************************
+        - バイカラージェム納品証【黄金】
+        - アックスビークの翼膜
+        - アルパカのフィレ肉
+        - ガルガンチュアの粗皮
+        - ゴンフォテリウムの粗皮
+        - シルバリオの粗皮
+        - スワンプモンクのモモ肉
+        - タンブルクラブの枯草
+        - チャイチャの刃爪
+        - ノパルテンダーのトゥナ
+        - ハンマーヘッドダイルの粗皮
+        - ブラーシャの粗皮
+        - ブランチベアラーの果実
+        - ポイズンフロッグの粘液
+        - メガマゲイの球茎
+        - レッサーアポリオンの甲殻
+        - ロネークの肩肉
+        - ロネークの獣毛
 
 [[End Metadata]]
 --]=====]
@@ -413,14 +416,6 @@ BicolorExchangeData =
         position=Vector3(78, 5, -37),
         shopItems =
         {
-            { itemName = "ポートレート教材:オールド・シャーレアン1", itemIndex = 0, price = 600 },
-            { itemName = "ポートレート教材:オールド・シャーレアン2", itemIndex = 1, price = 600 },
-            { itemName = "シャーレアンディアデーマ", itemIndex = 2, price = 600 },
-            { itemName = "オーケストリオン譜:知恵の水瓶", itemIndex = 3, price = 800 },
-            { itemName = "オーケストリオン譜:知恵の巻貝", itemIndex = 4, price = 350 },
-            { itemName = "オーケストリオン譜:いつの日かきっと", itemIndex = 5, price = 350 },
-            { itemName = "シャーレアン・ランプポスト", itemIndex = 6, price = 100 },
-            { itemName = "グリーナーズ・ナップサック", itemIndex = 7, price = 100 },
             { itemName = "バイカラージェム納品証", itemIndex = 8, price = 100 },
             { itemName = "オウヴィボスの乳", itemIndex = 9, price = 2 },
             { itemName = "ハンサの笹身", itemIndex = 10, price = 2 },
@@ -431,10 +426,10 @@ BicolorExchangeData =
             { itemName = "デュラミスシャード", itemIndex = 15, price = 2 },
             { itemName = "アルマスティの毛", itemIndex = 16, price = 2 },
             { itemName = "ガジャの粗皮", itemIndex = 17, price = 2 },
-            { itemName = "サイガの粗皮", itemIndex = 18, price = 2 },
-            { itemName = "クンビーラの粗皮", itemIndex = 19, price = 2 },
-            { itemName = "オピオタウロスの粗皮", itemIndex = 20, price = 2 },
-            { itemName = "クンビーラの粗皮", itemIndex = 21, price = 2 },
+            { itemName = "マウンテンチキンの粗皮", itemIndex = 18, price = 2 },
+            { itemName = "サイガの粗皮", itemIndex = 19, price = 2 },
+            { itemName = "クンビーラの粗皮", itemIndex = 20, price = 2 },
+            { itemName = "オピオタウロスの粗皮", itemIndex = 21, price = 2 },
             { itemName = "ベルカナの樹液", itemIndex = 22, price = 2 },
             { itemName = "ダイナマイトの灰", itemIndex = 23, price = 2 },
             { itemName = "ルナテンダーの花", itemIndex = 24, price = 2 },
@@ -454,12 +449,6 @@ BicolorExchangeData =
         },
         shopItems =
         {
-            { itemName = "ポートレート教材:ソリューション・ナイン1", itemIndex = 0, price = 600 },
-            { itemName = "ポートレート教材:ソリューション・ナイン2", itemIndex = 1, price = 600 },
-            { itemName = "ネオンパラソル", itemIndex = 2, price = 500 },
-            { itemName = "オーケストリオン譜:星なき摩天楼", itemIndex = 3, price = 450 },
-            { itemName = "ナインズ・ベンディングマシン", itemIndex = 4, price = 150 },
-            { itemName = "ホロディスプレイ", itemIndex = 5, price = 200 },
             { itemName = "バイカラージェム納品証【黄金】", itemIndex = 6, price = 100 },
             { itemName = "アルパカのフィレ肉", itemIndex = 7, price = 2 },
             { itemName = "スワンプモンクのモモ肉", itemIndex = 8, price = 2 },

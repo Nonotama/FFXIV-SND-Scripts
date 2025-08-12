@@ -33,7 +33,7 @@ configs:
         - None
 
   Rotation Plugin:
-    default: "Any"
+    default: "RotationSolver"
     type: string
     description: |
       What roation plugin to use
@@ -45,7 +45,7 @@ configs:
         - BossModReborn
 
   Dodging Plugin:
-    default: "Any"
+    default: "BossModReborn"
     type: string
     description: |
       What dodging plugin to use. If your Rotation plugin is BMR or VBM, this will be overriden.
@@ -143,7 +143,7 @@ configs:
     required: true
 
   Do collection FATEs?:
-    default: true
+    default: false
     type: boolean
 
   Do only bonus FATEs?:
@@ -166,12 +166,12 @@ configs:
     type: boolean
 
   Randomly Move if no eligible Fate?:
-    default: false
+    default: true
     description: Will automatically move after a fate if there are no eligible fates available.
     type: boolean
 
   Bicolor Exchange:
-    default: false
+    default: true
     type: boolean
     description: "--- Bicolor Exchange Section ---"
 
@@ -191,7 +191,7 @@ configs:
     type: string
 
   Buy Gysahl Greens?:
-    default: true
+    default: false
     description: Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if none in inventory
     type: boolean
 
@@ -206,11 +206,11 @@ configs:
     type: boolean
 
   Pause for retainers?:
-    default: true
+    default: false
     type: boolean
 
   Dump extra gear at GC?:
-    default: true
+    default: false
     type: boolean
     description: Used with retainers, in case they come back with too much stuff and clog your inventory.
 
@@ -3468,7 +3468,7 @@ MaxWait                             = 2            --Max number of seconds it sh
 DownTimeWaitAtNearestAetheryte      = false         --When waiting for fates to pop, should you fly to the nearest Aetheryte and wait there?
 EnableChangeInstance = Config.Get("Change instances if no FATEs?")
 WaitIfBonusBuff = true          --Dont change instances if you have the Twist of Fate bonus buff
-NumberOfInstances = 2
+NumberOfInstances = 3
 ShouldExchangeBicolorGemstones = Config.Get("Exchange bicolor gemstones?")
 ItemToPurchase = Config.Get("Exchange bicolor gemstones for")
 ShouldExchangeBicolorGemstones = true

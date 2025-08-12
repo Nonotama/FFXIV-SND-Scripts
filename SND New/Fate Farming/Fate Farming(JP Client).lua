@@ -166,12 +166,12 @@ configs:
     type: boolean
 
   Randomly Move if no eligible Fate?:
-    default: true
+    default: false
     description: Will automatically move after a fate if there are no eligible fates available.
     type: boolean
 
   Bicolor Exchange:
-    default: true
+    default: false
     type: boolean
     description: "--- Bicolor Exchange Section ---"
 

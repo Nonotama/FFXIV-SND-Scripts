@@ -1,7 +1,7 @@
 ﻿--[=====[
 [[SND Metadata]]
 author: baanderson40 || orginially pot0to
-version: 3.0.11
+version: 3.0.12
 description: |
   Support via https://ko-fi.com/baanderson40
   Fate farming script with the following features:
@@ -1553,7 +1553,7 @@ end
 function AcceptNPCFateOrRejectOtherYesno()
     if Addons.GetAddon("SelectYesno").Ready then
         local dialogBox = GetNodeText("SelectYesno", 1, 2)
-        if type(dialogBox) == "string" and dialogBox:find("The recommended level for this FATE is") then
+        if type(dialogBox) == "string" and dialogBox:find("このF.A.T.E.の推奨レベルは") then
             Engines.Run("/callback SelectYesno true 0") --accept fate
         else
             Engines.Run("/callback SelectYesno true 1") --decline all other boxes
@@ -2708,7 +2708,7 @@ function DoFate()
             ClearTarget()
         elseif not Svc.Targets.Target.IsDead then
             if not ForlornMarked then
-                Engines.Run("/enemysign attack1")
+                Engines.Run("/mk attack1")
                 if Echo == "all" then
                     Engines.Run("/echo  Found Forlorn! <se.3>")
                 end
@@ -3515,6 +3515,9 @@ if ShouldGrandCompanyTurnIn and not HasPlugin("AutoRetainer") then
     ShouldGrandCompanyTurnIn = false
     Engines.Run("/echo  [FATE] Warning: you have enabled the feature to process GC turn ins, but you do not have AutoRetainer installed.")
 end
+
+-- Enable Auto Advance plugin
+Engines.Run("/at y")
 
 -- Functions
 --Set combat max distance

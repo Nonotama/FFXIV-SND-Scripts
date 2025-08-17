@@ -1,8 +1,9 @@
 ﻿--[=====[
 [[SND Metadata]]
-author: pot0to || updated by baanderson40
-version: 3.0.10n
-description: >-
+author: baanderson40 || orginially pot0to
+version: 3.0.11
+description: |
+  Support via https://ko-fi.com/baanderson40
   Fate farming script with the following features:
   - Can purchase Bicolor Gemstone Vouchers (both old and new) when your gemstones are almost capped
   - Priority system for Fate selection: distance w/ teleport > most progress > is bonus fate > least time left > distance
@@ -18,20 +19,6 @@ plugin_dependencies:
 - vnavmesh
 - TextAdvance
 configs:
-  General:
-    default: false
-    type: boolean
-    description: "--- General Settings Section ---"
-
-  Echo logs:
-    default: Gems
-    type: string
-    description: |
-      Supported values:
-        - All
-        - Gems
-        - None
-
   Rotation Plugin:
     default: "RotationSolver"
     type: string
@@ -80,11 +67,6 @@ configs:
     type: int
     description: Ideally you want to make full use of your buffs, higher then 70% will still waste a few seconds if progress is too fast.
 
-  Combat & Buffs:
-    default: false
-    type: boolean
-    description: "--- Combat & Buffs Section ---"
-
   Food:
     default: 
     description: Leave blank if you dont want to use any food. If its HQ include <hq> next to the name "Baked Eggplant <hq>"
@@ -108,11 +90,6 @@ configs:
     min: 0
     max: 30
     required: true
-
-  FATE Filtering:
-    default: false
-    type: boolean
-    description: "--- FATE Filtering Section ---"
 
   Ignore FATE if progress is over (%):
     default: 80
@@ -165,25 +142,10 @@ configs:
     default: true
     type: boolean
 
-  Randomly Move if no eligible Fate?:
-    default: false
-    description: Will automatically move after a fate if there are no eligible fates available.
-    type: boolean
-
-  Bicolor Exchange:
-    default: false
-    type: boolean
-    description: "--- Bicolor Exchange Section ---"
-
   Exchange bicolor gemstones for:
     default: バイカラージェム納品証【黄金】
     type: string
     description: Leave blank if you dont want to spend your bicolors. See the bottom options for supported items.
-
-  Mount & Chocobo:
-    default: false
-    type: boolean
-    description: "--- Mount & Chocobo Section ---"
 
   Chocobo Companion Stance:
     default: "ヒーラースタンス"
@@ -194,11 +156,6 @@ configs:
     default: false
     description: Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if none in inventory
     type: boolean
-
-  Maintenance:
-    default: false
-    type: boolean
-    description: "--- Maintenance Section ---"
 
   Self repair?:
     default: true
@@ -213,11 +170,6 @@ configs:
     default: false
     type: boolean
     description: Used with retainers, in case they come back with too much stuff and clog your inventory.
-
-  Death & Recovery:
-    default: false
-    type: boolean
-    description: "--- Death & Recovery Section ---"
 
   Return on death?:
     default: true
@@ -269,6 +221,15 @@ configs:
         - レッサーアポリオンの甲殻
         - ロネークの肩肉
         - ロネークの獣毛
+        
+  Echo logs:
+    default: Gems
+    type: string
+    description: |
+      Supported values:
+        - All
+        - Gems
+        - None
 
 [[End Metadata]]
 --]=====]
@@ -277,7 +238,9 @@ configs:
 ********************************************************************************
 *                                  Changelog                                   *
 ********************************************************************************
-
+    -> 3.0.11   Revision rollup
+                Fixed Gysahl Greens purchases
+                Blacklisted "Plumbers Don't Fear Slimes" due to script crashing
     -> 3.0.10   By baanderson40
             a   Max melee distance fix.
             b   WaitingForFateRewards fix.
@@ -2409,7 +2372,7 @@ function AutoBuyGysahlGreens()
                     Engines.Run("/callback SelectIconString true 0")
                     return
                 elseif Addons.GetAddon("Shop").Ready then
-                    Engines.Run("/callback Shop true 0 2 99")
+                    Engines.Run("/callback Shop true 0 5 99")
                     return
                 elseif not Svc.Condition[CharacterCondition.occupied] then
                     Engines.Run("/interact")
@@ -2660,11 +2623,7 @@ function HandleUnexpectedCombat()
 end
 
 function DoFate()
-    local msg = "[FATE] DoFate"
-    if Echo == "all" then
-        Dalamud.Log(msg)
-        Engines.Run("/echo  "..msg)
-    end
+    Dalamud.Log("[FATE] DoFate")
     if WaitingForFateRewards == nil or WaitingForFateRewards.fateId ~= CurrentFate.fateId then
         WaitingForFateRewards = CurrentFate
         Dalamud.Log("[FATE] WaitingForFateRewards DoFate: "..tostring(WaitingForFateRewards.fateId))
@@ -2723,10 +2682,7 @@ function DoFate()
         end
     end
 
-    if Echo == "all" then
-        Dalamud.Log(msg)
-        Engines.Run("/echo  "..msg)
-    end
+    Dalamud.Log("[FATE] DoFate->Finished transition checks")
 
     -- do not target fate npc during combat
     if CurrentFate.npcName ~=nil and GetTargetName() == CurrentFate.npcName then
@@ -3396,64 +3352,60 @@ CharacterState = {
     autoBuyGysahlGreens = AutoBuyGysahlGreens
 }
 
-
+-- Settings Area
+-- Buffs
 Food = Config.Get("Food")
 Potion = Config.Get("Potion")
+
+-- Chocobo 
 ResummonChocoboTimeLeft         = 3 * 60        --Resummons chocobo if there's less than this many seconds left on the timer, so it doesn't disappear on you in the middle of a fate.
 ChocoboStance = Config.Get("Chocobo Companion Stance") -- Options: Follow, Free, Defender, Healer, Attacker, None. Do not summon if None.
 ShouldSummonChocobo = ChocoboStance == "追従"
-    or ChocoboStance == "フリーファイト"
-    or ChocoboStance == "ディフェンダースタンス"
-    or ChocoboStance == "ヒーラースタンス"
-    or ChocoboStance == "アタッカースタンス"
+                    or ChocoboStance == "フリーファイト"
+                    or ChocoboStance == "ディフェンダースタンス"
+                    or ChocoboStance == "ヒーラースタンス"
+                    or ChocoboStance == "アタッカースタンス"
+ShouldAutoBuyGysahlGreens       = Config.Get("Buy Gysahl Greens?")    --
+MountToUse                      = "ウィング・オブ・リゾルヴ"       --The mount you'd like to use when flying between fates
 
-ShouldAutoBuyGysahlGreens = Config.Get("Buy Gysahl Greens?")    --
-MountToUse                          = "ウィング・オブ・リゾルヴ"       --The mount you'd like to use when flying between fates
-FatePriority                        = {"Bonus", "Distance", "DistanceTeleport", "Progress", "TimeLeft"}
+-- Retainer 
 
---Fate Combat Settings
+
+
+
+--Fate Combat
 CompletionToIgnoreFate = Config.Get("Ignore FATE if progress is over (%)")
 MinTimeLeftToIgnoreFate = Config.Get("Ignore FATE if duration is less than (mins)")*60
 CompletionToJoinBossFate = Config.Get("Ignore boss FATEs until progress is at least (%)")
 CompletionToJoinSpecialBossFates = Config.Get("Ignore Special FATEs until progress is at least (%)")
-ClassForBossFates = ""            --If you want to use a different class for boss fates, set this to the 3 letter abbreviation
-                                                        --for the class. Ex: "PLD"
 JoinCollectionsFates = Config.Get("Do collection FATEs?")
 BonusFatesOnly = Config.Get("Do only bonus FATEs?")         --If true, will only do bonus fates and ignore everything else
-
+FatePriority                        = {"Bonus", "Distance", "DistanceTeleport", "Progress", "TimeLeft"}
 MeleeDist = Config.Get("Max melee distance")
 RangedDist = Config.Get("Max ranged distance")
+--ClassForBossFates                = ""            --If you want to use a different class for boss fates, set this to the 3 letter abbreviation
 
-RotationPlugin = string.lower(Config.Get("Rotation Plugin"))
-if RotationPlugin == "any" then
-    if HasPlugin("WrathCombo") then
-        RotationPlugin = "Wrath"
-    elseif HasPlugin("RotationSolver") then
-        RotationPlugin = "RSR"
-    elseif HasPlugin("BossModReborn") then
-        RotationPlugin = "BMR"
-    elseif HasPlugin("BossMod") then
-        RotationPlugin = "VBM"
-    end
-elseif RotationPlugin == "wrath" and HasPlugin("WrathCombo") then
-    RotationPlugin = "Wrath"
-elseif RotationPlugin == "rotationsolver" and HasPlugin("RotationSolver") then
-    RotationPlugin = "RSR"
-elseif RotationPlugin == "bossmodreborn" and HasPlugin("BossModReborn") then
-    RotationPlugin = "BMR"
-elseif RotationPlugin == "bossbod" and HasPlugin("BossMod") then
-    RotationPlugin = "VBM"
-else
-    StopScript = true
+-- Variable initialzization
+StopScript                      = false
+DidFate                         = false
+GemAnnouncementLock             = false
+DeathAnnouncementLock           = false
+MovingAnnouncementLock          = false
+SuccessiveInstanceChanges       = 0
+LastInstanceChangeTimestamp     = 0
+LastTeleportTimeStamp           = 0
+GotCollectionsFullCredit        = false
+WaitingForFateRewards           = nil
+LastFateEndTime                 = os.clock()
+LastStuckCheckTime              = os.clock()
+LastStuckCheckPosition          = Player.Entity.Position
+MainClass                       = Player.Job
+BossFatesClass                  = nil
+if ClassForBossFates ~= "" then
+    BossFatesClass              = GetClassJobTableFromName(ClassForBossFates)
 end
-    RSRAoeType                      = "Full"        --Options: Cleave/Full/Off
 
-    -- For BMR/VBM/Wrath
-    RotationSingleTargetPreset      = Config.Get("Single Target Rotation") --Preset name with single target strategies (for forlorns). TURN OFF AUTOMATIC TARGETING FOR THIS PRESET
-    RotationAoePreset               = Config.Get("AoE Rotation")           --Preset with AOE + Buff strategies.
-    RotationHoldBuffPreset          = Config.Get("Hold Buff Rotation")     --Preset to hold 2min burst when progress gets to seleted %
-    PercentageToHoldBuff            = Config.Get("Percentage to Hold Buff")--Ideally youll want to make full use of your buffs, higher than 70% will still waste a few seconds if progress is too fast.
-
+--Forlorns 
 IgnoreForlorns = false
 IgnoreBigForlornOnly = false
 Forlorns = string.lower(Config.Get("Forlorns"))
@@ -3463,35 +3415,38 @@ elseif Forlorns == "small" then
     IgnoreBigForlornOnly = true
 end
 
---Post Fate Settings
-MinWait                             = 0             --Min number of seconds it should wait until mounting up for next fate.
-MaxWait                             = 2            --Max number of seconds it should wait until mounting up for next fate.
-                                                        --Actual wait time will be a randomly generated number between MinWait and MaxWait.
-DownTimeWaitAtNearestAetheryte      = false         --When waiting for fates to pop, should you fly to the nearest Aetheryte and wait there?
-EnableChangeInstance = Config.Get("Change instances if no FATEs?")
-WaitIfBonusBuff = true          --Dont change instances if you have the Twist of Fate bonus buff
-NumberOfInstances = 3
-ShouldExchangeBicolorGemstones = Config.Get("Exchange bicolor gemstones?")
-ItemToPurchase = Config.Get("Exchange bicolor gemstones for")
-ShouldExchangeBicolorGemstones = true
-if ItemToPurchase == "" or ItemToPurchase == nil then
-    ShouldExchangeBicolorGemstones = false
+-- Rotation plugin 
+local configRotationPlugin = string.lower(Config.Get("Rotation Plugin"))
+if configRotationPlugin == "any" then
+    if HasPlugin("WrathCombo") then
+        RotationPlugin = "Wrath"
+    elseif HasPlugin("RotationSolver") then
+        RotationPlugin = "RSR"
+    elseif HasPlugin("BossModReborn") then
+        RotationPlugin = "BMR"
+    elseif HasPlugin("BossMod") then
+        RotationPlugin = "VBM"
+    end
+elseif configRotationPlugin == "wrath" and HasPlugin("WrathCombo") then
+    RotationPlugin = "Wrath"
+elseif configRotationPlugin == "rotationsolver" and HasPlugin("RotationSolver") then
+    RotationPlugin = "RSR"
+elseif configRotationPlugin == "bossmodreborn" and HasPlugin("BossModReborn") then
+    RotationPlugin = "BMR"
+elseif configRotationPlugin == "bossmod" and HasPlugin("BossMod") then
+    RotationPlugin = "VBM"
+else
+    StopScript = true
 end
-SelfRepair = Config.Get("Self repair?")
-RemainingDurabilityToRepair     = 90            --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
-ShouldAutoBuyDarkMatter         = false         --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
-ShouldExtractMateria                = true          --should it Extract Materia
-Retainers = Config.Get("Pause for retainers?")
-ShouldGrandCompanyTurnIn = Config.Get("Dump extra gear at GC?")         --should it do Turn ins at the GC (requires Deliveroo)
-    InventorySlotsLeft              = 5             --how much inventory space before turning in
+    RSRAoeType                      = "Full"        --Options: Cleave/Full/Off
 
-ReturnOnDeath = Config.Get("Return on death?")
+-- For BMR/VBM/Wrath rotation plugins
+    RotationSingleTargetPreset      = Config.Get("Single Target Rotation") --Preset name with single target strategies (for forlorns). TURN OFF AUTOMATIC TARGETING FOR THIS PRESET
+    RotationAoePreset               = Config.Get("AoE Rotation")           --Preset with AOE + Buff strategies.
+    RotationHoldBuffPreset          = Config.Get("Hold Buff Rotation")     --Preset to hold 2min burst when progress gets to seleted %
+    PercentageToHoldBuff            = Config.Get("Percentage to Hold Buff")--Ideally youll want to make full use of your buffs, higher than 70% will still waste a few seconds if progress is too fast.
 
-Echo = string.lower(Config.Get("Echo logs"))
-CompanionScriptMode                 = false         --Set to true if you are using the fate script with a companion script (such as the Atma Farmer)
-MoveToRandomSpot = Config.Get("Randomly Move if no eligible Fate?")
-
--- Get user-configured plugin
+-- Dodge plugin
 local dodgeConfig = string.lower(Config.Get("Dodging Plugin"))  -- Options: Any / BossModReborn / BossMod / None
 
 -- Resolve "any" or specific plugin if available
@@ -3520,9 +3475,37 @@ end
 
 -- Final warning if no dodging plugin is active
 if DodgingPlugin == "None" then
-    Engines.Run("/echo  [FATE] Warning: you do not have an AI dodging plugin configured, so your character will stand in AOEs. Please install either Veyn's BossMod or BossMod Reborn")
+    Engines.Run(
+    "/echo  [FATE] Warning: you do not have an AI dodging plugin configured, so your character will stand in AOEs. Please install either Veyn's BossMod or BossMod Reborn")
 end
 
+--Post Fate Settings
+MinWait                        = 0          --Min number of seconds it should wait until mounting up for next fate.
+MaxWait                        = 2          --Max number of seconds it should wait until mounting up for next fate.
+    --Actual wait time will be a randomly generated number between MinWait and MaxWait.
+DownTimeWaitAtNearestAetheryte = false      --When waiting for fates to pop, should you fly to the nearest Aetheryte and wait there?
+MoveToRandomSpot               = false      --Randomly fly to spot while waiting on fate.
+InventorySlotsLeft             = 5          --how much inventory space before turning in
+WaitIfBonusBuff                = true       --Dont change instances if you have the Twist of Fate bonus buff
+NumberOfInstances              = 3
+RemainingDurabilityToRepair    = 10         --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
+ShouldAutoBuyDarkMatter        = false      --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
+ShouldExtractMateria           = true       --should it Extract Materia
+
+-- Config settings
+EnableChangeInstance           = Config.Get("Change instances if no FATEs?")
+ShouldExchangeBicolorGemstones = Config.Get("Exchange bicolor gemstones?")
+ItemToPurchase                 = Config.Get("Exchange bicolor gemstones for")
+if ItemToPurchase == "" or ItemToPurchase == nil then
+    ShouldExchangeBicolorGemstones = false
+end
+ReturnOnDeath                   = Config.Get("Return on death?")
+SelfRepair                      = Config.Get("Self repair?")
+Retainers                       = Config.Get("Pause for retainers?")
+ShouldGrandCompanyTurnIn        = Config.Get("Dump extra gear at GC?")
+Echo                            = string.lower(Config.Get("Echo logs"))
+
+-- Plugin warnings
 if Retainers and not HasPlugin("AutoRetainer") then
     Retainers = false
     Engines.Run("/echo  [FATE] Warning: you have enabled the feature to process retainers, but you do not have AutoRetainer installed.")
@@ -3530,42 +3513,19 @@ end
 
 if ShouldGrandCompanyTurnIn and not HasPlugin("AutoRetainer") then
     ShouldGrandCompanyTurnIn = false
-    Engines.Run("/echo  [FATE] Warning: you have enabled the feature to process GC turn ins, but you do not have Deliveroo installed.")
+    Engines.Run("/echo  [FATE] Warning: you have enabled the feature to process GC turn ins, but you do not have AutoRetainer installed.")
 end
 
-if not CompanionScriptMode then
-    Engines.Run("/at y")
-end
-
-StopScript = false
-DidFate = false
-fateState = nil
-GemAnnouncementLock = false
-DeathAnnouncementLock = false
-MovingAnnouncementLock = false
-SuccessiveInstanceChanges = 0
-LastInstanceChangeTimestamp = 0
-LastTeleportTimeStamp = 0
-GotCollectionsFullCredit = false -- needs 7 items for  full
--- variable to track collections fates that you have completed but are still active.
--- will not leave area or change instance if value ~= 0
-WaitingForFateRewards = nil
-LastFateEndTime = os.clock()
-LastStuckCheckTime = os.clock()
-LastStuckCheckPosition = Player.Entity.Position
-MainClass = Player.Job
-BossFatesClass = nil
-if ClassForBossFates ~= "" then
-    BossFatesClass = GetClassJobTableFromName(ClassForBossFates)
-end
+-- Functions
+--Set combat max distance
 SetMaxDistance()
 
+--Set selected zone
 SelectedZone = SelectNextZone()
 if SelectedZone.zoneName ~= "" and Echo == "all" then
     Engines.Run("/echo  [FATE] Farming "..SelectedZone.zoneName)
 end
 Dalamud.Log("[FATE] Farming Start for "..SelectedZone.zoneName)
-
 
 if ShouldExchangeBicolorGemstones ~= false then
     for _, shop in ipairs(BicolorExchangeData) do
@@ -3588,8 +3548,6 @@ if ShouldExchangeBicolorGemstones ~= false then
     end
 end
 
-State = CharacterState.ready
-CurrentFate = nil
 if InActiveFate() then
     CurrentFate = BuildFateTable(Fates.GetNearestFate())
 end
@@ -3599,6 +3557,14 @@ if ShouldSummonChocobo and GetBuddyTimeRemaining() > 0 then
 end
 
 Dalamud.Log("[FATE] Starting fate farming script.")
+
+State = CharacterState.ready
+CurrentFate = nil
+
+if CompanionScriptMode == EnableChangeInstance then
+    yield("/echo The companion script will overwrite changing instances.")
+    EnableChangeInstance = false
+end
 
 while not StopScript do
     local nearestFate = Fates.GetNearestFate()
@@ -3637,15 +3603,15 @@ while not StopScript do
             or state == FateState.Failed
         then
             local msg = "[FATE] WaitingForFateRewards.fateObject is nil or fate state ("..tostring(state)..") indicates fate is finished for fateId: "..tostring(WaitingForFateRewards.fateId)..". Clearing it."
-            if Echo == "all" then
                 Dalamud.Log(msg)
+            if Echo == "all" then
                 Engines.Run("/echo  "..msg)
             end
             WaitingForFateRewards = nil
         else
-            local msg = "[FATE] Not clearing WaitingForFateRewards: fateState="..tostring(state)..", expected one of [Ended: "..tostring(FateState.Ended)..", Failed: "..tostring(FateState.Failed).."] or nil."
-            if Echo == "all" then
+            local msg = "[FATE] Not clearing WaitingForFateRewards: fate state="..tostring(state)..", expected one of [Ended: "..tostring(FateState.Ended)..", Failed: "..tostring(FateState.Failed).."] or nil."
                 Dalamud.Log(msg)
+            if Echo == "all" then
                 Engines.Run("/echo  "..msg)
             end
         end

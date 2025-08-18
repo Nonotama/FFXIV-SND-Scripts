@@ -1119,7 +1119,7 @@ FatesData = {
 --                { fateName="気まぐれロボット", continuationIsBoss=false }
             },
             blacklistedFates= {
-                "メガ・パイソン" -- 同名NPCが、同一箇所に複数いるため
+                "メガ・パイソン" -- FATE開始時スタックする可能性があるため
             }
         }
     },

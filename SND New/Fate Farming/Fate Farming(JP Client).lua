@@ -3359,7 +3359,7 @@ Food = Config.Get("Food")
 Potion = Config.Get("Potion")
 
 -- Chocobo 
-ResummonChocoboTimeLeft         = 3 * 60        --Resummons chocobo if there's less than this many seconds left on the timer, so it doesn't disappear on you in the middle of a fate.
+ResummonChocoboTimeLeft         = 2 * 60        --Resummons chocobo if there's less than this many seconds left on the timer, so it doesn't disappear on you in the middle of a fate.
 ChocoboStance = Config.Get("Chocobo Companion Stance") -- Options: Follow, Free, Defender, Healer, Attacker, None. Do not summon if None.
 ShouldSummonChocobo = ChocoboStance == "追従"
                     or ChocoboStance == "フリーファイト"
@@ -3485,11 +3485,11 @@ MinWait                        = 0          --Min number of seconds it should wa
 MaxWait                        = 2          --Max number of seconds it should wait until mounting up for next fate.
     --Actual wait time will be a randomly generated number between MinWait and MaxWait.
 DownTimeWaitAtNearestAetheryte = false      --When waiting for fates to pop, should you fly to the nearest Aetheryte and wait there?
-MoveToRandomSpot               = false      --Randomly fly to spot while waiting on fate.
+MoveToRandomSpot               = true       --Randomly fly to spot while waiting on fate.
 InventorySlotsLeft             = 5          --how much inventory space before turning in
 WaitIfBonusBuff                = true       --Dont change instances if you have the Twist of Fate bonus buff
 NumberOfInstances              = 3
-RemainingDurabilityToRepair    = 10         --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
+RemainingDurabilityToRepair    = 90         --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
 ShouldAutoBuyDarkMatter        = false      --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
 ShouldExtractMateria           = true       --should it Extract Materia
 

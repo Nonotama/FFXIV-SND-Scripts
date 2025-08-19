@@ -123,7 +123,7 @@ configs:
     type: boolean
 
   Exchange bicolor gemstones for:
-    default: Turali Bicolor Gemstone Voucher
+    default: バイカラージェム納品証【黄金】
     type: list
     is_choice: true
     description: Leave blank if you dont want to spend your bicolors.

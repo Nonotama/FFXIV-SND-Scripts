@@ -1,7 +1,7 @@
 ﻿--[=====[
 [[SND Metadata]]
 author: baanderson40 || orginially pot0to
-version: 3.0.12
+version: 3.0.13
 description: |
   Support via https://ko-fi.com/baanderson40
   Fate farming script with the following features:
@@ -13,7 +13,6 @@ description: |
   - Attempts to change instances when there are no fates left in the zone
   - Can process your retainers and Grand Company turn ins, then get back to fate farming
   - Autobuys gysahl greens and grade 8 dark matter when you run out
-  - Has companion scripts dedicated to atma farming, or you can write your own! (See section for companion scripts) Probably doesn't work.
 plugin_dependencies:
 - Lifestream
 - vnavmesh
@@ -21,26 +20,17 @@ plugin_dependencies:
 configs:
   Rotation Plugin:
     default: "RotationSolver"
-    type: string
-    description: |
-      What roation plugin to use
-      Supported values:
-        - Any
-        - Wrath
-        - RotationSolver
-        - BossMod
-        - BossModReborn
+    type: list
+    description: What roation plugin to use
+    is_choice: true
+    choices: ["Any", "Wrath", "RotationSolver","BossMod", "BossModReborn"]
 
   Dodging Plugin:
     default: "BossModReborn"
-    type: string
-    description: |
-      What dodging plugin to use. If your Rotation plugin is BMR or VBM, this will be overriden.
-      Supported values:
-        - Any
-        - BossMod
-        - BossModReborn
-        - None
+    type: list
+    description: What dodging plugin to use. If your Rotation plugin is BMR or VBM, this will be overriden.
+    is_choice: true
+    choices: ["Any", "BossMod", "BossModRebord", "None"]
 
   BMR/VBM Specific settings:
     default: false
@@ -82,42 +72,36 @@ configs:
     type: float
     min: 0
     max: 30
-    required: true
 
   Max ranged distance:
     default: 20
     type: float
     min: 0
     max: 30
-    required: true
 
   Ignore FATE if progress is over (%):
     default: 80
     type: int
     min: 0
     max: 100
-    required: true
 
   Ignore FATE if duration is less than (mins):
     default: 3
     type: int
     min: 0
     max: 100
-    required: true
 
   Ignore boss FATEs until progress is at least (%):
     default: 0
     type: int
     min: 0
     max: 100
-    required: true
 
   Ignore Special FATEs until progress is at least (%):
     default: 20
     type: int
     min: 0
     max: 100
-    required: true
 
   Do collection FATEs?:
     default: false
@@ -129,28 +113,66 @@ configs:
 
   Forlorns:
     default: All
-    type: string
-    description: |
-      Forlorns to attack.
-      Supported values:
-        - All
-        - Small
-        - None
-    required: true
+    type: list
+    description: Forlorns to attack.
+    is_choice: true
+    choices: ["All", "Small", "None"]
 
   Change instances if no FATEs?:
     default: true
     type: boolean
 
   Exchange bicolor gemstones for:
-    default: バイカラージェム納品証【黄金】
-    type: string
-    description: Leave blank if you dont want to spend your bicolors. See the bottom options for supported items.
+    default: Turali Bicolor Gemstone Voucher
+    type: list
+    is_choice: true
+    description: Leave blank if you dont want to spend your bicolors.
+    choices: ["",
+        "バイカラージェム納品証",
+        "アルマスティの毛",
+        "アームラ",
+        "エッグ・オブ・エルピス",
+        "オウヴィボスの乳",
+        "オピオタウロスの粗皮",
+        "ガジャの粗皮",
+        "クンビーラの粗皮",
+        "サイガの粗皮",
+        "ダイナマイトの灰",
+        "デュラミスシャード",
+        "ハンサの笹身",
+        "ブレスト・オブ・エルピス",
+        "ペタルダの鱗粉",
+        "ベルカナの樹液",
+        "マウンテンチキンの粗皮",
+        "ムースの肉",
+        "ヤーコウの肩肉",
+        "ルナテンダーの花",
+        "バイカラージェム納品証【黄金】",
+		"アックスビークの翼膜",
+		"アルパカのフィレ肉",
+		"ガルガンチュアの粗皮",
+		"ゴンフォテリウムの粗皮",
+		"シルバリオの粗皮",
+		"スワンプモンクのモモ肉",
+		"タンブルクラブの枯草",
+		"チャイチャの刃爪",
+		"ノパルテンダーのトゥナ",
+		"ハンマーヘッドダイルの粗皮",
+		"ブラーシャの粗皮",
+		"ブランチベアラーの果実",
+		"ポイズンフロッグの粘液",
+		"メガマゲイの球茎",
+		"レッサーアポリオンの甲殻",
+		"ロネークの肩肉",
+        "ロネークの獣毛"
+        ]
 
   Chocobo Companion Stance:
     default: "ヒーラースタンス"
-    description: Options - Follow/Free/Defender/Healer/Attacker/None. Will not summon chocobo if set to "None"
-    type: string
+    description: Will not summon chocobo if set to "None"
+    type: list
+    is_choice: true
+    choices: ["Follow", "Free", "Defender", "Healer", "Attacker", "None"]
 
   Buy Gysahl Greens?:
     default: false
@@ -176,60 +198,12 @@ configs:
     type: boolean
     description: Auto accept the box to return to home aetheryte when you die.
 
-  Bicolor Gemstone Items:
-    default: false
-    type: boolean
-    description: |
-      Item name to select.  
-      Supported values:
-        暁月 **************************
-        - バイカラージェム納品証
-        - アルマスティの毛
-        - アームラ
-        - エッグ・オブ・エルピス
-        - オウヴィボスの乳
-        - オピオタウロスの粗皮
-        - ガジャの粗皮
-        - クンビーラの粗皮
-        - サイガの粗皮
-        - ダイナマイトの灰
-        - デュラミスシャード
-        - ハンサの笹身
-        - ブレスト・オブ・エルピス
-        - ペタルダの鱗粉
-        - ベルカナの樹液
-        - マウンテンチキンの粗皮
-        - ムースの肉
-        - ヤーコウの肩肉
-        - ルナテンダーの花
-        黄金 **************************
-        - バイカラージェム納品証【黄金】
-        - アックスビークの翼膜
-        - アルパカのフィレ肉
-        - ガルガンチュアの粗皮
-        - ゴンフォテリウムの粗皮
-        - シルバリオの粗皮
-        - スワンプモンクのモモ肉
-        - タンブルクラブの枯草
-        - チャイチャの刃爪
-        - ノパルテンダーのトゥナ
-        - ハンマーヘッドダイルの粗皮
-        - ブラーシャの粗皮
-        - ブランチベアラーの果実
-        - ポイズンフロッグの粘液
-        - メガマゲイの球茎
-        - レッサーアポリオンの甲殻
-        - ロネークの肩肉
-        - ロネークの獣毛
-        
   Echo logs:
     default: Gems
-    type: string
-    description: |
-      Supported values:
-        - All
-        - Gems
-        - None
+    type: list
+    is_choice: true
+    choices: ["All", "Gems", "None"]
+    description: Debug level of logs. 
 
 [[End Metadata]]
 --]=====]
@@ -238,6 +212,7 @@ configs:
 ********************************************************************************
 *                                  Changelog                                   *
 ********************************************************************************
+    -> 3.0.13   Added list for settings
     -> 3.0.12   Fixed TextAdvance enabling 
     -> 3.0.11   Revision rollup
                 Fixed Gysahl Greens purchases
@@ -1779,7 +1754,7 @@ function TeleportTo(aetheryteName)
 end
 
 function ChangeInstance()
-    if SuccessiveInstanceChanges >= NumberOfInstances then
+    --[[if SuccessiveInstanceChanges >= NumberOfInstances then
         if CompanionScriptMode then
             local shouldWaitForBonusBuff = WaitIfBonusBuff and (HasStatusId(1288) or HasStatusId(1289))
             if WaitingForFateRewards == nil and not shouldWaitForBonusBuff then
@@ -1793,7 +1768,7 @@ function ChangeInstance()
             SuccessiveInstanceChanges = 0
         end
         return
-    end
+    end]]
 
     yield("/target エーテライト") -- search for nearby aetheryte
     if Svc.Targets.Target == nil or GetTargetName() ~= "エーテライト" then -- if no aetheryte within targeting range, teleport to it
@@ -2883,7 +2858,7 @@ function Ready()
             Dalamud.Log("[FATE] State Change: ChangingInstances")
             return
         end
-        if CompanionScriptMode and not shouldWaitForBonusBuff then
+        --[[if CompanionScriptMode and not shouldWaitForBonusBuff then
             if WaitingForFateRewards == nil then
                 StopScript = true
                 Dalamud.Log("[FATE] StopScript: Ready")
@@ -2891,7 +2866,7 @@ function Ready()
                 Dalamud.Log("[FATE] Waiting for fate rewards")
             end
             return
-        end
+        end]]
         if DownTimeWaitAtNearestAetheryte and (Svc.Targets.Target == nil or GetTargetName() ~= "aetheryte" or GetDistanceToTarget() > 20) then
             State = CharacterState.flyBackToAetheryte
             Dalamud.Log("[FATE] State Change: FlyBackToAetheryte")
@@ -2915,7 +2890,7 @@ function Ready()
         return
     end
 
-    if CompanionScriptMode and DidFate and not shouldWaitForBonusBuff then
+    --[[if CompanionScriptMode and DidFate and not shouldWaitForBonusBuff then
         if WaitingForFateRewards == nil then
             StopScript = true
             Dalamud.Log("[FATE] StopScript: DidFate")
@@ -2923,7 +2898,7 @@ function Ready()
             Dalamud.Log("[FATE] Waiting for fate rewards")
         end
         return
-    end
+    end]]
 
     if not Player.Available then
         return
@@ -3567,10 +3542,10 @@ Dalamud.Log("[FATE] Starting fate farming script.")
 State = CharacterState.ready
 CurrentFate = nil
 
-if CompanionScriptMode == EnableChangeInstance then
+--[[if CompanionScriptMode == EnableChangeInstance then
     yield("/echo The companion script will overwrite changing instances.")
     EnableChangeInstance = false
-end
+end]]
 
 while not StopScript do
     local nearestFate = Fates.GetNearestFate()

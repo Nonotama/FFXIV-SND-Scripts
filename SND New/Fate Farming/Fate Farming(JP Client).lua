@@ -86,13 +86,13 @@ configs:
     max: 100
 
   Ignore FATE if duration is less than (mins):
-    default: 3
+    default: 2
     type: int
     min: 0
     max: 100
 
   Ignore boss FATEs until progress is at least (%):
-    default: 0
+    default: 20
     type: int
     min: 0
     max: 100

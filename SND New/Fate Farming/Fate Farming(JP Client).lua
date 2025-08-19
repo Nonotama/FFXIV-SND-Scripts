@@ -2783,7 +2783,7 @@ function Ready()
 
     CombatModsOn = false
 
-    local shouldWaitForBonusBuff = WaitIfBonusBuff and (HasStatusId(1288) or HasStatusId(1289))
+    local shouldWaitForBonusBuff = WaitIfBonusBuff and HasStatusId(1289)
     local needsRepair = Inventory.GetItemsInNeedOfRepairs(RemainingDurabilityToRepair)
     local spiritbonded = Inventory.GetSpiritbondedItems()
 

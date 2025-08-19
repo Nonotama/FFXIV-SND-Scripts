@@ -30,7 +30,7 @@ configs:
     type: list
     description: What dodging plugin to use. If your Rotation plugin is BMR or VBM, this will be overriden.
     is_choice: true
-    choices: ["Any", "BossMod", "BossModRebord", "None"]
+    choices: ["Any", "BossMod", "BossModReborn", "None"]
 
   BMR/VBM Specific settings:
     default: false
@@ -172,7 +172,7 @@ configs:
     description: Will not summon chocobo if set to "None"
     type: list
     is_choice: true
-    choices: ["Follow", "Free", "Defender", "Healer", "Attacker", "None"]
+    choices: ["追従", "フリーファイト", "ディフェンダースタンス", "ヒーラースタンス", "アタッカースタンス", "None"]
 
   Buy Gysahl Greens?:
     default: false

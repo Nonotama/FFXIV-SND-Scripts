@@ -3462,7 +3462,7 @@ MinWait                        = 0          --Min number of seconds it should wa
 MaxWait                        = 2          --Max number of seconds it should wait until mounting up for next fate.
     --Actual wait time will be a randomly generated number between MinWait and MaxWait.
 DownTimeWaitAtNearestAetheryte = false      --When waiting for fates to pop, should you fly to the nearest Aetheryte and wait there?
-MoveToRandomSpot               = true       --Randomly fly to spot while waiting on fate.
+MoveToRandomSpot               = false      --Randomly fly to spot while waiting on fate.
 InventorySlotsLeft             = 5          --how much inventory space before turning in
 WaitIfBonusBuff                = true       --Dont change instances if you have the Twist of Fate bonus buff
 NumberOfInstances              = 3

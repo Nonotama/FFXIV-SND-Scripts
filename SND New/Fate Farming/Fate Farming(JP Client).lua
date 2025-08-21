@@ -1,7 +1,7 @@
 ﻿--[=====[
 [[SND Metadata]]
 author: baanderson40 || orginially pot0to
-version: 3.0.13
+version: 3.0.14
 description: |
   Support via https://ko-fi.com/baanderson40
   Fate farming script with the following features:
@@ -53,7 +53,7 @@ configs:
     description: Preset to hold 2min burst when progress gets to select %
 
   Percentage to Hold Buff:
-    default: 65
+    default: 0
     type: int
     description: Ideally you want to make full use of your buffs, higher then 70% will still waste a few seconds if progress is too fast.
 
@@ -92,7 +92,7 @@ configs:
     max: 100
 
   Ignore boss FATEs until progress is at least (%):
-    default: 20
+    default: 10
     type: int
     min: 0
     max: 100
@@ -212,6 +212,7 @@ configs:
 ********************************************************************************
 *                                  Changelog                                   *
 ********************************************************************************
+    -> 3.0.14   Fixed setting issue with Percentage to hold buff.
     -> 3.0.13   Added list for settings
     -> 3.0.12   Fixed TextAdvance enabling 
     -> 3.0.11   Revision rollup
@@ -2525,7 +2526,6 @@ function TurnOffCombatMods()
                 Engines.Run("/vbmai followtarget off")
                 Engines.Run("/vbmai followcombat off")
                 Engines.Run("/vbmai followoutofcombat off")
-                Engines.Run("/bmrai followoutofcombat off")
                 if RotationPlugin ~= "VBM" then
                     Engines.Run("/vbmai ForbidActions off") --This Enables VBM AI Auto-Target
                 end
@@ -3336,7 +3336,7 @@ Food = Config.Get("Food")
 Potion = Config.Get("Potion")
 
 -- Chocobo 
-ResummonChocoboTimeLeft         = 2 * 60        --Resummons chocobo if there's less than this many seconds left on the timer, so it doesn't disappear on you in the middle of a fate.
+ResummonChocoboTimeLeft         = 3 * 60        --Resummons chocobo if there's less than this many seconds left on the timer, so it doesn't disappear on you in the middle of a fate.
 ChocoboStance = Config.Get("Chocobo Companion Stance") -- Options: Follow, Free, Defender, Healer, Attacker, None. Do not summon if None.
 ShouldSummonChocobo = ChocoboStance == "追従"
                     or ChocoboStance == "フリーファイト"
@@ -3458,8 +3458,8 @@ if DodgingPlugin == "None" then
 end
 
 --Post Fate Settings
-MinWait                        = 0          --Min number of seconds it should wait until mounting up for next fate.
-MaxWait                        = 2          --Max number of seconds it should wait until mounting up for next fate.
+MinWait                        = 3          --Min number of seconds it should wait until mounting up for next fate.
+MaxWait                        = 10         --Max number of seconds it should wait until mounting up for next fate.
     --Actual wait time will be a randomly generated number between MinWait and MaxWait.
 DownTimeWaitAtNearestAetheryte = false      --When waiting for fates to pop, should you fly to the nearest Aetheryte and wait there?
 MoveToRandomSpot               = false      --Randomly fly to spot while waiting on fate.

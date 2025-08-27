@@ -1,7 +1,7 @@
 ﻿--[=====[
 [[SND Metadata]]
 author: baanderson40 || orginially pot0to
-version: 3.0.14
+version: 3.0.18
 description: |
   Support via https://ko-fi.com/baanderson40
   Fate farming script with the following features:
@@ -20,114 +20,94 @@ plugin_dependencies:
 configs:
   Rotation Plugin:
     default: "RotationSolver"
-    type: list
     description: What roation plugin to use
     is_choice: true
     choices: ["Any", "Wrath", "RotationSolver","BossMod", "BossModReborn"]
 
   Dodging Plugin:
     default: "BossModReborn"
-    type: list
     description: What dodging plugin to use. If your Rotation plugin is BMR or VBM, this will be overriden.
     is_choice: true
     choices: ["Any", "BossMod", "BossModReborn", "None"]
 
   BMR/VBM Specific settings:
     default: false
-    type: boolean
     description: "--- BMR/VBM Specific settings if you are using one of them as your rotation plugin ---"    
     
   Single Target Rotation:
     default: ""
-    type: string
     description: Preset name with single strategies (for forlorns). TURN OFF AUTOMATIC TARGETING FOR THIS PRESET   
 
   AoE Rotation:
     default: ""
-    type: string
     description: Preset with AoE and Buff Strategies.
     
   Hold Buff Rotation:
     default: ""
-    type: string
     description: Preset to hold 2min burst when progress gets to select %
 
   Percentage to Hold Buff:
     default: 0
-    type: int
     description: Ideally you want to make full use of your buffs, higher then 70% will still waste a few seconds if progress is too fast.
 
   Food:
-    default: 
+    default: ""
     description: Leave blank if you dont want to use any food. If its HQ include <hq> next to the name "Baked Eggplant <hq>"
-    type: string
 
   Potion:
-    default:
+    default: ""
     description: Leave blank if you dont want to use any potions. If its HQ include <hq> next to the name "Superior Spiritbond Potion <hq>"
-    type: string
 
   Max melee distance:
     default: 2.5
-    type: float
     min: 0
     max: 30
 
   Max ranged distance:
     default: 20
-    type: float
     min: 0
     max: 30
 
   Ignore FATE if progress is over (%):
     default: 80
-    type: int
     min: 0
     max: 100
 
   Ignore FATE if duration is less than (mins):
-    default: 2
-    type: int
+    default: 3
     min: 0
     max: 100
 
   Ignore boss FATEs until progress is at least (%):
     default: 10
-    type: int
     min: 0
     max: 100
 
   Ignore Special FATEs until progress is at least (%):
     default: 20
-    type: int
     min: 0
     max: 100
 
   Do collection FATEs?:
     default: false
-    type: boolean
 
   Do only bonus FATEs?:
     default: false
-    type: boolean
 
   Forlorns:
     default: All
-    type: list
     description: Forlorns to attack.
     is_choice: true
     choices: ["All", "Small", "None"]
 
   Change instances if no FATEs?:
     default: true
-    type: boolean
 
   Exchange bicolor gemstones for:
     default: バイカラージェム納品証【黄金】
-    type: list
     is_choice: true
     description: Leave blank if you dont want to spend your bicolors.
-    choices: ["",
+    choices: ["None",
         "バイカラージェム納品証",
         "アルマスティの毛",
         "アームラ",
@@ -170,37 +150,30 @@ configs:
   Chocobo Companion Stance:
     default: "ヒーラースタンス"
     description: Will not summon chocobo if set to "None"
-    type: list
     is_choice: true
     choices: ["追従", "フリーファイト", "ディフェンダースタンス", "ヒーラースタンス", "アタッカースタンス", "None"]
 
   Buy Gysahl Greens?:
-    default: false
-    description: Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if none in inventory
-    type: boolean
+    default: true
+    description: Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if none in inventory.
 
   Self repair?:
     default: true
     description: If checked, will attempt to repair your gear. If not checked, will go to Limsa mender.
-    type: boolean
 
   Pause for retainers?:
     default: false
-    type: boolean
 
   Dump extra gear at GC?:
     default: false
-    type: boolean
     description: Used with retainers, in case they come back with too much stuff and clog your inventory.
 
   Return on death?:
     default: true
-    type: boolean
     description: Auto accept the box to return to home aetheryte when you die.
 
   Echo logs:
     default: Gems
-    type: list
     is_choice: true
     choices: ["All", "Gems", "None"]
     description: Debug level of logs. 
@@ -212,7 +185,11 @@ configs:
 ********************************************************************************
 *                                  Changelog                                   *
 ********************************************************************************
-    -> 3.0.14   Fixed setting issue with Percentage to hold buff.
+    -> 3.0.18   Fixed Mender and Darkmatter npcs' positions
+    -> 3.0.17   Removed types from config settings
+    -> 3.0.16   Corrected Bossmod Reborn spelling for dodging plugin
+    -> 3.0.15   Added none as a purchase option to disable purchases
+    -> 3.0.14   Fixed setting issue with Percentage to hold buff
     -> 3.0.13   Added list for settings
     -> 3.0.12   Fixed TextAdvance enabling 
     -> 3.0.11   Revision rollup
@@ -3343,7 +3320,7 @@ ShouldSummonChocobo = ChocoboStance == "追従"
                     or ChocoboStance == "ディフェンダースタンス"
                     or ChocoboStance == "ヒーラースタンス"
                     or ChocoboStance == "アタッカースタンス"
-ShouldAutoBuyGysahlGreens       = Config.Get("Buy Gysahl Greens?")    --
+ShouldAutoBuyGysahlGreens       = Config.Get("Buy Gysahl Greens?")
 MountToUse                      = "ウィング・オブ・リゾルヴ"       --The mount you'd like to use when flying between fates
 
 -- Retainer 
@@ -3474,7 +3451,7 @@ ShouldExtractMateria           = true       --should it Extract Materia
 EnableChangeInstance           = Config.Get("Change instances if no FATEs?")
 ShouldExchangeBicolorGemstones = Config.Get("Exchange bicolor gemstones?")
 ItemToPurchase                 = Config.Get("Exchange bicolor gemstones for")
-if ItemToPurchase == "" or ItemToPurchase == nil then
+if ItemToPurchase == "None" then
     ShouldExchangeBicolorGemstones = false
 end
 ReturnOnDeath                   = Config.Get("Return on death?")

@@ -1,7 +1,7 @@
 ﻿--[=====[
 [[SND Metadata]]
 author: baanderson40 || orginially pot0to
-version: 3.0.12
+version: 3.0.18
 description: |
   Support via https://ko-fi.com/baanderson40
   Fate farming script with the following features:
@@ -13,7 +13,6 @@ description: |
   - Attempts to change instances when there are no fates left in the zone
   - Can process your retainers and Grand Company turn ins, then get back to fate farming
   - Autobuys gysahl greens and grade 8 dark matter when you run out
-  - Has companion scripts dedicated to atma farming, or you can write your own! (See section for companion scripts) Probably doesn't work.
 plugin_dependencies:
 - Lifestream
 - vnavmesh
@@ -21,215 +20,163 @@ plugin_dependencies:
 configs:
   Rotation Plugin:
     default: "RotationSolver"
-    type: string
-    description: |
-      What roation plugin to use
-      Supported values:
-        - Any
-        - Wrath
-        - RotationSolver
-        - BossMod
-        - BossModReborn
+    description: What roation plugin to use
+    is_choice: true
+    choices: ["Any", "Wrath", "RotationSolver","BossMod", "BossModReborn"]
 
   Dodging Plugin:
     default: "BossModReborn"
-    type: string
-    description: |
-      What dodging plugin to use. If your Rotation plugin is BMR or VBM, this will be overriden.
-      Supported values:
-        - Any
-        - BossMod
-        - BossModReborn
-        - None
+    description: What dodging plugin to use. If your Rotation plugin is BMR or VBM, this will be overriden.
+    is_choice: true
+    choices: ["Any", "BossMod", "BossModReborn", "None"]
 
   BMR/VBM Specific settings:
     default: false
-    type: boolean
     description: "--- BMR/VBM Specific settings if you are using one of them as your rotation plugin ---"    
     
   Single Target Rotation:
     default: ""
-    type: string
     description: Preset name with single strategies (for forlorns). TURN OFF AUTOMATIC TARGETING FOR THIS PRESET   
 
   AoE Rotation:
     default: ""
-    type: string
     description: Preset with AoE and Buff Strategies.
     
   Hold Buff Rotation:
     default: ""
-    type: string
     description: Preset to hold 2min burst when progress gets to select %
 
   Percentage to Hold Buff:
-    default: 65
-    type: int
+    default: 0
     description: Ideally you want to make full use of your buffs, higher then 70% will still waste a few seconds if progress is too fast.
 
   Food:
-    default: 
+    default: ""
     description: Leave blank if you dont want to use any food. If its HQ include <hq> next to the name "Baked Eggplant <hq>"
-    type: string
 
   Potion:
-    default:
+    default: ""
     description: Leave blank if you dont want to use any potions. If its HQ include <hq> next to the name "Superior Spiritbond Potion <hq>"
-    type: string
 
   Max melee distance:
     default: 2.5
-    type: float
     min: 0
     max: 30
-    required: true
 
   Max ranged distance:
     default: 20
-    type: float
     min: 0
     max: 30
-    required: true
 
   Ignore FATE if progress is over (%):
     default: 80
-    type: int
     min: 0
     max: 100
-    required: true
 
   Ignore FATE if duration is less than (mins):
     default: 3
-    type: int
     min: 0
     max: 100
-    required: true
 
   Ignore boss FATEs until progress is at least (%):
-    default: 0
-    type: int
+    default: 10
     min: 0
     max: 100
-    required: true
 
   Ignore Special FATEs until progress is at least (%):
     default: 20
-    type: int
     min: 0
     max: 100
-    required: true
 
   Do collection FATEs?:
     default: false
-    type: boolean
 
   Do only bonus FATEs?:
     default: false
-    type: boolean
 
   Forlorns:
     default: All
-    type: string
-    description: |
-      Forlorns to attack.
-      Supported values:
-        - All
-        - Small
-        - None
-    required: true
+    description: Forlorns to attack.
+    is_choice: true
+    choices: ["All", "Small", "None"]
 
   Change instances if no FATEs?:
     default: true
-    type: boolean
 
   Exchange bicolor gemstones for:
     default: バイカラージェム納品証【黄金】
-    type: string
-    description: Leave blank if you dont want to spend your bicolors. See the bottom options for supported items.
+    is_choice: true
+    description: Leave blank if you dont want to spend your bicolors.
+    choices: ["None",
+        "バイカラージェム納品証",
+        "アルマスティの毛",
+        "アームラ",
+        "エッグ・オブ・エルピス",
+        "オウヴィボスの乳",
+        "オピオタウロスの粗皮",
+        "ガジャの粗皮",
+        "クンビーラの粗皮",
+        "サイガの粗皮",
+        "ダイナマイトの灰",
+        "デュラミスシャード",
+        "ハンサの笹身",
+        "ブレスト・オブ・エルピス",
+        "ペタルダの鱗粉",
+        "ベルカナの樹液",
+        "マウンテンチキンの粗皮",
+        "ムースの肉",
+        "ヤーコウの肩肉",
+        "ルナテンダーの花",
+        "バイカラージェム納品証【黄金】",
+		"アックスビークの翼膜",
+		"アルパカのフィレ肉",
+		"ガルガンチュアの粗皮",
+		"ゴンフォテリウムの粗皮",
+		"シルバリオの粗皮",
+		"スワンプモンクのモモ肉",
+		"タンブルクラブの枯草",
+		"チャイチャの刃爪",
+		"ノパルテンダーのトゥナ",
+		"ハンマーヘッドダイルの粗皮",
+		"ブラーシャの粗皮",
+		"ブランチベアラーの果実",
+		"ポイズンフロッグの粘液",
+		"メガマゲイの球茎",
+		"レッサーアポリオンの甲殻",
+		"ロネークの肩肉",
+        "ロネークの獣毛"
+        ]
 
   Chocobo Companion Stance:
     default: "ヒーラースタンス"
-    description: Options - Follow/Free/Defender/Healer/Attacker/None. Will not summon chocobo if set to "None"
-    type: string
+    description: Will not summon chocobo if set to "None"
+    is_choice: true
+    choices: ["追従", "フリーファイト", "ディフェンダースタンス", "ヒーラースタンス", "アタッカースタンス", "None"]
 
   Buy Gysahl Greens?:
-    default: false
-    description: Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if none in inventory
-    type: boolean
+    default: true
+    description: Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if none in inventory.
 
   Self repair?:
     default: true
     description: If checked, will attempt to repair your gear. If not checked, will go to Limsa mender.
-    type: boolean
 
   Pause for retainers?:
     default: false
-    type: boolean
 
   Dump extra gear at GC?:
     default: false
-    type: boolean
     description: Used with retainers, in case they come back with too much stuff and clog your inventory.
 
   Return on death?:
     default: true
-    type: boolean
     description: Auto accept the box to return to home aetheryte when you die.
 
-  Bicolor Gemstone Items:
-    default: false
-    type: boolean
-    description: |
-      Item name to select.  
-      Supported values:
-        暁月 **************************
-        - バイカラージェム納品証
-        - アルマスティの毛
-        - アームラ
-        - エッグ・オブ・エルピス
-        - オウヴィボスの乳
-        - オピオタウロスの粗皮
-        - ガジャの粗皮
-        - クンビーラの粗皮
-        - サイガの粗皮
-        - ダイナマイトの灰
-        - デュラミスシャード
-        - ハンサの笹身
-        - ブレスト・オブ・エルピス
-        - ペタルダの鱗粉
-        - ベルカナの樹液
-        - マウンテンチキンの粗皮
-        - ムースの肉
-        - ヤーコウの肩肉
-        - ルナテンダーの花
-        黄金 **************************
-        - バイカラージェム納品証【黄金】
-        - アックスビークの翼膜
-        - アルパカのフィレ肉
-        - ガルガンチュアの粗皮
-        - ゴンフォテリウムの粗皮
-        - シルバリオの粗皮
-        - スワンプモンクのモモ肉
-        - タンブルクラブの枯草
-        - チャイチャの刃爪
-        - ノパルテンダーのトゥナ
-        - ハンマーヘッドダイルの粗皮
-        - ブラーシャの粗皮
-        - ブランチベアラーの果実
-        - ポイズンフロッグの粘液
-        - メガマゲイの球茎
-        - レッサーアポリオンの甲殻
-        - ロネークの肩肉
-        - ロネークの獣毛
-        
   Echo logs:
     default: Gems
-    type: string
-    description: |
-      Supported values:
-        - All
-        - Gems
-        - None
+    is_choice: true
+    choices: ["All", "Gems", "None"]
+    description: Debug level of logs. 
 
 [[End Metadata]]
 --]=====]
@@ -238,6 +185,13 @@ configs:
 ********************************************************************************
 *                                  Changelog                                   *
 ********************************************************************************
+    -> 3.0.18   Fixed Mender and Darkmatter npcs' positions
+    -> 3.0.17   Removed types from config settings
+    -> 3.0.16   Corrected Bossmod Reborn spelling for dodging plugin
+    -> 3.0.15   Added none as a purchase option to disable purchases
+    -> 3.0.14   Fixed setting issue with Percentage to hold buff
+    -> 3.0.13   Added list for settings
+    -> 3.0.12   Fixed TextAdvance enabling 
     -> 3.0.11   Revision rollup
                 Fixed Gysahl Greens purchases
                 Blacklisted "Plumbers Don't Fear Slimes" due to script crashing
@@ -1117,7 +1071,9 @@ FatesData = {
             fatesWithContinuations = {
 --                { fateName="気まぐれロボット", continuationIsBoss=false }
             },
-            blacklistedFates= {}
+            blacklistedFates= {
+                "メガ・パイソン" -- FATE開始時スタックする可能性があるため
+            }
         }
     },
     {
@@ -1776,7 +1732,7 @@ function TeleportTo(aetheryteName)
 end
 
 function ChangeInstance()
-    if SuccessiveInstanceChanges >= NumberOfInstances then
+    --[[if SuccessiveInstanceChanges >= NumberOfInstances then
         if CompanionScriptMode then
             local shouldWaitForBonusBuff = WaitIfBonusBuff and (HasStatusId(1288) or HasStatusId(1289))
             if WaitingForFateRewards == nil and not shouldWaitForBonusBuff then
@@ -1790,7 +1746,7 @@ function ChangeInstance()
             SuccessiveInstanceChanges = 0
         end
         return
-    end
+    end]]
 
     yield("/target エーテライト") -- search for nearby aetheryte
     if Svc.Targets.Target == nil or GetTargetName() ~= "エーテライト" then -- if no aetheryte within targeting range, teleport to it
@@ -2547,7 +2503,6 @@ function TurnOffCombatMods()
                 Engines.Run("/vbmai followtarget off")
                 Engines.Run("/vbmai followcombat off")
                 Engines.Run("/vbmai followoutofcombat off")
-                Engines.Run("/bmrai followoutofcombat off")
                 if RotationPlugin ~= "VBM" then
                     Engines.Run("/vbmai ForbidActions off") --This Enables VBM AI Auto-Target
                 end
@@ -2805,7 +2760,7 @@ function Ready()
 
     CombatModsOn = false
 
-    local shouldWaitForBonusBuff = WaitIfBonusBuff and (HasStatusId(1288) or HasStatusId(1289))
+    local shouldWaitForBonusBuff = WaitIfBonusBuff and HasStatusId(1289)
     local needsRepair = Inventory.GetItemsInNeedOfRepairs(RemainingDurabilityToRepair)
     local spiritbonded = Inventory.GetSpiritbondedItems()
 
@@ -2880,7 +2835,7 @@ function Ready()
             Dalamud.Log("[FATE] State Change: ChangingInstances")
             return
         end
-        if CompanionScriptMode and not shouldWaitForBonusBuff then
+        --[[if CompanionScriptMode and not shouldWaitForBonusBuff then
             if WaitingForFateRewards == nil then
                 StopScript = true
                 Dalamud.Log("[FATE] StopScript: Ready")
@@ -2888,7 +2843,7 @@ function Ready()
                 Dalamud.Log("[FATE] Waiting for fate rewards")
             end
             return
-        end
+        end]]
         if DownTimeWaitAtNearestAetheryte and (Svc.Targets.Target == nil or GetTargetName() ~= "aetheryte" or GetDistanceToTarget() > 20) then
             State = CharacterState.flyBackToAetheryte
             Dalamud.Log("[FATE] State Change: FlyBackToAetheryte")
@@ -2912,7 +2867,7 @@ function Ready()
         return
     end
 
-    if CompanionScriptMode and DidFate and not shouldWaitForBonusBuff then
+    --[[if CompanionScriptMode and DidFate and not shouldWaitForBonusBuff then
         if WaitingForFateRewards == nil then
             StopScript = true
             Dalamud.Log("[FATE] StopScript: DidFate")
@@ -2920,7 +2875,7 @@ function Ready()
             Dalamud.Log("[FATE] Waiting for fate rewards")
         end
         return
-    end
+    end]]
 
     if not Player.Available then
         return
@@ -3365,7 +3320,7 @@ ShouldSummonChocobo = ChocoboStance == "追従"
                     or ChocoboStance == "ディフェンダースタンス"
                     or ChocoboStance == "ヒーラースタンス"
                     or ChocoboStance == "アタッカースタンス"
-ShouldAutoBuyGysahlGreens       = Config.Get("Buy Gysahl Greens?")    --
+ShouldAutoBuyGysahlGreens       = Config.Get("Buy Gysahl Greens?")
 MountToUse                      = "ウィング・オブ・リゾルヴ"       --The mount you'd like to use when flying between fates
 
 -- Retainer 
@@ -3480,15 +3435,15 @@ if DodgingPlugin == "None" then
 end
 
 --Post Fate Settings
-MinWait                        = 0          --Min number of seconds it should wait until mounting up for next fate.
-MaxWait                        = 2          --Max number of seconds it should wait until mounting up for next fate.
+MinWait                        = 3          --Min number of seconds it should wait until mounting up for next fate.
+MaxWait                        = 10         --Max number of seconds it should wait until mounting up for next fate.
     --Actual wait time will be a randomly generated number between MinWait and MaxWait.
 DownTimeWaitAtNearestAetheryte = false      --When waiting for fates to pop, should you fly to the nearest Aetheryte and wait there?
 MoveToRandomSpot               = false      --Randomly fly to spot while waiting on fate.
 InventorySlotsLeft             = 5          --how much inventory space before turning in
 WaitIfBonusBuff                = true       --Dont change instances if you have the Twist of Fate bonus buff
 NumberOfInstances              = 3
-RemainingDurabilityToRepair    = 10         --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
+RemainingDurabilityToRepair    = 90         --the amount it needs to drop before Repairing (set it to 0 if you don't want it to repair)
 ShouldAutoBuyDarkMatter        = false      --Automatically buys a 99 stack of Grade 8 Dark Matter from the Limsa gil vendor if you're out
 ShouldExtractMateria           = true       --should it Extract Materia
 
@@ -3496,7 +3451,7 @@ ShouldExtractMateria           = true       --should it Extract Materia
 EnableChangeInstance           = Config.Get("Change instances if no FATEs?")
 ShouldExchangeBicolorGemstones = Config.Get("Exchange bicolor gemstones?")
 ItemToPurchase                 = Config.Get("Exchange bicolor gemstones for")
-if ItemToPurchase == "" or ItemToPurchase == nil then
+if ItemToPurchase == "None" then
     ShouldExchangeBicolorGemstones = false
 end
 ReturnOnDeath                   = Config.Get("Return on death?")
@@ -3564,10 +3519,10 @@ Dalamud.Log("[FATE] Starting fate farming script.")
 State = CharacterState.ready
 CurrentFate = nil
 
-if CompanionScriptMode == EnableChangeInstance then
+--[[if CompanionScriptMode == EnableChangeInstance then
     yield("/echo The companion script will overwrite changing instances.")
     EnableChangeInstance = false
-end
+end]]
 
 while not StopScript do
     local nearestFate = Fates.GetNearestFate()

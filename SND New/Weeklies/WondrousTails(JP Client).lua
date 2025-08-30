@@ -87,7 +87,7 @@ local wonderousTailsDuties = {
         { dutyMode="Regular", dutyName="レベリングダンジョン Lv81-89/91-99", dutyId=952 }, --異形楼閣 ゾットの塔
     },
     { -- type 6: expansion cap dungeons
-        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv50-60", dutyId=362 }, --盟友支援 ブレイフロクスの野営地 (Hard)
+        { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv50・60", dutyId=362 }, --盟友支援 ブレイフロクスの野営地 (Hard)
         { dutyMode="Regular", dutyName="ハイレベリングダンジョン Lv70・80", dutyId=788 }, --草木汚染 聖モシャーヌ植物園 (Hard)
         { dutyMode="Trust", dutyName="ハイレベリングダンジョン Lv90", dutyId=973 }, --最終幻想 レムナント
     },

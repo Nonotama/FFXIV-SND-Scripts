@@ -1,7 +1,7 @@
 ﻿--[=====[
 [[SND Metadata]]
 author: baanderson40 || orginially pot0to
-version: 3.0.18
+version: 3.0.20
 description: |
   Support via https://ko-fi.com/baanderson40
   Fate farming script with the following features:
@@ -23,90 +23,70 @@ configs:
     description: What roation plugin to use
     is_choice: true
     choices: ["Any", "Wrath", "RotationSolver","BossMod", "BossModReborn"]
-
   Dodging Plugin:
     default: "BossModReborn"
     description: What dodging plugin to use. If your Rotation plugin is BMR or VBM, this will be overriden.
     is_choice: true
     choices: ["Any", "BossMod", "BossModReborn", "None"]
-
   BMR/VBM Specific settings:
     default: false
     description: "--- BMR/VBM Specific settings if you are using one of them as your rotation plugin ---"    
-    
   Single Target Rotation:
     default: ""
     description: Preset name with single strategies (for forlorns). TURN OFF AUTOMATIC TARGETING FOR THIS PRESET   
-
   AoE Rotation:
     default: ""
     description: Preset with AoE and Buff Strategies.
-    
   Hold Buff Rotation:
     default: ""
     description: Preset to hold 2min burst when progress gets to select %
-
-  Percentage to Hold Buff:
-    default: 0
-    description: Ideally you want to make full use of your buffs, higher then 70% will still waste a few seconds if progress is too fast.
-
   Food:
     default: ""
     description: Leave blank if you dont want to use any food. If its HQ include <hq> next to the name "Baked Eggplant <hq>"
-
   Potion:
     default: ""
     description: Leave blank if you dont want to use any potions. If its HQ include <hq> next to the name "Superior Spiritbond Potion <hq>"
-
   Max melee distance:
     default: 2.5
     min: 0
     max: 30
-
   Max ranged distance:
     default: 20
     min: 0
     max: 30
-
   Ignore FATE if progress is over (%):
     default: 80
     min: 0
     max: 100
-
   Ignore FATE if duration is less than (mins):
     default: 3
     min: 0
     max: 100
-
   Ignore boss FATEs until progress is at least (%):
     default: 10
     min: 0
     max: 100
-
   Ignore Special FATEs until progress is at least (%):
     default: 20
     min: 0
     max: 100
-
   Do collection FATEs?:
     default: false
 
   Do only bonus FATEs?:
     default: false
-
   Forlorns:
     default: All
     description: Forlorns to attack.
     is_choice: true
     choices: ["All", "Small", "None"]
-
   Change instances if no FATEs?:
     default: true
 
   Exchange bicolor gemstones for:
     default: バイカラージェム納品証【黄金】
     is_choice: true
-    description: Leave blank if you dont want to spend your bicolors.
+    description: Choose none if you dont want to spend your bicolors.
     choices: ["None",
         "バイカラージェム納品証",
         "アルマスティの毛",
@@ -156,28 +136,23 @@ configs:
   Buy Gysahl Greens?:
     default: true
     description: Automatically buys a 99 stack of Gysahl Greens from the Limsa gil vendor if none in inventory.
-
   Self repair?:
     default: true
     description: If checked, will attempt to repair your gear. If not checked, will go to Limsa mender.
-
   Pause for retainers?:
     default: false
 
   Dump extra gear at GC?:
     default: false
     description: Used with retainers, in case they come back with too much stuff and clog your inventory.
-
   Return on death?:
     default: true
     description: Auto accept the box to return to home aetheryte when you die.
-
   Echo logs:
     default: Gems
     is_choice: true
     choices: ["All", "Gems", "None"]
     description: Debug level of logs. 
-
 [[End Metadata]]
 --]=====]
 --[[
@@ -185,7 +160,9 @@ configs:
 ********************************************************************************
 *                                  Changelog                                   *
 ********************************************************************************
-    -> 3.0.18   Fixed Mender and Darkmatter npcs' positions
+    -> 3.0.20   Fixed unexptected combat while moving
+    -> 3.0.19   Fixed random pathing to mob target
+    -> 3.0.18   Fixed Mender and Darkmatter npc positions
     -> 3.0.17   Removed types from config settings
     -> 3.0.16   Corrected Bossmod Reborn spelling for dodging plugin
     -> 3.0.15   Added none as a purchase option to disable purchases
@@ -1163,37 +1140,29 @@ function AttemptToTargetClosestFateEnemy()
     end
 end
 
--- Calculates a point on the line from 'start' to 'end',
--- stopping 'd' units before reaching 'end'
+function Normalize(v)
+    local len = v:Length()
+    if len == 0 then return v end
+    return v / len
+end
+
 function MoveToTargetHitbox()
+    --Dalamud.Log("[FATE] Move to Target Hit Box")
     if Svc.Targets.Target == nil then
         return
     end
-
-    -- Vector from start to end
+    local playerPos = Svc.ClientState.LocalPlayer.Position
+    local targetPos = Svc.Targets.Target.Position
     local distance = GetDistanceToTarget()
-
-    -- Distance between start and end
-    if distance == 0 then
-        return
-    end
-
-    -- Scale direction vector to (distance - d)
-    local newDistance = distance - GetTargetHitboxRadius()
-    if newDistance <= 0 then
-        return
-    end
-
-    -- Calculate normalized direction vector
-    local norm = (Svc.Targets.Target.Position - Svc.ClientState.LocalPlayer.Position) / distance
-    local edgeOfHitbox = (norm*newDistance) + Svc.ClientState.LocalPlayer.Position
-    local newPos = nil
-    local halfExt = 10
-    while newPos == nil do
-        newPos = IPC.vnavmesh.PointOnFloor(edgeOfHitbox, false, halfExt)
-        halfExt = halfExt + 10
-    end
-    Engines.Run("/vnav moveto "..newPos.X.." "..newPos.Y.." "..newPos.Z)
+    if distance == 0 then return end
+    local desiredRange = math.max(0.1, GetTargetHitboxRadius() + GetPlayerHitboxRadius() + MaxDistance)
+    local STOP_EPS = 0.15
+    if distance <= (desiredRange + STOP_EPS) then return end
+    local dir = Normalize(playerPos - targetPos)
+    if dir:Length() == 0 then return end
+    local ideal = targetPos + (dir * desiredRange)
+    local newPos = IPC.vnavmesh.PointOnFloor(ideal, false, 1.5) or ideal
+    IPC.vnavmesh.PathfindAndMoveTo(newPos, false)
 end
 
 function HasPlugin(name)
@@ -3092,7 +3061,7 @@ function Repair()
         return
     end
 
-    local hawkersAlleyAethernetShard = { x=-213.95, y=15.99, z=49.35 }
+    local hawkersAlleyAethernetShard = {position = Vector3(-213.95, 15.99, 49.35)}
     if SelfRepair then
         if Inventory.GetItemCount(33916) > 0 then
             if Addons.GetAddon("Shop").Ready then
@@ -3129,7 +3098,7 @@ function Repair()
                 return
             end
 
-            local darkMatterVendor = { npcName="雑貨屋 ウンシンレール", x=-257.71, y=16.19, z=50.11, wait=0.08 }
+            local darkMatterVendor = {npcName="雑貨屋 ウンシンレール", position = Vector3(-257.71, 16.19, 50.11), wait=0.08}
             if GetDistanceToPoint(darkMatterVendor.position) > (DistanceBetween(hawkersAlleyAethernetShard.position, darkMatterVendor.position) + 10) then
                 Engines.Run("/li マーケット（国際街広場）")
                 yield("/wait 1") -- give it a moment to register
@@ -3163,7 +3132,7 @@ function Repair()
                 return
             end
             
-            local mender = { npcName="修理屋 アリステア", x=-246.87, y=16.19, z=49.83 }
+            local mender = { npcName="修理屋 アリステア", position = Vector3(-246.87, 16.19, 49.83)}
             if GetDistanceToPoint(mender.position) > (DistanceBetween(hawkersAlleyAethernetShard.position, mender.position) + 10) then
                 Engines.Run("/li マーケット（国際街広場）")
                 yield("/wait 1") -- give it a moment to register
@@ -3338,6 +3307,7 @@ BonusFatesOnly = Config.Get("Do only bonus FATEs?")         --If true, will only
 FatePriority                        = {"Bonus", "Distance", "DistanceTeleport", "Progress", "TimeLeft"}
 MeleeDist = Config.Get("Max melee distance")
 RangedDist = Config.Get("Max ranged distance")
+HitboxBuffer                    = 0.5
 --ClassForBossFates                = ""            --If you want to use a different class for boss fates, set this to the 3 letter abbreviation
 
 -- Variable initialzization
@@ -3396,10 +3366,10 @@ end
     RSRAoeType                      = "Full"        --Options: Cleave/Full/Off
 
 -- For BMR/VBM/Wrath rotation plugins
-    RotationSingleTargetPreset      = Config.Get("Single Target Rotation") --Preset name with single target strategies (for forlorns). TURN OFF AUTOMATIC TARGETING FOR THIS PRESET
-    RotationAoePreset               = Config.Get("AoE Rotation")           --Preset with AOE + Buff strategies.
-    RotationHoldBuffPreset          = Config.Get("Hold Buff Rotation")     --Preset to hold 2min burst when progress gets to seleted %
-    PercentageToHoldBuff            = Config.Get("Percentage to Hold Buff")--Ideally youll want to make full use of your buffs, higher than 70% will still waste a few seconds if progress is too fast.
+RotationSingleTargetPreset      = Config.Get("Single Target Rotation") --Preset name with single target strategies (for forlorns). TURN OFF AUTOMATIC TARGETING FOR THIS PRESET
+RotationAoePreset               = Config.Get("AoE Rotation")           --Preset with AOE + Buff strategies.
+RotationHoldBuffPreset          = Config.Get("Hold Buff Rotation")     --Preset to hold 2min burst when progress gets to seleted %
+PercentageToHoldBuff            = 65 --Config.Get("Percentage to Hold Buff")--Ideally youll want to make full use of your buffs, higher than 70% will still waste a few seconds if progress is too fast.
 
 -- Dodge plugin
 local dodgeConfig = string.lower(Config.Get("Dodging Plugin"))  -- Options: Any / BossModReborn / BossMod / None
@@ -3536,7 +3506,8 @@ while not StopScript do
     if State ~= CharacterState.dead and Svc.Condition[CharacterCondition.dead] then
         State = CharacterState.dead
         Dalamud.Log("[FATE] State Change: Dead")
-    elseif State ~= CharacterState.unexpectedCombat
+    elseif not Player.IsMoving then
+        if State ~= CharacterState.unexpectedCombat
         and State ~= CharacterState.doFate
         and State ~= CharacterState.waitForContinuation
         and State ~= CharacterState.collectionsFateTurnIn
@@ -3544,11 +3515,11 @@ while not StopScript do
         and (
             not InActiveFate()
             or (InActiveFate() and IsCollectionsFate(nearestFate.Name) and nearestFate.Progress == 100)
-            or State == CharacterState.moveToFate   -- <-- this is new!
-        )
-    then
-        State = CharacterState.unexpectedCombat
-        Dalamud.Log("[FATE] State Change: UnexpectedCombat")
+	        )
+	    then
+	        State = CharacterState.unexpectedCombat
+	        Dalamud.Log("[FATE] State Change: UnexpectedCombat")
+	    end
     end
     
     BicolorGemCount = Inventory.GetItemCount(26807)

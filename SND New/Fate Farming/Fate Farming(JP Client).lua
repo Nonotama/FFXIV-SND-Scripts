@@ -1,7 +1,7 @@
 ﻿--[=====[
 [[SND Metadata]]
 author: baanderson40 || orginially pot0to
-version: 3.0.21
+version: 3.1.1
 description: |
   Support via https://ko-fi.com/baanderson40
   Fate farming script with the following features:
@@ -150,12 +150,19 @@ configs:
     default: "Gems"
     is_choice: true
     choices: ["All", "Gems", "None"]
+  Companion Script Mode:
+    description: Currently only Multi Zone Farming.
+    default: false
 [[End Metadata]]
 --]=====]
 --[[
 
 ********************************************************************************
 *                                  Changelog                                   *
+********************************************************************************
+    -> 3.1.1    Reverted RSR auto to just 'on'
+    -> 3.1.0    Updated to support companion scripts by Minnu
+
 ********************************************************************************
     -> 3.0.21   Updated meta data config settings
     -> 3.0.20   Fixed unexptected combat while moving
@@ -359,6 +366,21 @@ BicolorExchangeData =
             { itemName = "アックスビークの翼膜", itemIndex = 21, price = 2 },
             { itemName = "レッサーアポリオンの甲殻", itemIndex = 22, price = 2 },
             { itemName = "タンブルクラブの枯草", itemIndex = 23, price = 2 },
+        }
+    },
+    {
+        shopKeepName = "広域交易商 ラルルック",
+        zoneName = "ヤクテル樹海",
+        zoneId = 1189,
+        aetheryteName = "イクブラーシャ",
+        position=Vector3(-381, 23, -436),
+        shopItems =
+        {
+            { itemName = "ヤクテル・スケールツリー", itemIndex = 3, price = 150 },
+            { itemName = "ブランチベアラーの果実", itemIndex = 5, price = 3 },
+            { itemName = "ブラーシャの粗皮", itemIndex = 6, price = 3 },
+            { itemName = "チャイチャの刃爪", itemIndex = 7, price = 3 },
+            { itemName = "ウトォーム隕鉄", itemIndex = 8, price = 600 },
         }
     }
 }
@@ -1462,7 +1484,7 @@ function SelectNextFate()
 
     Dalamud.Log("[FATE] Finished considering all fates")
     if nextFate == nil then
-        Dalamud.Log("[FATE] No eligible fates found.")
+        Dalamud.Log("[FATE] .>H N found.")
         if Echo == "all" then
             Engines.Run("/echo  [FATE] No eligible fates found.")
         end
@@ -1489,7 +1511,10 @@ end
 --#region Movement Functions
 
 function DistanceBetween(pos1, pos2)
-    return Vector3.Distance(pos1, pos2)
+    local dx = pos1.X - pos2.X
+    local dy = pos1.Y - pos2.Y
+    local dz = pos1.Z - pos2.Z
+    return math.sqrt(dx * dx + dy * dy + dz * dz)
 end
 
 function GetDistanceToPoint(vec3)
@@ -1517,9 +1542,9 @@ function GetDistanceToPointFlat(vec3)
 end
 
 function DistanceBetweenFlat(pos1, pos2)
-    local flat1 = Vector3(pos1.X, 0, pos1.Z)
-    local flat2 = Vector3(pos2.X, 0, pos2.Z)
-    return Vector3.Distance(flat1, flat2)
+    local dx = pos1.X - pos2.X
+    local dz = pos1.Z - pos2.Z
+    return math.sqrt(dx * dx + dz * dz)
 end
 
 function RandomAdjustCoordinates(position, maxDistance)
@@ -1699,7 +1724,7 @@ function TeleportTo(aetheryteName)
 end
 
 function ChangeInstance()
-    --[[if SuccessiveInstanceChanges >= NumberOfInstances then
+    if SuccessiveInstanceChanges >= NumberOfInstances then
         if CompanionScriptMode then
             local shouldWaitForBonusBuff = WaitIfBonusBuff and (HasStatusId(1288) or HasStatusId(1289))
             if WaitingForFateRewards == nil and not shouldWaitForBonusBuff then
@@ -1713,7 +1738,7 @@ function ChangeInstance()
             SuccessiveInstanceChanges = 0
         end
         return
-    end]]
+    end
 
     yield("/target エーテライト") -- search for nearby aetheryte
     if Svc.Targets.Target == nil or GetTargetName() ~= "エーテライト" then -- if no aetheryte within targeting range, teleport to it
@@ -2802,7 +2827,7 @@ function Ready()
             Dalamud.Log("[FATE] State Change: ChangingInstances")
             return
         end
-        --[[if CompanionScriptMode and not shouldWaitForBonusBuff then
+        if CompanionScriptMode and not shouldWaitForBonusBuff then
             if WaitingForFateRewards == nil then
                 StopScript = true
                 Dalamud.Log("[FATE] StopScript: Ready")
@@ -2810,7 +2835,7 @@ function Ready()
                 Dalamud.Log("[FATE] Waiting for fate rewards")
             end
             return
-        end]]
+        end
         if DownTimeWaitAtNearestAetheryte and (Svc.Targets.Target == nil or GetTargetName() ~= "aetheryte" or GetDistanceToTarget() > 20) then
             State = CharacterState.flyBackToAetheryte
             Dalamud.Log("[FATE] State Change: FlyBackToAetheryte")
@@ -2834,7 +2859,7 @@ function Ready()
         return
     end
 
-    --[[if CompanionScriptMode and DidFate and not shouldWaitForBonusBuff then
+    if CompanionScriptMode and DidFate and not shouldWaitForBonusBuff then
         if WaitingForFateRewards == nil then
             StopScript = true
             Dalamud.Log("[FATE] StopScript: DidFate")
@@ -2842,7 +2867,7 @@ function Ready()
             Dalamud.Log("[FATE] Waiting for fate rewards")
         end
         return
-    end]]
+    end
 
     if not Player.Available then
         return
@@ -3274,6 +3299,18 @@ CharacterState = {
     autoBuyGysahlGreens = AutoBuyGysahlGreens
 }
 
+--- Fate state enum mapping (values confirmed from FFXIV SND)
+FateState = {
+    None       = 0,  -- no state / unknown
+    Preparing  = 1,  -- fate is setting up
+    Waiting    = 2,  -- waiting before spawn
+    Spawning   = 3,  -- mobs/NPCs spawning
+    Running    = 4,  -- fate active and in progress
+    Ending     = 5,  -- fate nearing completion
+    Ended      = 6,  -- fate finished successfully
+    Failed     = 7   -- fate failed
+}
+
 -- Settings Area
 -- Buffs
 Food = Config.Get("Food")
@@ -3324,9 +3361,6 @@ LastStuckCheckTime              = os.clock()
 LastStuckCheckPosition          = Player.Entity.Position
 MainClass                       = Player.Job
 BossFatesClass                  = nil
-if ClassForBossFates ~= "" then
-    BossFatesClass              = GetClassJobTableFromName(ClassForBossFates)
-end
 
 --Forlorns 
 IgnoreForlorns = false
@@ -3427,6 +3461,7 @@ SelfRepair                      = Config.Get("Self repair?")
 Retainers                       = Config.Get("Pause for retainers?")
 ShouldGrandCompanyTurnIn        = Config.Get("Dump extra gear at GC?")
 Echo                            = string.lower(Config.Get("Echo logs"))
+CompanionScriptMode             = Config.Get("Companion Script Mode")
 
 -- Plugin warnings
 if Retainers and not HasPlugin("AutoRetainer") then
@@ -3487,10 +3522,10 @@ Dalamud.Log("[FATE] Starting fate farming script.")
 State = CharacterState.ready
 CurrentFate = nil
 
---[[if CompanionScriptMode == EnableChangeInstance then
+if CompanionScriptMode == EnableChangeInstance then
     yield("/echo The companion script will overwrite changing instances.")
     EnableChangeInstance = false
-end]]
+end
 
 while not StopScript do
     local nearestFate = Fates.GetNearestFate()
@@ -3556,4 +3591,6 @@ Engines.Run("/vnav stop")
 if Player.Job.Id ~= MainClass.Id then
     Engines.Run("/gs change "..MainClass.Name)
 end
+
+Engines.Run("/echo [Fate] Loop Ended !!")
 --#endregion Main
